@@ -1,0 +1,8 @@
+// Solução 07 — tabuada do 7 com while
+main() {
+    var i = 1
+    while (i <= 10) {
+        println("7 x " + i + " = " + (7 * i))
+        i = i + 1
+    }
+}

@@ -1,0 +1,8 @@
+// Solução 14 — record Livro
+record Livro(String titulo, String autor, Int ano)
+
+main() {
+    var l = Livro("O Nome do Vento", "Patrick Rothfuss", 2007)
+    println(l.titulo())
+    println(l.ano())
+}

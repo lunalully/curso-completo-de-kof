@@ -1,0 +1,36 @@
+Int dividir(Int a, Int b) {
+    if (b == 0) {
+        throw "divisao por zero"
+    }
+    return a / b
+}
+class Pilha {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    Int desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+}
+main() {
+    try {
+        dividir(1, 0)
+        assert(false, "deveria ter lancado")
+    } catch (String e) {
+        assert(true, "lancou como esperado")
+    }
+    var p = Pilha()
+    try {
+        p.desempilhar()
+        assert(false, "deveria ter lancado")
+    } catch (String e) {
+        assert(true, "pilha vazia lancou")
+    }
+    println("testes de excecao passaram")
+}

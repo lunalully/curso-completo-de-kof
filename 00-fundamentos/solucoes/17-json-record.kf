@@ -1,0 +1,10 @@
+// Solução 17 — JSON com record (JVM)
+record Livro(String titulo, String autor, Int ano)
+
+main() {
+    var l = Livro("Duna", "Frank Herbert", 1965)
+    var j = json.encode(l)
+    println(j)
+    var d = json.decode<Livro>("{\"titulo\":\"1984\",\"autor\":\"Orwell\",\"ano\":1949}")
+    println(d.titulo())
+}

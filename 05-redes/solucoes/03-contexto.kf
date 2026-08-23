@@ -1,0 +1,12 @@
+main() {
+    var app = web.app()
+    app.get("/info/:id") {
+        return "method=" + method() + " path=" + path() +
+            " id=" + param("id") + " q=" + query("nome") +
+            " agent=" + header("user-agent")
+    }
+    app.post("/echo") {
+        return "body=" + body()
+    }
+    app.listen(8080)
+}

@@ -1,0 +1,7 @@
+// Solução 26 — contar palavras de um arquivo
+main() {
+    writeFile("texto.txt", "kof e uma linguagem compilada e tipada")
+    var conteudo = readFile("texto.txt")
+    var palavras = conteudo.split(" ")
+    println(palavras.length)
+}

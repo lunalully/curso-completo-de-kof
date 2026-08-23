@@ -1,0 +1,31 @@
+record Livro(Int id, String titulo, String autor)
+
+main() {
+    var db = db.connect("jdbc:h2:mem:lib;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table if not exists livros(id int, titulo varchar(80), autor varchar(80), disponivel bool)")
+    db.execute(db, "create table if not exists emprestimos(id int, livro_id int, usuario varchar(50))")
+
+    db.execute(db, "insert into livros values (1, 'Duna', 'Herbert', true)")
+    db.execute(db, "insert into livros values (2, '1984', 'Orwell', true)")
+
+    // listar disponíveis
+    var disponiveis = db.query<Livro>(db, "select id, titulo, autor from livros where disponivel = true")
+    println("disponiveis=" + disponiveis.size)
+
+    // emprestar (transação)
+    transaction {
+        db.execute(db, "insert into emprestimos values (?, ?, ?)", 1, 1, "Mel")
+        db.execute(db, "update livros set disponivel = false where id = 1")
+    }
+
+    // emprestados com JOIN
+    var emprestados = db.query(db, "select l.titulo, e.usuario from emprestimos e join livros l on l.id = e.livro_id")
+    println(emprestados.get(0))
+
+    // devolver
+    transaction {
+        db.execute(db, "delete from emprestimos where id = ?", 1)
+        db.execute(db, "update livros set disponivel = true where id = 1")
+    }
+    db.close(db)
+}

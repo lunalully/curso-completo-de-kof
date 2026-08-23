@@ -1,0 +1,9 @@
+Int mdc(Int a, Int b) {
+    if (b == 0) {
+        return a
+    }
+    return mdc(b, a % b)
+}
+main() {
+    println(mdc(48, 36))   // 12
+}

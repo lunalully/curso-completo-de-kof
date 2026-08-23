@@ -1,0 +1,36 @@
+Int fibRec(Int n) {
+    if (n <= 1) {
+        return n
+    }
+    return fibRec(n - 1) + fibRec(n - 2)
+}
+Int fibIter(Int n) {
+    if (n <= 1) {
+        return n
+    }
+    var a = 0
+    var b = 1
+    for (var i = 2; i <= n; i = i + 1) {
+        var prox = a + b
+        a = b
+        b = prox
+    }
+    return b
+}
+Int fibMemo(Int n) {
+    if (n <= 1) {
+        return n
+    }
+    var memo = new Int[n + 1]
+    memo[0] = 0
+    memo[1] = 1
+    for (var i = 2; i <= n; i = i + 1) {
+        memo[i] = memo[i - 1] + memo[i - 2]
+    }
+    return memo[n]
+}
+main() {
+    println(fibRec(10))     // 55
+    println(fibIter(10))    // 55
+    println(fibMemo(40))    // 102334155 — recursivo travaria
+}

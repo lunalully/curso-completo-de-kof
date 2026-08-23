@@ -1,0 +1,15 @@
+Int ultimoIndice(List<Int> lista, Int alvo) {
+    var ultimo = -1
+    for (var i = 0; i < lista.size; i = i + 1) {
+        if (lista.get(i) == alvo) {
+            ultimo = i
+        }
+    }
+    if (ultimo < 0) {
+        throw "nao encontrado: " + alvo
+    }
+    return ultimo
+}
+main() {
+    println(ultimoIndice(listOf(1, 2, 1, 3, 1), 1))   // 4
+}

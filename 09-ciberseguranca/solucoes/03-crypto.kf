@@ -1,0 +1,23 @@
+main() {
+    var msg = "dados sensiveis"
+    var chave = "segredo"
+
+    var a = crypto.sha256(msg)
+    var b = crypto.sha256(msg)
+    println(security.constantTimeEquals(a, b))
+
+    var mac = crypto.hmacSha256(chave, msg)
+    println(security.constantTimeEquals(mac, crypto.hmacSha256(chave, msg)))
+
+    var key = crypto.randomHex(32)
+    var ct = crypto.encryptAesGcm("segredo", key)
+    println(crypto.decryptAesGcm(ct, key) == "segredo")
+
+    var corrompido = ct.substring(0, ct.length() - 4) + "XXXX"
+    try {
+        crypto.decryptAesGcm(corrompido, key)
+        println("falhou em detectar")
+    } catch (String e) {
+        println("tamper detectado")
+    }
+}

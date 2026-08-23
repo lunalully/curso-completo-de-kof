@@ -1,0 +1,6 @@
+main() {
+    var db = db.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table users(id int, name varchar(50))")
+    db.close(db)
+    println("ok")
+}

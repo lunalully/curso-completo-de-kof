@@ -1,0 +1,26 @@
+Int fatorial(Int n) {
+    var r = 1
+    for (var i = 2; i <= n; i = i + 1) {
+        r = r * i
+    }
+    return r
+}
+Int dividir(Int a, Int b) {
+    if (b == 0) {
+        throw "divisao por zero"
+    }
+    return a / b
+}
+main() {
+    assert(fatorial(0) == 1, "fat 0")
+    assert(fatorial(1) == 1, "fat 1")
+    assert(fatorial(5) == 120, "fat 5")
+    assert(dividir(10, 2) == 5, "divisao")
+    try {
+        dividir(1, 0)
+        assert(false, "deveria lancar")
+    } catch (String e) {
+        assert(true, "zero lanca")
+    }
+    println("limites: PASS")
+}

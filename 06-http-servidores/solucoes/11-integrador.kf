@@ -1,0 +1,76 @@
+// API de tarefas — checkpoint da trilha
+record Tarefa(Int id, String titulo, Bool concluida)
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+class ListaTarefas {
+    List<Tarefa> itens
+    constructor() {
+        itens = listOf()
+    }
+    Tarefa buscar(Int id) {
+        for (var t in itens) {
+            if (t.id == id) {
+                return t
+            }
+        }
+        throw "tarefa nao existe: " + id
+    }
+    void concluir(Int id) {
+        for (var i = 0; i < itens.size; i = i + 1) {
+            if (itens.get(i).id == id) {
+                itens.set(i, Tarefa(id, itens.get(i).titulo, true))
+                return
+            }
+        }
+        throw "tarefa nao existe: " + id
+    }
+    void remover(Int id) {
+        for (var i = 0; i < itens.size; i = i + 1) {
+            if (itens.get(i).id == id) {
+                itens.remove(i)
+                return
+            }
+        }
+        throw "tarefa nao existe: " + id
+    }
+}
+main() {
+    var lista = ListaTarefas()
+    lista.itens.add(Tarefa(1, "estudar kof", false))
+
+    var app = web.app()
+    app.use {
+        log.info(method() + " " + path())
+        return null
+    }
+    app.get("/tarefas") {
+        return json.encode(lista.itens)
+    }
+    app.post("/tarefas") {
+        var t = json.decode<Tarefa>(body())
+        if (t.titulo.length == 0) {
+            return "{\"error\": \"titulo obrigatorio\"}"
+        }
+        lista.itens.add(t)
+        return "{\"ok\": true}"
+    }
+    app.put("/tarefas/:id") {
+        lista.concluir(toInt(param("id")))
+        return "{\"ok\": true}"
+    }
+    app.delete("/tarefas/:id") {
+        lista.remover(toInt(param("id")))
+        return "{\"ok\": true}"
+    }
+    app.listen(config.int("server.port", 8080))
+}

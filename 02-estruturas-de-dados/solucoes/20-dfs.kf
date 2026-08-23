@@ -1,0 +1,53 @@
+record Aresta(String de, String para)
+class Grafo {
+    List<String> vertices
+    List<Aresta> arestas
+    constructor() {
+        vertices = listOf()
+        arestas = listOf()
+    }
+    void adicionarAresta(String de, String para) {
+        if (!vertices.contains(de)) {
+            vertices.add(de)
+        }
+        if (!vertices.contains(para)) {
+            vertices.add(para)
+        }
+        arestas.add(Aresta(de, para))
+        arestas.add(Aresta(para, de))
+    }
+    vizinhos(String v): List<String> {
+        var l = listOf<String>()
+        for (var e in arestas) {
+            if (e.de == v) {
+                l.add(e.para)
+            }
+        }
+        return l
+    }
+}
+List<String> dfs(Grafo g, String inicio) {
+    var visitados = listOf<String>()
+    var pilha = listOf(inicio)
+    while (pilha.size > 0) {
+        var v = pilha.get(pilha.size - 1)
+        pilha.remove(pilha.size - 1)
+        if (visitados.contains(v)) {
+            continue
+        }
+        visitados.add(v)
+        for (var viz in g.vizinhos(v)) {
+            if (!visitados.contains(viz)) {
+                pilha.add(viz)
+            }
+        }
+    }
+    return visitados
+}
+main() {
+    var g = Grafo()
+    g.adicionarAresta("A", "B")
+    g.adicionarAresta("A", "C")
+    g.adicionarAresta("B", "D")
+    println(dfs(g, "A"))
+}

@@ -1,0 +1,71 @@
+List<Int> mergeSort(List<Int> l) {
+    if (l.size <= 1) {
+        return l
+    }
+    var meio = l.size / 2
+    var esq = listOf<Int>()
+    var dir = listOf<Int>()
+    for (var i = 0; i < meio; i = i + 1) {
+        esq.add(l.get(i))
+    }
+    for (var i = meio; i < l.size; i = i + 1) {
+        dir.add(l.get(i))
+    }
+    return merge(mergeSort(esq), mergeSort(dir))
+}
+List<Int> merge(List<Int> a, List<Int> b) {
+    var r = listOf<Int>()
+    var i = 0
+    var j = 0
+    while (i < a.size && j < b.size) {
+        if (a.get(i) < b.get(j)) {
+            r.add(a.get(i))
+            i = i + 1
+        } else {
+            r.add(b.get(j))
+            j = j + 1
+        }
+    }
+    while (i < a.size) {
+        r.add(a.get(i))
+        i = i + 1
+    }
+    while (j < b.size) {
+        r.add(b.get(j))
+        j = j + 1
+    }
+    return r
+}
+void trocar(List<Int> l, Int i, Int j) {
+    var t = l.get(i)
+    l.set(i, l.get(j))
+    l.set(j, t)
+}
+List<Int> bubbleSort(List<Int> l) {
+    var n = l.size
+    for (var i = 0; i < n - 1; i = i + 1) {
+        for (var j = 0; j < n - 1 - i; j = j + 1) {
+            if (l.get(j) > l.get(j + 1)) {
+                trocar(l, j, j + 1)
+            }
+        }
+    }
+    return l
+}
+main() {
+    for (var n in listOf(2000, 5000)) {
+        var dados = listOf<Int>()
+        for (var i = 0; i < n; i = i + 1) {
+            dados.add(n - i)
+        }
+        var t1 = now()
+        var o1 = bubbleSort(dados)
+        var t2 = now()
+        println("bubble n=" + n + ": " + (t2 - t1) + " ms")
+
+        var t3 = now()
+        var o2 = mergeSort(listOf<Int>() + dados)
+        var t4 = now()
+        println("merge n=" + n + ": " + (t4 - t3) + " ms")
+    }
+}

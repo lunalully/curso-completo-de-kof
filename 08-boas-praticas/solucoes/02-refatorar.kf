@@ -1,0 +1,20 @@
+// Recebe um padrão Java-like e devolve a forma Kof
+class User {
+    String name
+    Int age
+}
+record Point(Int x, Int y)
+Int somar(Int a, Int b) {
+    return a + b
+}
+String capitalizar(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1)
+}
+main() {
+    var u = User("Mel", 26)
+    println(u.name)
+    var p = Point(3, 4)
+    println(p.x())
+    println(somar(2, 3))
+    println(capitalizar("kof"))
+}

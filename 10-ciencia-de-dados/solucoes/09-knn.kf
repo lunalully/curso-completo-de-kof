@@ -1,0 +1,81 @@
+record Ponto(Double x, Double y, String classe)
+record Distancia(Double d, String classe)
+Double raizQuadrada(Double n) {
+    if (n <= 0) {
+        return 0
+    }
+    var x = n
+    for (var i = 0; i < 100; i = i + 1) {
+        x = (x + n / x) / 2.0
+    }
+    return x
+}
+List<Distancia> mergeSortDist(List<Distancia> l) {
+    if (l.size <= 1) {
+        return l
+    }
+    var meio = l.size / 2
+    var esq = listOf<Distancia>()
+    var dir = listOf<Distancia>()
+    for (var i = 0; i < meio; i = i + 1) {
+        esq.add(l.get(i))
+    }
+    for (var i = meio; i < l.size; i = i + 1) {
+        dir.add(l.get(i))
+    }
+    return mergeDist(mergeSortDist(esq), mergeSortDist(dir))
+}
+List<Distancia> mergeDist(List<Distancia> a, List<Distancia> b) {
+    var r = listOf<Distancia>()
+    var i = 0
+    var j = 0
+    while (i < a.size && j < b.size) {
+        if (a.get(i).d < b.get(j).d) {
+            r.add(a.get(i))
+            i = i + 1
+        } else {
+            r.add(b.get(j))
+            j = j + 1
+        }
+    }
+    while (i < a.size) {
+        r.add(a.get(i))
+        i = i + 1
+    }
+    while (j < b.size) {
+        r.add(b.get(j))
+        j = j + 1
+    }
+    return r
+}
+String classificar(List<Ponto> treino, Ponto novo, Int k) {
+    var distancias = listOf<Distancia>()
+    for (var p in treino) {
+        var dx = p.x - novo.x
+        var dy = p.y - novo.y
+        distancias.add(Distancia(raizQuadrada(dx * dx + dy * dy), p.classe))
+    }
+    var ord = mergeSortDist(distancias)
+    var contagemA = 0
+    var contagemB = 0
+    for (var i = 0; i < k && i < ord.size; i = i + 1) {
+        if (ord.get(i).classe == "A") {
+            contagemA = contagemA + 1
+        } else {
+            contagemB = contagemB + 1
+        }
+    }
+    return if (contagemA >= contagemB) "A" else "B"
+}
+main() {
+    var treino = listOf(
+        Ponto(1.0, 1.0, "A"),
+        Ponto(1.5, 1.5, "A"),
+        Ponto(2.0, 2.0, "A"),
+        Ponto(8.0, 8.0, "B"),
+        Ponto(9.0, 8.5, "B"),
+        Ponto(8.5, 9.0, "B")
+    )
+    println(classificar(treino, Ponto(1.2, 1.1, ""), 3))   // A
+    println(classificar(treino, Ponto(8.8, 8.2, ""), 3))   // B
+}

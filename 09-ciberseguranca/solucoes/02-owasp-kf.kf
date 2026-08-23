@@ -1,0 +1,13 @@
+// A02 crypto / A03 injection / A09 logging — demonstração dos fixes
+main() {
+    // A02 — senha nunca sha256; use passwords.hash
+    var hash = passwords.hash("segredo")
+    println(passwords.verify("segredo", hash))
+
+    // A03 — SQL com bind (conceito; o banco real está na trilha 03)
+    // db.query<User>(db, "select * from users where name = ?", nome)
+
+    // A09 — log de evento de segurança
+    log.info("login ok para mel")
+    log.warn("login falhou para mel")
+}

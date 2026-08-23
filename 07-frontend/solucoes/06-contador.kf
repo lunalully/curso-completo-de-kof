@@ -1,0 +1,14 @@
+// janela com contador — compile para JS: kof build 06-contador.kf --target js
+class App {
+    static Int count = 0
+}
+main() {
+    var w = Window("Contador")
+    var label = Label("contagem: 0")
+    w.bind(label)
+    w.bind(Button("+1", () -> {
+        App.count = App.count + 1
+        label.text = "contagem: " + App.count
+    }))
+    w.show()
+}

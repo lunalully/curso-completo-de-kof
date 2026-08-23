@@ -1,0 +1,10 @@
+// Bug: índice fora do intervalo (erro de runtime)
+main() {
+    var arr = new Int[3]
+    arr[0] = 10
+    arr[1] = 20
+    arr[2] = 30
+    for (var i = 0; i <= arr.length; i = i + 1) {   // <= é o bug
+        println(arr[i])
+    }
+}

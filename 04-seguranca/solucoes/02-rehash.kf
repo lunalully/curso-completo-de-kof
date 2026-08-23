@@ -1,0 +1,10 @@
+main() {
+    var hash = passwords.hash("segredo")
+    println(passwords.needsRehash(hash))   // false (parâmetros atuais)
+    if (passwords.needsRehash(hash)) {
+        var novo = passwords.hash("segredo")
+        println("rehash necessário")
+    } else {
+        println("hash atual ok")
+    }
+}

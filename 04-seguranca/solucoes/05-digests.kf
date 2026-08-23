@@ -1,0 +1,7 @@
+main() {
+    var a = crypto.sha256("kof")
+    var b = crypto.sha256("kof")
+    println(security.constantTimeEquals(a, b))        // true
+    println(crypto.sha512("kof").length())            // 128 (hex)
+    println(crypto.hmacSha256("key", "data").length())// 64
+}

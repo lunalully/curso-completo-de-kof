@@ -1,0 +1,12 @@
+// Solução 18 — soma de lista
+main() {
+    var l = listOf<Int>()
+    for (var i = 1; i <= 100; i = i + 1) {
+        l.add(i)
+    }
+    var soma = 0
+    for (var v in l) {
+        soma = soma + v
+    }
+    println(soma)   // 5050
+}

@@ -1,0 +1,33 @@
+// Solução 28 — agenda de contatos em JSON (JVM)
+record Contato(String nome, String telefone)
+
+void salvar(List<Contato> agenda) {
+    var texto = ""
+    for (var c in agenda) {
+        texto = texto + json.encode(c) + "\n"
+    }
+    writeFile("agenda.json", texto)
+}
+List<Contato> carregar() {
+    var lista = listOf<Contato>()
+    var conteudo = readFile("agenda.json")
+    if (conteudo != null) {
+        for (var linha in conteudo.split("\n")) {
+            if (linha.length > 0) {
+                lista.add(json.decode<Contato>(linha))
+            }
+        }
+    }
+    return lista
+}
+main() {
+    var agenda = carregar()
+    agenda.add(Contato("Mel", "9999-0001"))
+    agenda.add(Contato("Kof", "9999-0002"))
+    salvar(agenda)
+
+    var recarregada = carregar()
+    for (var c in recarregada) {
+        println(c.nome() + ": " + c.telefone())
+    }
+}

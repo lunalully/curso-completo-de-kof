@@ -1,0 +1,6 @@
+// Solução 08 — par/impar com if-expr
+main() {
+    var n = 42
+    var r = if (n % 2 == 0) "par" else "impar"
+    println(r)
+}

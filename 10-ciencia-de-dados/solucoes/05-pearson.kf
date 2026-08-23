@@ -1,0 +1,40 @@
+Double raizQuadrada(Double n) {
+    if (n <= 0) {
+        return 0
+    }
+    var x = n
+    for (var i = 0; i < 100; i = i + 1) {
+        x = (x + n / x) / 2.0
+    }
+    return x
+}
+Double media(List<Double> dados) {
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + x
+    }
+    return soma / dados.size
+}
+Double pearson(List<Double> x, List<Double> y) {
+    if (x.size != y.size || x.size == 0) {
+        throw "series devem ter o mesmo tamanho"
+    }
+    var mx = media(x)
+    var my = media(y)
+    var somaXY = 0.0
+    var somaXX = 0.0
+    var somaYY = 0.0
+    for (var i = 0; i < x.size; i = i + 1) {
+        var dx = x.get(i) - mx
+        var dy = y.get(i) - my
+        somaXY = somaXY + dx * dy
+        somaXX = somaXX + dx * dx
+        somaYY = somaYY + dy * dy
+    }
+    return somaXY / raizQuadrada(somaXX * somaYY)
+}
+main() {
+    var alturas = listOf(150.0, 160.0, 170.0, 180.0, 190.0)
+    var pesos = listOf(50.0, 60.0, 68.0, 80.0, 90.0)
+    println(pearson(alturas, pesos))
+}

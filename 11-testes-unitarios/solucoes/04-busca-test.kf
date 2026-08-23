@@ -1,0 +1,30 @@
+Int buscaBinaria(List<Int> lista, Int alvo) {
+    var baixo = 0
+    var alto = lista.size - 1
+    while (baixo <= alto) {
+        var meio = (baixo + alto) / 2
+        var valor = lista.get(meio)
+        if (valor == alvo) {
+            return meio
+        }
+        if (valor < alvo) {
+            baixo = meio + 1
+        } else {
+            alto = meio - 1
+        }
+    }
+    throw "nao encontrado: " + alvo
+}
+main() {
+    var dados = listOf(1, 3, 5, 7, 9)
+    assert(buscaBinaria(dados, 1) == 0, "inicio")
+    assert(buscaBinaria(dados, 9) == 4, "fim")
+    assert(buscaBinaria(dados, 5) == 2, "meio")
+    try {
+        buscaBinaria(dados, 42)
+        assert(false, "deveria lancar")
+    } catch (String e) {
+        assert(true, "ausente lanca")
+    }
+    println("busca: PASS")
+}

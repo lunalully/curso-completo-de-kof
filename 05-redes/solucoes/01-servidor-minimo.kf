@@ -1,0 +1,7 @@
+main() {
+    var app = web.app()
+    app.get("/") {
+        return "kof serve online"
+    }
+    app.listen(8080)
+}

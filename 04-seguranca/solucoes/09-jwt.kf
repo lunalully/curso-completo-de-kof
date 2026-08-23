@@ -1,0 +1,12 @@
+main() {
+    var claims = "{\"sub\":\"mel\",\"roles\":[\"admin\"],\"iss\":\"kof\",\"aud\":\"api\"}"
+    var token = jwt.create(claims, "s3cret")
+    var ok = jwt.verify(token, "s3cret", "kof", "api")
+    println(ok.contains("admin"))       // true
+    try {
+        jwt.verify(token, "outro-segredo", "kof", "api")
+        println("aceito (erro!)")
+    } catch (String e) {
+        println("rejeitado")            // esperado
+    }
+}

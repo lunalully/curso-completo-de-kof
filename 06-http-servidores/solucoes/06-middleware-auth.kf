@@ -1,0 +1,13 @@
+main() {
+    var app = web.app()
+    app.use {
+        if (header("x-auth") == "secret") {
+            return null
+        }
+        return "{\"error\": \"unauthorized\"}"
+    }
+    app.get("/hello") {
+        return "Hello from Kof"
+    }
+    app.listen(8080)
+}

@@ -1,0 +1,15 @@
+Int somaDiagonal(List<List<Int>> m) {
+    var soma = 0
+    for (var i = 0; i < m.size; i = i + 1) {
+        soma = soma + m.get(i).get(i)
+    }
+    return soma
+}
+main() {
+    var m = listOf(
+        listOf(1, 2, 3),
+        listOf(4, 5, 6),
+        listOf(7, 8, 9)
+    )
+    println(somaDiagonal(m))   // 1+5+9 = 15
+}

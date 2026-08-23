@@ -1,0 +1,16 @@
+// Desafio: média com bug lógico — encontre e corrija
+Double media(List<Int> dados) {
+    var soma = 0
+    for (var i = 0; i < dados.size; i = i + 1) {
+        soma = soma + dados.get(i)
+    }
+    // CORRIGIDO: remova o "- 1" indevido
+    return (soma * 1.0) / dados.size
+}
+main() {
+    var dados = listOf(10, 20, 30)
+    var m = media(dados)
+    println("media: " + m)
+    assert(m >= 19.9 && m <= 20.1, "media deve ser 20")
+    println("integrador: PASS")
+}

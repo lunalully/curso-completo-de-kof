@@ -1,0 +1,16 @@
+List<Int> insertionSort(List<Int> l) {
+    var n = l.size
+    for (var i = 1; i < n; i = i + 1) {
+        var chave = l.get(i)
+        var j = i - 1
+        while (j >= 0 && l.get(j) > chave) {
+            l.set(j + 1, l.get(j))
+            j = j - 1
+        }
+        l.set(j + 1, chave)
+    }
+    return l
+}
+main() {
+    println(insertionSort(listOf(8, 2, 6, 4, 9)))
+}

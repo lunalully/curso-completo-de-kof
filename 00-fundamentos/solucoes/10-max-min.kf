@@ -1,0 +1,11 @@
+// Solução 10 — max e min
+Int max(Int a, Int b) {
+    return if (a > b) a else b
+}
+Int min(Int a, Int b) {
+    return if (a < b) a else b
+}
+main() {
+    println(max(3, 9))
+    println(min(3, 9))
+}

@@ -1,0 +1,8 @@
+// Compile para o target native e observe o diagnostic CONC001:
+//   kof build 07-spawn-native.kf --target native --output out
+void tarefa() {
+    println("x")
+}
+main() {
+    spawn tarefa()
+}

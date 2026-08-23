@@ -1,0 +1,11 @@
+main() {
+    var dark = Theme.dark()
+    println(dark.isDark())
+    println(dark.background().toCss())
+    println(dark.text().toCss())
+    println(dark.error().toCss())
+
+    var light = Theme.light()
+    println(light.isDark())
+    println(light.background().toCss())
+}

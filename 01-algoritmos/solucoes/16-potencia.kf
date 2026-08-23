@@ -1,0 +1,22 @@
+Int potenciaIngenua(Int base, Int exp) {
+    var r = 1
+    for (var i = 0; i < exp; i = i + 1) {
+        r = r * base
+    }
+    return r
+}
+Int potenciaRapida(Int base, Int exp) {
+    if (exp == 0) {
+        return 1
+    }
+    var metade = potenciaRapida(base, exp / 2)
+    if (exp % 2 == 0) {
+        return metade * metade
+    }
+    return metade * metade * base
+}
+main() {
+    println(potenciaIngenua(2, 10))   // 1024
+    println(potenciaRapida(2, 10))    // 1024
+    println(potenciaRapida(3, 5))     // 243
+}

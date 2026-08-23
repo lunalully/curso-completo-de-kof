@@ -1,0 +1,32 @@
+// BAD: estado duplicado
+class CartBad {
+    List<Int> items
+    Int count
+    constructor() {
+        items = listOf()
+        count = 0
+    }
+    void add(Int id) {
+        items.add(id)
+        count = items.size
+    }
+}
+// GOOD: derive, não armazene
+class Cart {
+    List<Int> items
+    constructor() {
+        items = listOf()
+    }
+    void add(Int id) {
+        items.add(id)
+    }
+    Int size() {
+        return items.size
+    }
+}
+main() {
+    var c = Cart()
+    c.add(1)
+    c.add(2)
+    println(c.size())
+}

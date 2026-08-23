@@ -1,0 +1,70 @@
+class PilhaInt {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(Int v) {
+        itens.add(v)
+    }
+    Int desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+// toInt robusto usando indexOf no alfabeto de digitos
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var resultado = 0
+    var neg = false
+    var inicio = 0
+    if (s.charAt(0) == 45) {
+        neg = true
+        inicio = 1
+    }
+    for (var i = inicio; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        resultado = resultado * 10 + d
+    }
+    return if (neg) -resultado else resultado
+}
+Int avaliar(String expr) {
+    var p = PilhaInt()
+    var tokens = expr.split(" ")
+    for (var i = 0; i < tokens.length; i = i + 1) {
+        var t = tokens[i]
+        if (t == "+") {
+            var b = p.desempilhar()
+            var a = p.desempilhar()
+            p.empilhar(a + b)
+        } else if (t == "-") {
+            var b = p.desempilhar()
+            var a = p.desempilhar()
+            p.empilhar(a - b)
+        } else if (t == "*") {
+            var b = p.desempilhar()
+            var a = p.desempilhar()
+            p.empilhar(a * b)
+        } else if (t == "/") {
+            var b = p.desempilhar()
+            var a = p.desempilhar()
+            p.empilhar(a / b)
+        } else {
+            p.empilhar(toInt(t))
+        }
+    }
+    return p.desempilhar()
+}
+main() {
+    println(avaliar("3 4 +"))                // 7
+    println(avaliar("5 1 2 + 4 * + 3 -"))    // 14
+}

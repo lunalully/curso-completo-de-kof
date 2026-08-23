@@ -1,0 +1,17 @@
+Int fatRec(Int n) {
+    if (n <= 1) {
+        return 1
+    }
+    return n * fatRec(n - 1)
+}
+Int fatIter(Int n) {
+    var r = 1
+    for (var i = 2; i <= n; i = i + 1) {
+        r = r * i
+    }
+    return r
+}
+main() {
+    println(fatRec(6))    // 720
+    println(fatIter(6))   // 720
+}

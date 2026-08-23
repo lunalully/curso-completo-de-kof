@@ -1,0 +1,20 @@
+List<Double> minMax(List<Double> dados) {
+    var min = dados.get(0)
+    var max = dados.get(0)
+    for (var x in dados) {
+        if (x < min) {
+            min = x
+        }
+        if (x > max) {
+            max = x
+        }
+    }
+    var r = listOf<Double>()
+    for (var x in dados) {
+        r.add((x - min) / (max - min))
+    }
+    return r
+}
+main() {
+    println(minMax(listOf(10.0, 20.0, 30.0, 40.0)))
+}

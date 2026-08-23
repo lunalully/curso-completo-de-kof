@@ -1,0 +1,48 @@
+// O(1)
+Int constante() {
+    return 42
+}
+// O(n)
+Int soma(List<Int> l) {
+    var t = 0
+    for (var x in l) {
+        t = t + x
+    }
+    return t
+}
+// O(n^2)
+Int pares(List<Int> l) {
+    var c = 0
+    for (var i = 0; i < l.size; i = i + 1) {
+        for (var j = i + 1; j < l.size; j = j + 1) {
+            c = c + 1
+        }
+    }
+    return c
+}
+// O(log n)
+Int passosBin(List<Int> l, Int alvo) {
+    var passos = 0
+    var baixo = 0
+    var alto = l.size - 1
+    while (baixo <= alto) {
+        passos = passos + 1
+        var meio = (baixo + alto) / 2
+        if (l.get(meio) == alvo) {
+            return passos
+        }
+        if (l.get(meio) < alvo) {
+            baixo = meio + 1
+        } else {
+            alto = meio - 1
+        }
+    }
+    return passos
+}
+main() {
+    var dados = listOf<Int>()
+    for (var i = 0; i < 1000; i = i + 1) {
+        dados.add(i)
+    }
+    println(passosBin(dados, 777))   // ~10 passos
+}

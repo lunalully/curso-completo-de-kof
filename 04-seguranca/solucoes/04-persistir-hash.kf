@@ -1,0 +1,48 @@
+record Usuario(String email, String senhaHash)
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+void salvar(List<Usuario> usuarios) {
+    var texto = ""
+    for (var u in usuarios) {
+        texto = texto + u.email + "|" + u.senhaHash + "\n"
+    }
+    writeFile("cofre.txt", texto)
+}
+List<Usuario> carregar() {
+    var lista = listOf<Usuario>()
+    var conteudo = readFile("cofre.txt")
+    if (conteudo != null) {
+        for (var linha in conteudo.split("\n")) {
+            if (linha.length > 0) {
+                var partes = linha.split("\\|")
+                lista.add(Usuario(partes[0], partes[1]))
+            }
+        }
+    }
+    return lista
+}
+Bool login(List<Usuario> usuarios, String email, String senha) {
+    for (var u in usuarios) {
+        if (u.email == email) {
+            return passwords.verify(senha, u.senhaHash)
+        }
+    }
+    return false
+}
+main() {
+    var usuarios = carregar()
+    usuarios.add(Usuario("mel@kof.dev", passwords.hash("s3nh4")))
+    salvar(usuarios)
+    var deArquivo = carregar()
+    println(login(deArquivo, "mel@kof.dev", "s3nh4"))   // true
+}

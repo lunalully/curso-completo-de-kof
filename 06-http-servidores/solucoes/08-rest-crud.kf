@@ -1,0 +1,67 @@
+record Produto(Int id, String nome)
+
+class Catalogo {
+    List<Produto> produtos
+    constructor() {
+        produtos = listOf()
+    }
+    void criar(Produto p) {
+        produtos.add(p)
+    }
+    Produto buscar(Int id) {
+        for (var p in produtos) {
+            if (p.id == id) {
+                return p
+            }
+        }
+        throw "produto nao encontrado: " + id
+    }
+    void remover(Int id) {
+        for (var i = 0; i < produtos.size; i = i + 1) {
+            if (produtos.get(i).id == id) {
+                produtos.remove(i)
+                return
+            }
+        }
+        throw "produto nao encontrado: " + id
+    }
+}
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+main() {
+    var catalogo = Catalogo()
+    catalogo.criar(Produto(1, "Cafe"))
+    catalogo.criar(Produto(2, "Cha"))
+
+    var app = web.app()
+    app.get("/produtos") {
+        return json.encode(catalogo.produtos)
+    }
+    app.get("/produtos/:id") {
+        try {
+            return json.encode(catalogo.buscar(toInt(param("id"))))
+        } catch (String e) {
+            return null
+        }
+    }
+    app.post("/produtos") {
+        var p = json.decode<Produto>(body())
+        catalogo.criar(p)
+        return "{\"ok\": true}"
+    }
+    app.delete("/produtos/:id") {
+        catalogo.remover(toInt(param("id")))
+        return "{\"ok\": true}"
+    }
+    app.listen(8080)
+}

@@ -1,0 +1,43 @@
+// Biblioteca de utilidades idiomática + testes + config + log
+record Contato(String nome, String telefone)
+
+class Agenda {
+    List<Contato> contatos
+    constructor() {
+        contatos = listOf()
+    }
+    void adicionar(Contato c) {
+        contatos.add(c)
+    }
+    Contato buscar(String nome) {
+        for (var c in contatos) {
+            if (c.nome == nome) {
+                return c
+            }
+        }
+        throw "contato nao existe: " + nome
+    }
+}
+
+String capitalizar(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1)
+}
+
+main() {
+    var agenda = Agenda()
+    agenda.adicionar(Contato("mel", "1"))
+    agenda.adicionar(Contato("kof", "2"))
+
+    assert(agenda.buscar("mel").telefone == "1", "busca por nome")
+    assert(capitalizar("kof") == "Kof", "capitalizar")
+
+    try {
+        agenda.buscar("x")
+        assert(false, "deveria lancar")
+    } catch (String e) {
+        assert(true, "excecao ok")
+    }
+
+    log.info("config app=" + config.str("app.name", "agenda"))
+    println("integrador ok")
+}

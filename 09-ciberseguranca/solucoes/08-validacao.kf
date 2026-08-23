@@ -1,0 +1,18 @@
+record User(Int id, String name)
+main() {
+    var app = web.app()
+    app.post("/users") {
+        var u = json.decode<User>(body())
+        if (u.name.length == 0) {
+            return "{\"error\": \"nome obrigatorio\"}"
+        }
+        if (u.name.length > 50) {
+            return "{\"error\": \"nome muito longo\"}"
+        }
+        if (u.id < 0) {
+            return "{\"error\": \"id invalido\"}"
+        }
+        return "{\"ok\": true}"
+    }
+    app.listen(8080)
+}

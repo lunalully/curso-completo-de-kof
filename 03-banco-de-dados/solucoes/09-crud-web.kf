@@ -1,0 +1,48 @@
+record User(Int id, String name)
+
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+
+main() {
+    var db = db.connect("jdbc:h2:mem:app;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table if not exists users(id int, name varchar(50))")
+    db.execute(db, "insert into users values (1, 'Mel')")
+    db.execute(db, "insert into users values (2, 'Ada')")
+
+    var app = web.app()
+
+    app.get("/users") {
+        return json.encode(db.query<User>(db, "select * from users order by id"))
+    }
+
+    app.get("/users/:id") {
+        var users = db.query<User>(db, "select * from users where id = ?", toInt(param("id")))
+        if (users.size == 0) {
+            return null
+        }
+        return json.encode(users.get(0))
+    }
+
+    app.post("/users") {
+        var u = json.decode<User>(body())
+        db.execute(db, "insert into users values (?, ?)", u.id, u.name)
+        return "{\"ok\": true}"
+    }
+
+    app.delete("/users/:id") {
+        db.execute(db, "delete from users where id = ?", toInt(param("id")))
+        return "{\"ok\": true}"
+    }
+
+    app.listen(8080)
+}

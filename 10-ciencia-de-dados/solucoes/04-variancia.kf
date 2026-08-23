@@ -1,0 +1,34 @@
+Double raizQuadrada(Double n) {
+    if (n <= 0) {
+        return 0
+    }
+    var x = n
+    for (var i = 0; i < 100; i = i + 1) {
+        x = (x + n / x) / 2.0
+    }
+    return x
+}
+Double media(List<Double> dados) {
+    if (dados.size == 0) {
+        throw "conjunto vazio"
+    }
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + x
+    }
+    return soma / dados.size
+}
+Double variancia(List<Double> dados) {
+    var m = media(dados)
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + (x - m) * (x - m)
+    }
+    return soma / dados.size
+}
+Double desvioPadrao(List<Double> dados) {
+    return raizQuadrada(variancia(dados))
+}
+main() {
+    println(desvioPadrao(listOf(1.0, 2.0, 2.0, 3.0, 4.0, 7.0, 9.0)))
+}

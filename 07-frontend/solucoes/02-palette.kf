@@ -1,0 +1,5 @@
+main() {
+    println(Palette.green.toCss())
+    println(Palette.transparent.alpha())
+    println(Palette.purple.toCss())
+}

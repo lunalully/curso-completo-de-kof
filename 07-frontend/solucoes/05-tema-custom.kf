@@ -1,0 +1,21 @@
+class Colors {
+    static Color primary    = Color(0xFF6750A4)
+    static Color background = Color(0xFF121212)
+    static Color text       = Color(0xFFE0E0E0)
+    static Color error      = Color(0xFFCF6679)
+}
+class Style {
+    Color background
+    Color foreground
+    Int padding
+    constructor(Color background, Color foreground, Int padding) {
+        this.background = background
+        this.foreground = foreground
+        this.padding = padding
+    }
+}
+main() {
+    var s = Style(Colors.background, Colors.text, 16)
+    println(s.background.toCss())
+    println(s.padding)
+}

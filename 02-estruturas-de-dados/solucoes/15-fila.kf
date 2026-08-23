@@ -1,0 +1,28 @@
+class Fila {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    void enfileirar(Int v) {
+        itens.add(v)
+    }
+    Int desenfileirar() {
+        if (itens.size == 0) {
+            throw "fila vazia"
+        }
+        var primeiro = itens.get(0)
+        itens.remove(0)
+        return primeiro
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+main() {
+    var f = Fila()
+    f.enfileirar(1)
+    f.enfileirar(2)
+    f.enfileirar(3)
+    println(f.desenfileirar())   // 1
+    println(f.desenfileirar())   // 2
+}

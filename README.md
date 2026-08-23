@@ -37,6 +37,12 @@ kof test <arquivo.kf>       # roda testes (PASS/FAIL por exit code)
 | [`07-frontend`](07-frontend/) | KofJS, `kof.ui`, janelas, render web | 00 |
 | [`08-boas-praticas`](08-boas-praticas/) | Filosofia, idioms, anti-patterns, testes, config, logging | todos |
 | [`09-ciberseguranca`](09-ciberseguranca/) | **Trilha completa de cibersegurança com Kof** | 04, 06, 08 |
+| [`10-ciencia-de-dados`](10-ciencia-de-dados/) | Estatística, correlação, regressão, k-NN em Kof puro | 00, 01, 02 |
+| [`11-testes-unitarios`](11-testes-unitarios/) | `assert`, `kof test`, casos de borda, TDD | 00, 01, 08 |
+| [`12-debugger`](12-debugger/) | `kof debug` (DAP), erros de runtime, ferramentas | 00, 11 |
+| [`13-microservicos`](13-microservicos/) | Serviços, HTTP entre serviços, gateway, config | 03, 06, 08, 09 |
+| [`14-arquitetura`](14-arquitetura/) | Clean architecture na filosofia Kof, hexagonal sem container | 00, 06, 08, 13 |
+| [`15-devops`](15-devops/) | Build multi-target, CI, release, containers, observabilidade | todas |
 | [`projetos`](projetos/) | Projetos práticos de ponta a ponta | todos |
 | [`exemplos`](exemplos/) | Programas compiláveis para copiar e estudar | todos |
 
@@ -48,8 +54,14 @@ kof test <arquivo.kf>       # roda testes (PASS/FAIL por exit code)
 2. Não pule os exercícios — eles são o coração do aprendizado.
 3. Mantenha a regra do corpus oficial: *código que compila ≠ código
    idiomático*. O curso ensina os dois.
-4. Ao final, faça os projetos em `projetos/` e a trilha de cibersegurança em
-   `09-ciberseguranca/`.
+4. Ao final, faça os projetos em `projetos/`, a trilha de cibersegurança em
+   `09-ciberseguranca/` e feche com `15-devops/` (build multi-target + release).
+
+## Estado das soluções
+
+Todas as **soluções compilam e rodam** no compilador real 0.0.8-alpha
+(verificadas nesta trilha). Workarounds para bugs reais do compilador estão
+em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 

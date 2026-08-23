@@ -1,0 +1,32 @@
+// Idioms BAD -> GOOD
+String statusDe(Bool ativo) {
+    return if (ativo) "online" else "offline"
+}
+Bool ehMel(String nome) {
+    return nome == "Mel"
+}
+class Registry {
+    List<String> entries
+    constructor() {
+        entries = listOf()
+    }
+}
+String capitalizar(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1)
+}
+String find(List<String> lista, String alvo) {
+    for (var x in lista) {
+        if (x == alvo) {
+            return x
+        }
+    }
+    throw "nao encontrado: " + alvo
+}
+main() {
+    println(statusDe(true))
+    println(ehMel("Mel"))
+    var r = Registry()
+    r.entries.add("kof")
+    println(capitalizar("kof"))
+    println(find(listOf("a", "b"), "b"))
+}

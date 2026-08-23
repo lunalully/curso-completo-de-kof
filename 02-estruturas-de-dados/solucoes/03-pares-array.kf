@@ -1,0 +1,17 @@
+Int contarPares(Int[] arr) {
+    var total = 0
+    for (var v in arr) {
+        if (v % 2 == 0) {
+            total = total + 1
+        }
+    }
+    return total
+}
+main() {
+    var arr = new Int[4]
+    arr[0] = 2
+    arr[1] = 5
+    arr[2] = 8
+    arr[3] = 11
+    println(contarPares(arr))   // 2
+}

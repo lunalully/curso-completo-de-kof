@@ -1,0 +1,7 @@
+// Solução 25 — salvar e ler arquivo
+main() {
+    var rc = writeFile("nomes.txt", "Mel\nKof\n")
+    println("rc=" + rc)
+    var conteudo = readFile("nomes.txt")
+    println(conteudo)
+}

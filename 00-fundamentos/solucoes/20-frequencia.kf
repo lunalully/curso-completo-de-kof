@@ -1,0 +1,27 @@
+// Solução 20 — frequência de letras
+record Letra(Char c, Int n)
+
+List<Letra> frequencia(String s) {
+    var letras = listOf<Letra>()
+    for (var i = 0; i < s.length; i = i + 1) {
+        var c = s.charAt(i)
+        var achou = false
+        for (var j = 0; j < letras.size; j = j + 1) {
+            if (letras.get(j).c == c) {
+                letras.set(j, Letra(c, letras.get(j).n + 1))
+                achou = true
+                break
+            }
+        }
+        if (!achou) {
+            letras.add(Letra(c, 1))
+        }
+    }
+    return letras
+}
+main() {
+    var f = frequencia("banana")
+    for (var x in f) {
+        println(x.n)
+    }
+}

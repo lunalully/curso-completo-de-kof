@@ -1,0 +1,39 @@
+record Entry(String chave, String valor)
+class Dicionario {
+    List<Entry> entradas
+    constructor() {
+        entradas = listOf()
+    }
+    void put(String chave, String valor) {
+        for (var i = 0; i < entradas.size; i = i + 1) {
+            if (entradas.get(i).chave == chave) {
+                entradas.set(i, Entry(chave, valor))
+                return
+            }
+        }
+        entradas.add(Entry(chave, valor))
+    }
+    String get(String chave) {
+        for (var e in entradas) {
+            if (e.chave == chave) {
+                return e.valor
+            }
+        }
+        throw "chave nao existe: " + chave
+    }
+    Bool contem(String chave) {
+        for (var e in entradas) {
+            if (e.chave == chave) {
+                return true
+            }
+        }
+        return false
+    }
+}
+main() {
+    var d = Dicionario()
+    d.put("kof", "linguagem")
+    d.put("mel", "gato")
+    println(d.get("kof"))
+    println(d.contem("mel"))
+}

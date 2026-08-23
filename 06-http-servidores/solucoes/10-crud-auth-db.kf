@@ -1,0 +1,33 @@
+record Produto(Int id, String nome, Double preco)
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+main() {
+    var db = db.connect(config.str("database.url", "jdbc:h2:mem:app"))
+    db.execute(db, "create table if not exists produtos(id int, nome varchar(50), preco double)")
+    auth.secret(secrets.get("JWT_SECRET", "dev-secret"))
+
+    var app = web.app()
+    app.use {
+        if (auth.authenticated() || path() == "/login") {
+            return null
+        }
+        return "{\"error\": \"unauthorized\"}"
+    }
+    app.post("/login") {
+        return "{\"token\": \"" + jwt.create("{\"sub\":\"mel\",\"roles\":[\"admin\"],\"iss\":\"kof\",\"aud\":\"api\"}", "dev-secret") + "\"}"
+    }
+    app.get("/produtos") {
+        return json.encode(db.query<Produto>(db, "select * from produtos order by id"))
+    }
+    app.listen(config.int("server.port", 8080))
+}

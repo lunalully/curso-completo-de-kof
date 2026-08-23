@@ -1,0 +1,44 @@
+// Suíte do sistema de estoque
+record Produto(Int id, String nome, Int qtd)
+class Estoque {
+    List<Produto> produtos
+    constructor() {
+        produtos = listOf()
+    }
+    void adicionar(Produto p) {
+        produtos.add(p)
+    }
+    void remover(Int id) {
+        for (var i = 0; i < produtos.size; i = i + 1) {
+            if (produtos.get(i).id == id) {
+                produtos.remove(i)
+                return
+            }
+        }
+        throw "produto inexistente: " + id
+    }
+    Int consultar(Int id) {
+        for (var p in produtos) {
+            if (p.id == id) {
+                return p.qtd
+            }
+        }
+        throw "produto inexistente: " + id
+    }
+}
+main() {
+    var estoque = Estoque()
+    assert(estoque.produtos.size == 0, "vazio")
+    estoque.adicionar(Produto(1, "Cafe", 10))
+    estoque.adicionar(Produto(2, "Cha", 0))
+    assert(estoque.consultar(1) == 10, "qtd cafe")
+    assert(estoque.consultar(2) == 0, "qtd cha (borda 0)")
+    estoque.remover(1)
+    try {
+        estoque.consultar(1)
+        assert(false, "deveria lancar")
+    } catch (String e) {
+        assert(true, "removido lanca")
+    }
+    println("estoque: PASS")
+}

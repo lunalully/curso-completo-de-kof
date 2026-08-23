@@ -1,0 +1,62 @@
+// Solução 29 — desafio integrador
+record Tarefa(Int id, String titulo, Bool concluida)
+
+String linhaDe(Tarefa t) {
+    return t.id + "|" + t.titulo + "|" + t.concluida
+}
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+
+Tarefa tarefaDe(String linha) {
+    var partes = linha.split("\\|")
+    return Tarefa(toInt(partes[0]), partes[1], partes[2] == "true")
+}
+void salvar(List<Tarefa> tarefas) {
+    var texto = ""
+    for (var t in tarefas) {
+        texto = texto + linhaDe(t) + "\n"
+    }
+    writeFile("tarefas.txt", texto)
+}
+List<Tarefa> carregar() {
+    var lista = listOf<Tarefa>()
+    var conteudo = readFile("tarefas.txt")
+    if (conteudo != null) {
+        for (var linha in conteudo.split("\n")) {
+            if (linha.length > 0) {
+                lista.add(tarefaDe(linha))
+            }
+        }
+    }
+    return lista
+}
+void concluir(List<Tarefa> tarefas, Int id) {
+    for (var i = 0; i < tarefas.size; i = i + 1) {
+        if (tarefas.get(i).id == id) {
+            tarefas.set(i, Tarefa(id, tarefas.get(i).titulo, true))
+            return
+        }
+    }
+    throw "tarefa nao existe: " + id
+}
+main() {
+    var tarefas = carregar()
+    tarefas.add(Tarefa(1, "estudar kof", false))
+    tarefas.add(Tarefa(2, "fazer exercicios", false))
+    concluir(tarefas, 1)
+    salvar(tarefas)
+
+    for (var t in carregar()) {
+        println(t.id + " " + t.titulo + " concluida=" + t.concluida)
+    }
+}

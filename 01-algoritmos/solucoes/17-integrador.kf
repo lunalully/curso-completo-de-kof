@@ -1,0 +1,66 @@
+record Aluno(String nome, Int nota)
+
+List<Aluno> mergeSortAlunos(List<Aluno> l) {
+    if (l.size <= 1) {
+        return l
+    }
+    var meio = l.size / 2
+    var esq = listOf<Aluno>()
+    var dir = listOf<Aluno>()
+    for (var i = 0; i < meio; i = i + 1) {
+        esq.add(l.get(i))
+    }
+    for (var i = meio; i < l.size; i = i + 1) {
+        dir.add(l.get(i))
+    }
+    return mergeAlunos(mergeSortAlunos(esq), mergeSortAlunos(dir))
+}
+List<Aluno> mergeAlunos(List<Aluno> a, List<Aluno> b) {
+    var r = listOf<Aluno>()
+    var i = 0
+    var j = 0
+    while (i < a.size && j < b.size) {
+        if (a.get(i).nota < b.get(j).nota) {
+            r.add(a.get(i))
+            i = i + 1
+        } else {
+            r.add(b.get(j))
+            j = j + 1
+        }
+    }
+    while (i < a.size) {
+        r.add(a.get(i))
+        i = i + 1
+    }
+    while (j < b.size) {
+        r.add(b.get(j))
+        j = j + 1
+    }
+    return r
+}
+Aluno maiorNota(List<Aluno> l) {
+    if (l.size == 0) {
+        throw "lista vazia"
+    }
+    var melhor = l.get(0)
+    for (var a in l) {
+        if (a.nota > melhor.nota) {
+            melhor = a
+        }
+    }
+    return melhor
+}
+main() {
+    var alunos = listOf(
+        Aluno("Mel", 8),
+        Aluno("Ada", 10),
+        Aluno("Kof", 7),
+        Aluno("Pedro", 9)
+    )
+    var ordenados = mergeSortAlunos(alunos)
+    for (var a in ordenados) {
+        println(a.nome + ": " + a.nota)
+    }
+    var top = maiorNota(alunos)
+    println("melhor: " + top.nome)
+}

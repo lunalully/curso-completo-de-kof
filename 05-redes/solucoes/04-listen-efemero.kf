@@ -1,0 +1,8 @@
+main() {
+    var app = web.app()
+    app.get("/") {
+        return "porta efemera"
+    }
+    app.listen(0)
+    println("servidor na porta " + app.port())
+}

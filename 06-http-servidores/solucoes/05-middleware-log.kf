@@ -1,0 +1,11 @@
+main() {
+    var app = web.app()
+    app.use {
+        log.info(method() + " " + path())
+        return null
+    }
+    app.get("/") {
+        return "logged"
+    }
+    app.listen(8080)
+}

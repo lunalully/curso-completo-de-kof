@@ -1,0 +1,24 @@
+// Ports & Adapters sem container
+interface Armazenamento {
+    salvar(String chave, String valor)
+    carregar(String chave): String
+}
+
+class ArmazenamentoEmArquivo implements Armazenamento {
+    String pasta
+    constructor(String pasta) {
+        this.pasta = pasta
+    }
+    void salvar(String chave, String valor) {
+        writeFile(pasta + "/" + chave + ".txt", valor)
+    }
+    String carregar(String chave) {
+        return readFile(pasta + "/" + chave + ".txt")
+    }
+}
+
+main() {
+    var storage = ArmazenamentoEmArquivo("data")
+    storage.salvar("usuario-1", "Mel")
+    println(storage.carregar("usuario-1"))
+}

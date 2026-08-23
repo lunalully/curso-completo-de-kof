@@ -1,0 +1,14 @@
+main() {
+    var app = web.app()
+    app.get("/dados") {
+        try {
+            var n = 10
+            var r = 100 / n
+            return "{\"resultado\": " + r + "}"
+        } catch (String e) {
+            log.error("falha em /dados: " + e)
+            return "{\"error\": \"erro interno\"}"
+        }
+    }
+    app.listen(8080)
+}

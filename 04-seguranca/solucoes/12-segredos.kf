@@ -1,0 +1,5 @@
+main() {
+    var chave = secrets.get("API_KEY", "default-key")
+    println(secrets.get("NAO_EXISTE", "fallback") == "fallback")  // true
+    println(secrets.redact("sk-abcdefghijklmnop"))
+}

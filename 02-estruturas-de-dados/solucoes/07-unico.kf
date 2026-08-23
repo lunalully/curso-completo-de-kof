@@ -1,0 +1,12 @@
+List<Int> unico(List<Int> l) {
+    var r = listOf<Int>()
+    for (var x in l) {
+        if (!r.contains(x)) {
+            r.add(x)
+        }
+    }
+    return r
+}
+main() {
+    println(unico(listOf(1, 2, 2, 3, 1, 4)))
+}

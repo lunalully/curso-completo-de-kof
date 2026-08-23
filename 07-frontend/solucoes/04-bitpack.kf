@@ -1,0 +1,7 @@
+main() {
+    var c = Color(0x11223344)
+    println(c.red())
+    println(c.green())
+    println(c.blue())
+    println(c.alpha())
+}

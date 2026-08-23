@@ -1,0 +1,13 @@
+record Produto(Int id, String nome, Double preco)
+
+main() {
+    var db = db.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table produtos(id int, nome varchar(50), preco double)")
+    db.execute(db, "insert into produtos values (?, ?, ?)", 1, "Cafe", 12.5)
+    db.execute(db, "insert into produtos values (?, ?, ?)", 2, "Cha", 8.0)
+    var produtos = db.query<Produto>(db, "select * from produtos order by id")
+    for (var p in produtos) {
+        println(p.id + " " + p.nome + " " + p.preco)
+    }
+    db.close(db)
+}

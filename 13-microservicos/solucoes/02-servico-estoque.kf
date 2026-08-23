@@ -1,0 +1,56 @@
+// Serviço de estoque (porta 8082)
+record Produto(Int id, Int qtd)
+
+class RepoEstoque {
+    List<Produto> produtos
+    constructor() {
+        produtos = listOf()
+    }
+    Int consultar(Int id) {
+        for (var p in produtos) {
+            if (p.id == id) {
+                return p.qtd
+            }
+        }
+        throw "produto inexistente: " + id
+    }
+}
+
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+
+main() {
+    var repo = RepoEstoque()
+    repo.produtos.add(Produto(1, 10))
+    repo.produtos.add(Produto(2, 5))
+
+    var app = web.app()
+    app.use {
+        log.info("estoque: " + method() + " " + path())
+        return null
+    }
+
+    app.get("/health") {
+        return "{\"status\": \"ok\", \"servico\": \"estoque\"}"
+    }
+
+    app.get("/produtos/:id") {
+        try {
+            return "{\"id\": " + param("id") + ", \"qtd\": " + repo.consultar(toInt(param("id"))) + "}"
+        } catch (String e) {
+            return null
+        }
+    }
+
+    app.listen(config.int("server.port", 8082))
+}

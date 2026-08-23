@@ -1,0 +1,11 @@
+// programa básico que compila para JS — kof build 10-kofjs-basico.kf --target js
+record Ponto(Int x, Int y)
+Int soma(Int a, Int b) {
+    return a + b
+}
+main() {
+    var p = Ponto(3, 4)
+    var f = (n: Int) -> n * 2
+    println(soma(p.x(), p.y()))
+    println(f(21))
+}

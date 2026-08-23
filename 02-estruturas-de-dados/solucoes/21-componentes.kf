@@ -1,0 +1,73 @@
+record Aresta(String de, String para)
+class Grafo {
+    List<String> vertices
+    List<Aresta> arestas
+    constructor() {
+        vertices = listOf()
+        arestas = listOf()
+    }
+    void adicionarVertice(String nome) {
+        if (!vertices.contains(nome)) {
+            vertices.add(nome)
+        }
+    }
+    void adicionarAresta(String de, String para) {
+        adicionarVertice(de)
+        adicionarVertice(para)
+        arestas.add(Aresta(de, para))
+        arestas.add(Aresta(para, de))
+    }
+    vizinhos(String v): List<String> {
+        var l = listOf<String>()
+        for (var e in arestas) {
+            if (e.de == v) {
+                l.add(e.para)
+            }
+        }
+        return l
+    }
+}
+List<String> alcance(Grafo g, String inicio) {
+    var visitados = listOf<String>()
+    var fila = listOf(inicio)
+    while (fila.size > 0) {
+        var v = fila.get(0)
+        fila.remove(0)
+        if (visitados.contains(v)) {
+            continue
+        }
+        visitados.add(v)
+        for (var viz in g.vizinhos(v)) {
+            if (!visitados.contains(viz)) {
+                fila.add(viz)
+            }
+        }
+    }
+    return visitados
+}
+Int componentesConexas(Grafo g) {
+    var visitados = listOf<String>()
+    var componentes = 0
+    for (var v in g.vertices) {
+        if (!visitados.contains(v)) {
+            componentes = componentes + 1
+            var grupo = alcance(g, v)
+            for (var x in grupo) {
+                if (!visitados.contains(x)) {
+                    visitados.add(x)
+                }
+            }
+        }
+    }
+    return componentes
+}
+main() {
+    var g = Grafo()
+    g.adicionarVertice("A")
+    g.adicionarVertice("B")
+    g.adicionarVertice("C")
+    g.adicionarVertice("D")
+    g.adicionarAresta("A", "B")
+    g.adicionarAresta("C", "D")
+    println(componentesConexas(g))   // 2
+}

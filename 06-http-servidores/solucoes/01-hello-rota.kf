@@ -1,0 +1,10 @@
+main() {
+    var app = web.app()
+    app.get("/") {
+        return "kof serve online"
+    }
+    app.get("/hello") {
+        return "Hello from Kof"
+    }
+    app.listen(8080)
+}

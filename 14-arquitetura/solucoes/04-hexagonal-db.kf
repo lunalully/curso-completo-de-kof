@@ -1,0 +1,32 @@
+// O mesmo port com adapter kof.db (JVM + driver JDBC)
+interface Armazenamento {
+    salvar(String chave, String valor)
+    carregar(String chave): String
+}
+
+class ArmazenamentoEmBanco implements Armazenamento {
+    Int handle
+    constructor(Int handle) {
+        this.handle = handle
+    }
+    void salvar(String chave, String valor) {
+        db.execute(handle, "create table if not exists kv(chave varchar(80), valor varchar(255))")
+        db.execute(handle, "delete from kv where chave = ?", chave)
+        db.execute(handle, "insert into kv values (?, ?)", chave, valor)
+    }
+    String carregar(String chave) {
+        var rows = db.query(handle, "select valor from kv where chave = ?", chave)
+        if (rows.size == 0) {
+            throw "chave nao existe: " + chave
+        }
+        return rows.get(0)
+    }
+}
+
+main() {
+    var db = db.connect("jdbc:h2:mem:hex;DB_CLOSE_DELAY=-1")
+    var storage = ArmazenamentoEmBanco(db)
+    storage.salvar("usuario-1", "Mel")
+    println(storage.carregar("usuario-1"))
+    db.close(db)
+}

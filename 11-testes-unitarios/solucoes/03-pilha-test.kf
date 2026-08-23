@@ -1,0 +1,43 @@
+class Pilha {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(Int v) {
+        itens.add(v)
+    }
+    Int desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+    Int topo() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        return itens.get(itens.size - 1)
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+main() {
+    var p = Pilha()
+    assert(p.vazia(), "comeca vazia")
+    p.empilhar(1)
+    p.empilhar(2)
+    assert(!p.vazia(), "nao vazia")
+    assert(p.topo() == 2, "topo")
+    assert(p.desempilhar() == 2, "LIFO")
+    assert(p.desempilhar() == 1, "LIFO 2")
+    try {
+        p.desempilhar()
+        assert(false, "deveria lancar")
+    } catch (String e) {
+        assert(true, "vazia lanca")
+    }
+    println("pilha: PASS")
+}

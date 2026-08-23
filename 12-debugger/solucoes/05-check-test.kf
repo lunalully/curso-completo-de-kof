@@ -1,0 +1,11 @@
+Int soma(Int a, Int b) {
+    return a + b
+}
+Int dobro(Int x) {
+    return x * 2
+}
+main() {
+    assert(soma(2, 3) == 5, "soma")
+    assert(dobro(21) == 42, "dobro")
+    println("check/test ok")
+}

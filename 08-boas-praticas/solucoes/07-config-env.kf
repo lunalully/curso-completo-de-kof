@@ -1,0 +1,4 @@
+main() {
+    println(config.str("database.url", "jdbc:h2:mem:test"))
+    println(config.int("server.port", 8080))
+}

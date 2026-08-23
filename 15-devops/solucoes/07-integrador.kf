@@ -1,0 +1,46 @@
+// Serviço pronto para deploy + testes
+record Item(Int id, String nome)
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+class Catalogo {
+    List<Item> itens
+    constructor() {
+        itens = listOf()
+    }
+    void adicionar(Item i) {
+        itens.add(i)
+    }
+    Int tamanho() {
+        return itens.size
+    }
+}
+main() {
+    var catalogo = Catalogo()
+    catalogo.adicionar(Item(1, "cafe"))
+
+    assert(catalogo.tamanho() == 1, "catalogo tem 1 item")
+
+    var app = web.app()
+    app.get("/health") {
+        return "{\"status\": \"ok\"}"
+    }
+    app.get("/itens") {
+        return json.encode(catalogo.itens)
+    }
+    app.post("/itens") {
+        var i = json.decode<Item>(body())
+        catalogo.adicionar(i)
+        return "{\"ok\": true}"
+    }
+    app.listen(config.int("server.port", 8080))
+}

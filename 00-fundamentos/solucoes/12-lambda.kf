@@ -1,0 +1,7 @@
+// Solução 12 — lambdas (sem captura)
+main() {
+    var dobro = (x: Int) -> x * 2
+    var soma = (a: Int, b: Int) -> a + b
+    println(dobro(21))     // 42
+    println(soma(3, 4))    // 7
+}

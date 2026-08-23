@@ -1,0 +1,26 @@
+record Produto(Int id, String nome, Double preco)
+
+main() {
+    var db = db.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table if not exists produtos(id int, nome varchar(50), preco double)")
+
+    // CREATE
+    db.execute(db, "insert into produtos values (?, ?, ?)", 1, "Cafe", 12.5)
+    db.execute(db, "insert into produtos values (?, ?, ?)", 2, "Cha", 8.0)
+
+    // READ
+    var todos = db.query<Produto>(db, "select * from produtos order by id")
+    for (var p in todos) {
+        println(p.id + " " + p.nome + " " + p.preco)
+    }
+
+    // UPDATE
+    db.execute(db, "update produtos set preco = ? where id = ?", 15.0, 1)
+
+    // DELETE
+    db.execute(db, "delete from produtos where id = ?", 2)
+
+    var restantes = db.query<Produto>(db, "select * from produtos order by id")
+    println("restantes=" + restantes.size)
+    db.close(db)
+}

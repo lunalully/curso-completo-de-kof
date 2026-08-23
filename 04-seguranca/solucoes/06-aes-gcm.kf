@@ -1,0 +1,12 @@
+main() {
+    var key = crypto.randomHex(32)
+    var ct = crypto.encryptAesGcm("segredo", key)
+    println(crypto.decryptAesGcm(ct, key) == "segredo")   // true
+    var corrompido = ct.substring(0, ct.length() - 4) + "XXXX"
+    try {
+        crypto.decryptAesGcm(corrompido, key)
+        println("falhou em detectar")    // não deve aparecer
+    } catch (String e) {
+        println("tamper detectado")      // esperado
+    }
+}

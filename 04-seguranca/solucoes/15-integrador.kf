@@ -1,0 +1,53 @@
+// Cofre de senhas
+record Senha(String site, String hash)
+Int toInt(String s) {
+    var digitos = "0123456789"
+    var r = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var d = digitos.indexOf(s.substring(i, i + 1))
+        if (d < 0) {
+            throw "numero invalido: " + s
+        }
+        r = r * 10 + d
+    }
+    return r
+}
+void salvar(List<Senha> cofre) {
+    var texto = ""
+    for (var s in cofre) {
+        texto = texto + s.site + "|" + s.hash + "\n"
+    }
+    writeFile("cofre.txt", texto)
+}
+List<Senha> carregar() {
+    var lista = listOf<Senha>()
+    var conteudo = readFile("cofre.txt")
+    if (conteudo != null) {
+        for (var linha in conteudo.split("\n")) {
+            if (linha.length > 0) {
+                var partes = linha.split("\\|")
+                lista.add(Senha(partes[0], partes[1]))
+            }
+        }
+    }
+    return lista
+}
+void cadastrar(List<Senha> cofre, String site, String senha) {
+    cofre.add(Senha(site, passwords.hash(senha)))
+}
+Bool verificar(List<Senha> cofre, String site, String senha) {
+    for (var s in cofre) {
+        if (s.site == site) {
+            return passwords.verify(senha, s.hash)
+        }
+    }
+    return false
+}
+main() {
+    var cofre = carregar()
+    cadastrar(cofre, "github", "g1thub-s3cret")
+    salvar(cofre)
+    var lido = carregar()
+    println(verificar(lido, "github", "g1thub-s3cret"))   // true
+    println(verificar(lido, "github", "errada"))          // false
+}

@@ -1,0 +1,23 @@
+void trocar(List<Int> l, Int i, Int j) {
+    var t = l.get(i)
+    l.set(i, l.get(j))
+    l.set(j, t)
+}
+List<Int> selectionSort(List<Int> l) {
+    var n = l.size
+    for (var i = 0; i < n - 1; i = i + 1) {
+        var menor = i
+        for (var j = i + 1; j < n; j = j + 1) {
+            if (l.get(j) < l.get(menor)) {
+                menor = j
+            }
+        }
+        if (menor != i) {
+            trocar(l, i, menor)
+        }
+    }
+    return l
+}
+main() {
+    println(selectionSort(listOf(9, 3, 7, 1, 5)))
+}

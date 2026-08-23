@@ -1,0 +1,39 @@
+class PilhaChar {
+    List<Char> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(Char c) {
+        itens.add(c)
+    }
+    Char desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+Bool balanceado(String s) {
+    var p = PilhaChar()
+    for (var i = 0; i < s.length; i = i + 1) {
+        var c = s.charAt(i)
+        if (c == 40) {
+            p.empilhar(c)
+        } else if (c == 41) {
+            if (p.vazia()) {
+                return false
+            }
+            p.desempilhar()
+        }
+    }
+    return p.vazia()
+}
+main() {
+    println(balanceado("((a+b)*(c))"))   // true
+    println(balanceado("((a+b)"))        // false
+}

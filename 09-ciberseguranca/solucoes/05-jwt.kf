@@ -1,0 +1,19 @@
+main() {
+    var token = jwt.create("{\"sub\":\"mel\",\"roles\":[\"admin\"],\"iss\":\"kof\",\"aud\":\"api\"}", "s3cret")
+    println(jwt.verify(token, "s3cret", "kof", "api").contains("admin"))
+
+    try {
+        jwt.verify(token, "segredo-errado", "kof", "api")
+        println("aceito (erro!)")
+    } catch (String e) {
+        println("segredo errado rejeitado")
+    }
+
+    var adulterado = token.substring(0, token.length() - 2) + "XX"
+    try {
+        jwt.verify(adulterado, "s3cret", "kof", "api")
+        println("aceito (erro!)")
+    } catch (String e) {
+        println("adulterado rejeitado")
+    }
+}

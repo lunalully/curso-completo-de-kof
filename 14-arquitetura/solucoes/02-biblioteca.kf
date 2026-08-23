@@ -1,0 +1,33 @@
+// Domínio de biblioteca
+record Livro(String titulo, String autor, Int ano)
+
+class Acervo {
+    List<Livro> livros
+    constructor() {
+        livros = listOf()
+    }
+    void adicionar(Livro l) {
+        livros.add(l)
+    }
+    Int tamanho() {
+        return livros.size
+    }
+}
+
+// lógica top-level
+Livro buscarPorTitulo(List<Livro> livros, String titulo) {
+    for (var l in livros) {
+        if (l.titulo() == titulo) {
+            return l
+        }
+    }
+    throw "livro nao encontrado: " + titulo
+}
+
+main() {
+    var acervo = Acervo()
+    acervo.adicionar(Livro("Duna", "Herbert", 1965))
+    acervo.adicionar(Livro("1984", "Orwell", 1949))
+    println(acervo.tamanho())
+    println(buscarPorTitulo(acervo.livros, "Duna").autor())
+}

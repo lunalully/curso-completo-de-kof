@@ -1,0 +1,24 @@
+record Usuario(String email, String senhaHash)
+class Banco {
+    List<Usuario> usuarios
+    constructor() {
+        usuarios = listOf()
+    }
+    void cadastrar(String email, String senha) {
+        usuarios.add(Usuario(email, passwords.hash(senha)))
+    }
+    Bool login(String email, String senha) {
+        for (var u in usuarios) {
+            if (u.email == email) {
+                return passwords.verify(senha, u.senhaHash)
+            }
+        }
+        return false
+    }
+}
+main() {
+    var b = Banco()
+    b.cadastrar("mel@kof.dev", "minha-senha")
+    println(b.login("mel@kof.dev", "minha-senha"))   // true
+    println(b.login("mel@kof.dev", "errada"))        // false
+}

@@ -1,0 +1,18 @@
+// View + Style — compile para JS
+class Style {
+    Color background
+    Color foreground
+    Int padding
+    constructor(Color background, Color foreground, Int padding) {
+        this.background = background
+        this.foreground = foreground
+        this.padding = padding
+    }
+}
+main() {
+    var w = Window("Estilo")
+    var view = View()
+    view.style = Style(Theme.dark().background(), Theme.dark().text(), 16)
+    w.bind(view)
+    w.show()
+}

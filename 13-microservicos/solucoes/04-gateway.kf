@@ -1,0 +1,21 @@
+// API gateway — entry point único (porta 8080)
+main() {
+    var app = web.app()
+
+    app.use {
+        log.info("gateway: " + method() + " " + path())
+        return null
+    }
+
+    app.get("/health") {
+        return "{\"status\": \"gateway ok\"}"
+    }
+
+    // roteamento: /pedidos/* e /estoque/* para os serviços internos
+    // WORKAROUND: até kof.http existir, delegue via proxy/CLI externo.
+    app.get("/pedidos") {
+        return "{\"rotas\": [\"/pedidos\", \"/estoque\"]}"
+    }
+
+    app.listen(8080)
+}

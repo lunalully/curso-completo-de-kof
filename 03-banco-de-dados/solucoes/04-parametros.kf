@@ -1,0 +1,12 @@
+record User(Int id, String name)
+
+main() {
+    var db = db.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table users(id int, name varchar(50))")
+    db.execute(db, "insert into users values (?, ?)", 1, "Mel")
+    db.execute(db, "insert into users values (?, ?)", 2, "Ada")
+    var users = db.query<User>(db, "select * from users where id = ?", 2)
+    println(users.size)
+    println(users.get(0).name)
+    db.close(db)
+}

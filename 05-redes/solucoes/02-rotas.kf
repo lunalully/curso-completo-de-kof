@@ -1,0 +1,16 @@
+main() {
+    var app = web.app()
+    app.get("/users") {
+        return "list users"
+    }
+    app.post("/users") {
+        return "create user"
+    }
+    app.put("/users/:id") {
+        return "update " + param("id")
+    }
+    app.delete("/users/:id") {
+        return "delete " + param("id")
+    }
+    app.listen(8080)
+}

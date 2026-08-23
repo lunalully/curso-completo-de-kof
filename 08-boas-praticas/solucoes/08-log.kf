@@ -1,0 +1,6 @@
+main() {
+    log.debug("detalhe")
+    log.info("info")
+    log.warn("cuidado")
+    log.error("boom")
+}

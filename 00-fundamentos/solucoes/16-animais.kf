@@ -1,0 +1,35 @@
+// Solução 16 — herança + interface + dispatch virtual
+interface Speaker {
+    speak(): String
+}
+class Animal {
+    String name
+    public constructor(String name) {
+        this.name = name
+    }
+    public speak(): String {
+        return "animal"
+    }
+}
+class Cachorro extends Animal implements Speaker {
+    public constructor(String name) {
+        super(name)
+    }
+    public speak(): String {
+        return "woof"
+    }
+}
+class Gato extends Animal implements Speaker {
+    public constructor(String name) {
+        super(name)
+    }
+    public speak(): String {
+        return "meow"
+    }
+}
+main() {
+    Animal a = new Cachorro("Rex")
+    println(a.speak())       // woof (virtual)
+    var g = new Gato("Mimi")
+    println(g.speak())       // meow
+}

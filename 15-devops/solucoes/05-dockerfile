@@ -1,0 +1,17 @@
+# Dockerfile — serviço Kof (web.app) multi-stage
+FROM eclipse-temurin:21 AS build
+WORKDIR /src
+COPY . .
+RUN mvn -q clean package -DskipTests \
+    && mkdir -p /app/lib \
+    && cp kof-cli/target/kof-cli-*.jar /app/lib/kof.jar
+
+FROM eclipse-temurin:21
+WORKDIR /app
+COPY --from=build /app/lib /app/lib
+COPY app.kf /app/app.kf
+# driver JDBC (se usar kof.db):
+# COPY h2.jar /app/h2.jar
+ENV KOF_SERVER_PORT=8080
+EXPOSE 8080
+CMD ["bash", "-c", "java -cp /app/lib/kof.jar dev.kof.cli.Main serve /app/app.kf --port $KOF_SERVER_PORT"]

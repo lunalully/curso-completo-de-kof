@@ -1,0 +1,58 @@
+// Sistema de reservas — hexagonal sem container
+record Reserva(String id, String sala, Int horario)
+
+interface Armazenamento {
+    salvarReserva(Reserva r)
+    todas(): List<Reserva>
+}
+
+class ReservasEmArquivo implements Armazenamento {
+    String pasta
+    constructor(String pasta) {
+        this.pasta = pasta
+    }
+    void salvarReserva(Reserva r) {
+        writeFile(pasta + "/" + r.id + ".txt", r.id + "|" + r.sala + "|" + r.horario)
+    }
+    todas(): List<Reserva> {
+        var lista = listOf<Reserva>()
+        for (var nome in Directory(pasta).list()) {
+            var conteudo = readFile(pasta + "/" + nome)
+            if (conteudo != null) {
+                var partes = conteudo.split("\\|")
+                var h = partes[2]
+                var horas = 0
+                for (var i = 0; i < h.length; i = i + 1) {
+                    horas = horas * 10 + (h.charAt(i) - 48)
+                }
+                lista.add(Reserva(partes[0], partes[1], horas))
+            }
+        }
+        return lista
+    }
+}
+
+Bool conflita(List<Reserva> reservas, Reserva nova) {
+    for (var r in reservas) {
+        if (r.sala == nova.sala && r.horario == nova.horario) {
+            return true
+        }
+    }
+    return false
+}
+
+String criarReserva(List<Reserva> reservas, Reserva nova) {
+    if (conflita(reservas, nova)) {
+        return "conflito de horario"
+    }
+    return "ok"
+}
+
+main() {
+    Directory("reservas").createDirectories()
+    var storage = ReservasEmArquivo("reservas")
+    var r1 = Reserva("r1", "A1", 10)
+    storage.salvarReserva(r1)
+    println(criarReserva(storage.todas(), Reserva("r2", "A1", 10)))
+    println(criarReserva(storage.todas(), Reserva("r3", "B2", 10)))
+}

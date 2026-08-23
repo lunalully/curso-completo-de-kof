@@ -1,0 +1,39 @@
+class PilhaInt {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(Int v) {
+        itens.add(v)
+    }
+    Int desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+String binario(Int n) {
+    if (n == 0) {
+        return "0"
+    }
+    var p = PilhaInt()
+    var x = n
+    while (x > 0) {
+        p.empilhar(x % 2)
+        x = x / 2
+    }
+    var s = ""
+    while (!p.vazia()) {
+        s = s + p.desempilhar()
+    }
+    return s
+}
+main() {
+    println(binario(13))   // 1101
+}

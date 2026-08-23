@@ -1,0 +1,19 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: build
+        run: |
+          mvn -q clean package -DskipTests
+          mkdir -p lib && cp kof-cli/target/kof-cli-*.jar lib/kof.jar
+      - name: check
+        run: bin/kof check src/
+      - name: test
+        run: bin/kof test testes/

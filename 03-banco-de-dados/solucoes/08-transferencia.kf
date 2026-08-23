@@ -1,0 +1,25 @@
+main() {
+    var db = db.connect("jdbc:h2:mem:bank;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table contas(id int, saldo int)")
+    transaction {
+        db.execute(db, "insert into contas values (1, 1000)")
+        db.execute(db, "insert into contas values (2, 100)")
+    }
+    try {
+        transaction {
+            var a = db.query(db, "select saldo from contas where id = 1")
+            var b = db.query(db, "select saldo from contas where id = 2")
+            if (a.get(0).length() > 3) {
+                throw "saldo insuficiente"
+            }
+            db.execute(db, "update contas set saldo = saldo - 200 where id = 1")
+            db.execute(db, "update contas set saldo = saldo + 200 where id = 2")
+        }
+    } catch (String e) {
+        println("erro: " + e)
+    }
+    var contas = db.query(db, "select * from contas order by id")
+    println(contas.get(0))
+    println(contas.get(1))
+    db.close(db)
+}

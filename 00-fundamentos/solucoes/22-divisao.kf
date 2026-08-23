@@ -1,0 +1,15 @@
+// Solução 22 — divisão com exceção
+Double dividir(Int a, Int b) {
+    if (b == 0) {
+        throw "divisao por zero"
+    }
+    return a / b
+}
+main() {
+    println(dividir(10, 2))
+    try {
+        println(dividir(1, 0))
+    } catch (String e) {
+        println("erro: " + e)
+    }
+}

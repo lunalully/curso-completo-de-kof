@@ -1,0 +1,11 @@
+void tarefa(Int id) {
+    println("tarefa " + id)
+}
+main() {
+    spawn tarefa(1)
+    spawn tarefa(2)
+    spawn {
+        println("background")
+    }
+    println("fim")
+}

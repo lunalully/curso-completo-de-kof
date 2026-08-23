@@ -1,0 +1,53 @@
+List<Double> mergeSortD(List<Double> l) {
+    if (l.size <= 1) {
+        return l
+    }
+    var meio = l.size / 2
+    var esq = listOf<Double>()
+    var dir = listOf<Double>()
+    for (var i = 0; i < meio; i = i + 1) {
+        esq.add(l.get(i))
+    }
+    for (var i = meio; i < l.size; i = i + 1) {
+        dir.add(l.get(i))
+    }
+    return mergeD(mergeSortD(esq), mergeSortD(dir))
+}
+List<Double> mergeD(List<Double> a, List<Double> b) {
+    var r = listOf<Double>()
+    var i = 0
+    var j = 0
+    while (i < a.size && j < b.size) {
+        if (a.get(i) < b.get(j)) {
+            r.add(a.get(i))
+            i = i + 1
+        } else {
+            r.add(b.get(j))
+            j = j + 1
+        }
+    }
+    while (i < a.size) {
+        r.add(a.get(i))
+        i = i + 1
+    }
+    while (j < b.size) {
+        r.add(b.get(j))
+        j = j + 1
+    }
+    return r
+}
+Double mediana(List<Double> dados) {
+    if (dados.size == 0) {
+        throw "conjunto vazio"
+    }
+    var ord = mergeSortD(dados)
+    var meio = ord.size / 2
+    if (ord.size % 2 == 1) {
+        return ord.get(meio)
+    }
+    return (ord.get(meio - 1) + ord.get(meio)) / 2.0
+}
+main() {
+    println(mediana(listOf(1.0, 2.0, 2.0, 3.0, 4.0, 7.0, 9.0)))   // 3.0
+    println(mediana(listOf(1.0, 2.0, 3.0, 4.0)))                   // 2.5
+}

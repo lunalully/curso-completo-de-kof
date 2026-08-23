@@ -1,0 +1,37 @@
+Double raizQuadrada(Double n) {
+    if (n <= 0) {
+        return 0
+    }
+    var x = n
+    for (var i = 0; i < 100; i = i + 1) {
+        x = (x + n / x) / 2.0
+    }
+    return x
+}
+Double media(List<Double> dados) {
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + x
+    }
+    return soma / dados.size
+}
+Double desvioPadrao(List<Double> dados) {
+    var m = media(dados)
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + (x - m) * (x - m)
+    }
+    return raizQuadrada(soma / dados.size)
+}
+List<Double> zScore(List<Double> dados) {
+    var m = media(dados)
+    var d = desvioPadrao(dados)
+    var r = listOf<Double>()
+    for (var x in dados) {
+        r.add((x - m) / d)
+    }
+    return r
+}
+main() {
+    println(zScore(listOf(10.0, 20.0, 30.0, 40.0)))
+}

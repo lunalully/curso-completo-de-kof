@@ -1,0 +1,91 @@
+// Agenda de contatos: busca + pilha de desfazer + fila de notificações + índice hash
+record Contato(String nome, String telefone)
+record Entry(String chave, Int valor)
+
+class PilhaDeAcoes {
+    List<String> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(String a) {
+        itens.add(a)
+    }
+    String desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+
+class FilaDeNotificacoes {
+    List<String> itens
+    constructor() {
+        itens = listOf()
+    }
+    void enfileirar(String n) {
+        itens.add(n)
+    }
+    String desenfileirar() {
+        if (itens.size == 0) {
+            throw "fila vazia"
+        }
+        var p = itens.get(0)
+        itens.remove(0)
+        return p
+    }
+}
+
+class IndicePorLetra {
+    List<List<Entry>> baldes
+    constructor() {
+        baldes = listOf()
+        for (var i = 0; i < 26; i = i + 1) {
+            baldes.add(listOf())
+        }
+    }
+    Int hash(String nome) {
+        var c = nome.charAt(0)
+        if (c >= 65 && c <= 90) {
+            return c - 65
+        }
+        if (c >= 97 && c <= 122) {
+            return c - 97
+        }
+        return 0
+    }
+    void adicionar(String nome, Int idx) {
+        baldes.get(hash(nome)).add(Entry(nome, idx))
+    }
+    Int buscar(String nome) {
+        for (var e in baldes.get(hash(nome))) {
+            if (e.chave == nome) {
+                return e.valor
+            }
+        }
+        throw "contato nao existe: " + nome
+    }
+}
+
+main() {
+    var agenda = listOf(Contato("Mel", "1"), Contato("Kof", "2"), Contato("Ada", "3"))
+    var desfazer = PilhaDeAcoes()
+    var notificacoes = FilaDeNotificacoes()
+    var indice = IndicePorLetra()
+
+    for (var i = 0; i < agenda.size; i = i + 1) {
+        indice.adicionar(agenda.get(i).nome, i)
+        notificacoes.enfileirar("adicionado: " + agenda.get(i).nome)
+    }
+
+    println("indice de Kof = " + indice.buscar("Kof"))
+    println("notificacao: " + notificacoes.desenfileirar())
+
+    desfazer.empilhar("adicionou Kof")
+    println("desfazer topo: " + desfazer.desempilhar())
+}

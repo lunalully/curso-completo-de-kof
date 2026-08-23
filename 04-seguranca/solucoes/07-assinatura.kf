@@ -1,0 +1,13 @@
+String assinatura(String msg, String chave) {
+    return crypto.hmacSha256(chave, msg)
+}
+Bool verificar(String msg, String chave, String ass) {
+    return security.constantTimeEquals(ass, crypto.hmacSha256(chave, msg))
+}
+main() {
+    var chave = "segredo-compartilhado"
+    var msg = "{\"valor\": 100}"
+    var ass = assinatura(msg, chave)
+    println(verificar(msg, chave, ass))          // true
+    println(verificar(msg, "chave-errada", ass)) // false
+}

@@ -1,0 +1,21 @@
+// Solução 13 — cifra de César sobre letras minúsculas
+// Usa indexOf/substring (APIs verificadas) para montar letra a letra.
+String cifrar(String s, Int deslocamento) {
+    var alfabeto = "abcdefghijklmnopqrstuvwxyz"
+    var resultado = ""
+    for (var i = 0; i < s.length; i = i + 1) {
+        var c = s.substring(i, i + 1)
+        var idx = alfabeto.indexOf(c)
+        if (idx < 0) {
+            resultado = resultado + c
+        } else {
+            var novo = (idx + deslocamento) % 26
+            resultado = resultado + alfabeto.substring(novo, novo + 1)
+        }
+    }
+    return resultado
+}
+main() {
+    println(cifrar("abc", 1))   // bcd
+    println(cifrar("zebra", 3)) // cheud
+}

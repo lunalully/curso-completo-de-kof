@@ -1,0 +1,44 @@
+record Aresta(String de, String para)
+class Grafo {
+    List<String> vertices
+    List<Aresta> arestas
+    constructor() {
+        vertices = listOf()
+        arestas = listOf()
+    }
+    void adicionarVertice(String nome) {
+        if (!vertices.contains(nome)) {
+            vertices.add(nome)
+        }
+    }
+    void adicionarAresta(String de, String para) {
+        adicionarVertice(de)
+        adicionarVertice(para)
+        arestas.add(Aresta(de, para))
+        arestas.add(Aresta(para, de))
+    }
+    Bool saoVizinhos(String a, String b) {
+        for (var e in arestas) {
+            if (e.de == a && e.para == b) {
+                return true
+            }
+        }
+        return false
+    }
+    vizinhos(String v): List<String> {
+        var l = listOf<String>()
+        for (var e in arestas) {
+            if (e.de == v) {
+                l.add(e.para)
+            }
+        }
+        return l
+    }
+}
+main() {
+    var g = Grafo()
+    g.adicionarAresta("A", "B")
+    g.adicionarAresta("A", "C")
+    println(g.saoVizinhos("A", "B"))   // true
+    println(g.vizinhos("A"))           // [B, C]
+}

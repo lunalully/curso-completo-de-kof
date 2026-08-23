@@ -1,0 +1,12 @@
+// layout com Column/Row — compile para JS
+main() {
+    var w = Window("Layout")
+    var col = Column()
+    col.add(Label("item 1"))
+    col.add(Label("item 2"))
+    var row = Row()
+    row.add(Button("acao", () -> println("ok")))
+    w.bind(col)
+    w.bind(row)
+    w.show()
+}

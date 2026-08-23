@@ -1,0 +1,13 @@
+main() {
+    var a = new Int[3]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    var b = new Int[a.length]
+    for (var i = 0; i < a.length; i = i + 1) {
+        b[i] = a[i]
+    }
+    b[0] = 99
+    println(a[0])   // 1 — independência
+    println(b[0])   // 99
+}

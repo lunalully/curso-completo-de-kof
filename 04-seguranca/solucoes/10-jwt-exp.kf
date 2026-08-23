@@ -1,0 +1,10 @@
+main() {
+    var token = jwt.create("{\"sub\":\"u1\",\"iss\":\"kof\",\"aud\":\"api\"}", "s3cret")
+    var adulterado = token.substring(0, token.length() - 2) + "XX"
+    try {
+        jwt.verify(adulterado, "s3cret", "kof", "api")
+        println("aceito (erro!)")
+    } catch (String e) {
+        println("token adulterado rejeitado")
+    }
+}

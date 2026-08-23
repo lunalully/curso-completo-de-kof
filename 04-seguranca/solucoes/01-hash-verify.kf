@@ -1,0 +1,5 @@
+main() {
+    var hash = passwords.hash("hunter2")
+    println(passwords.verify("hunter2", hash))   // true
+    println(passwords.verify("wrong", hash))     // false
+}

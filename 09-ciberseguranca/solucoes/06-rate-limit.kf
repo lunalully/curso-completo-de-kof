@@ -1,0 +1,40 @@
+// WORKAROUND: rate limit manual até a plataforma ter kof.security.ratelimit
+// Nota: evite campos `Long` em classes — o 0.0.8 crasha ao carregá-los
+// (COMP002). Use Int para a janela (ms) e a comparação Long < Int funciona.
+record Tentativa(String chave, Long quando)
+
+class RateLimiter {
+    List<Tentativa> tentativas
+    Int maximo
+    Int janelaMs
+    constructor(Int maximo, Int janelaMs) {
+        this.maximo = maximo
+        this.janelaMs = janelaMs
+        tentativas = listOf()
+    }
+    Bool permite(String chave) {
+        var janela = janelaMs
+        var agora = now()
+        var ativos = listOf<Tentativa>()
+        for (var t in tentativas) {
+            if (t.chave == chave && agora - t.quando < janela) {
+                ativos.add(t)
+            }
+        }
+        tentativas = ativos
+        if (tentativas.size >= maximo) {
+            return false
+        }
+        tentativas.add(Tentativa(chave, agora))
+        return true
+    }
+}
+
+main() {
+    var limite = RateLimiter(3, 60000)
+    var ip = "10.0.0.1"
+    println(limite.permite(ip))   // true
+    println(limite.permite(ip))   // true
+    println(limite.permite(ip))   // true
+    println(limite.permite(ip))   // false — bloqueado
+}

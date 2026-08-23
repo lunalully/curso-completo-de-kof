@@ -1,0 +1,46 @@
+class FilaCircular {
+    Int[] buffer
+    Int inicio
+    Int fim
+    Int n
+    constructor(Int capacidade) {
+        buffer = new Int[capacidade]
+        inicio = 0
+        fim = 0
+        n = 0
+    }
+    Bool cheia() {
+        return n == buffer.length
+    }
+    Bool vazia() {
+        return n == 0
+    }
+    void enfileirar(Int v) {
+        if (cheia()) {
+            throw "fila cheia"
+        }
+        buffer[fim] = v
+        fim = (fim + 1) % buffer.length
+        n = n + 1
+    }
+    Int desenfileirar() {
+        if (vazia()) {
+            throw "fila vazia"
+        }
+        var v = buffer[inicio]
+        inicio = (inicio + 1) % buffer.length
+        n = n - 1
+        return v
+    }
+}
+main() {
+    var f = FilaCircular(4)
+    f.enfileirar(10)
+    f.enfileirar(20)
+    f.enfileirar(30)
+    println(f.desenfileirar())   // 10
+    println(f.desenfileirar())   // 20
+    f.enfileirar(40)
+    println(f.desenfileirar())   // 30
+    println(f.desenfileirar())   // 40
+}

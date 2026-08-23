@@ -1,0 +1,17 @@
+// Funções aninhadas que lançam — o erro propaga pelos frames
+void nivel3() {
+    throw "falhou no nivel 3"
+}
+void nivel2() {
+    nivel3()
+}
+void nivel1() {
+    nivel2()
+}
+main() {
+    try {
+        nivel1()
+    } catch (String e) {
+        println("capturado no topo: " + e)
+    }
+}

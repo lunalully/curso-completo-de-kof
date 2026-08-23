@@ -1,0 +1,27 @@
+record Contagem(Double valor, Int n)
+Double moda(List<Double> dados) {
+    var contagens = listOf<Contagem>()
+    for (var x in dados) {
+        var achou = false
+        for (var i = 0; i < contagens.size; i = i + 1) {
+            if (contagens.get(i).valor == x) {
+                contagens.set(i, Contagem(x, contagens.get(i).n + 1))
+                achou = true
+                break
+            }
+        }
+        if (!achou) {
+            contagens.add(Contagem(x, 1))
+        }
+    }
+    var melhor = contagens.get(0)
+    for (var c in contagens) {
+        if (c.n > melhor.n) {
+            melhor = c
+        }
+    }
+    return melhor.valor
+}
+main() {
+    println(moda(listOf(1.0, 2.0, 2.0, 3.0, 2.0, 4.0)))   // 2.0
+}

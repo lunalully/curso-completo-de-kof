@@ -1,0 +1,30 @@
+record Regressao(Double a, Double b)
+Double media(List<Double> dados) {
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + x
+    }
+    return soma / dados.size
+}
+Regressao ajustar(List<Double> x, List<Double> y) {
+    var mx = media(x)
+    var my = media(y)
+    var somaXY = 0.0
+    var somaXX = 0.0
+    for (var i = 0; i < x.size; i = i + 1) {
+        somaXY = somaXY + (x.get(i) - mx) * (y.get(i) - my)
+        somaXX = somaXX + (x.get(i) - mx) * (x.get(i) - mx)
+    }
+    var a = somaXY / somaXX
+    var b = my - a * mx
+    return Regressao(a, b)
+}
+Double prever(Regressao r, Double x) {
+    return r.a * x + r.b
+}
+main() {
+    var alturas = listOf(150.0, 160.0, 170.0, 180.0, 190.0)
+    var pesos = listOf(50.0, 60.0, 68.0, 80.0, 90.0)
+    var r = ajustar(alturas, pesos)
+    println("peso previsto p/ 175: " + prever(r, 175.0))
+}

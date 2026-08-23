@@ -1,0 +1,19 @@
+main() {
+    var arr = new Int[5]
+    arr[0] = 42
+    arr[1] = 7
+    arr[2] = 99
+    arr[3] = 3
+    arr[4] = 18
+    var maior = arr[0]
+    var menor = arr[0]
+    for (var v in arr) {
+        if (v > maior) {
+            maior = v
+        }
+        if (v < menor) {
+            menor = v
+        }
+    }
+    println("maior=" + maior + " menor=" + menor)
+}

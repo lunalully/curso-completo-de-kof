@@ -1,0 +1,24 @@
+record Letra(Char c, Int n)
+List<Letra> frequencia(String s) {
+    var l = listOf<Letra>()
+    for (var i = 0; i < s.length; i = i + 1) {
+        var c = s.charAt(i)
+        var achou = false
+        for (var j = 0; j < l.size; j = j + 1) {
+            if (l.get(j).c == c) {
+                l.set(j, Letra(c, l.get(j).n + 1))
+                achou = true
+                break
+            }
+        }
+        if (!achou) {
+            l.add(Letra(c, 1))
+        }
+    }
+    return l
+}
+main() {
+    for (var x in frequencia("abacaxi")) {
+        println(x.c + " -> " + x.n)
+    }
+}

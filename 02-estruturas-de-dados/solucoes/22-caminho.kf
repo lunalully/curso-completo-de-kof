@@ -1,0 +1,56 @@
+record Aresta(String de, String para)
+class Grafo {
+    List<String> vertices
+    List<Aresta> arestas
+    constructor() {
+        vertices = listOf()
+        arestas = listOf()
+    }
+    void adicionarAresta(String de, String para) {
+        if (!vertices.contains(de)) {
+            vertices.add(de)
+        }
+        if (!vertices.contains(para)) {
+            vertices.add(para)
+        }
+        arestas.add(Aresta(de, para))
+        arestas.add(Aresta(para, de))
+    }
+    vizinhos(String v): List<String> {
+        var l = listOf<String>()
+        for (var e in arestas) {
+            if (e.de == v) {
+                l.add(e.para)
+            }
+        }
+        return l
+    }
+}
+Bool conectados(Grafo g, String a, String b) {
+    var visitados = listOf<String>()
+    var fila = listOf(a)
+    while (fila.size > 0) {
+        var v = fila.get(0)
+        fila.remove(0)
+        if (v == b) {
+            return true
+        }
+        if (visitados.contains(v)) {
+            continue
+        }
+        visitados.add(v)
+        for (var viz in g.vizinhos(v)) {
+            if (!visitados.contains(viz)) {
+                fila.add(viz)
+            }
+        }
+    }
+    return false
+}
+main() {
+    var g = Grafo()
+    g.adicionarAresta("A", "B")
+    g.adicionarAresta("B", "C")
+    println(conectados(g, "A", "C"))   // true
+    println(conectados(g, "A", "Z"))   // false
+}

@@ -1,0 +1,9 @@
+// Bug: leitura de arquivo inexistente retorna null
+main() {
+    var conteudo = readFile("arquivo-que-nao-existe.txt")
+    if (conteudo == null) {
+        println("arquivo nao encontrado — trate antes de usar")
+    } else {
+        println(conteudo)
+    }
+}

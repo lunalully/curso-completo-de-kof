@@ -1,0 +1,7 @@
+// Solução 27 — listar diretório
+main() {
+    var itens = Directory(".").list()
+    for (var nome in itens) {
+        println(nome)
+    }
+}

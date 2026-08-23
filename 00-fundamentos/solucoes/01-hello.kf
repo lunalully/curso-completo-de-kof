@@ -1,0 +1,7 @@
+// Solução 01 — três formas de dizer "olá"
+main() {
+    println("Olá, Kof!")
+    println("Olá" + ", " + "Kof!")
+    var saudacao = "Olá, Kof!"
+    println(saudacao)
+}

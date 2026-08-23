@@ -1,0 +1,30 @@
+// Solução 15 — classe Biblioteca
+record Livro(String titulo, String autor, Int ano)
+
+class Biblioteca {
+    List<Livro> livros
+    constructor() {
+        livros = listOf()
+    }
+    void adicionar(Livro l) {
+        livros.add(l)
+    }
+    Int tamanho() {
+        return livros.size
+    }
+    Livro buscarPorTitulo(String titulo) {
+        for (var l in livros) {
+            if (l.titulo() == titulo) {
+                return l
+            }
+        }
+        throw "livro nao encontrado: " + titulo
+    }
+}
+main() {
+    var b = Biblioteca()
+    b.adicionar(Livro("Duna", "Frank Herbert", 1965))
+    b.adicionar(Livro("1984", "George Orwell", 1949))
+    println(b.tamanho())
+    println(b.buscarPorTitulo("Duna").autor())
+}

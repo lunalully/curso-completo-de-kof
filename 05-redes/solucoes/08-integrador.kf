@@ -1,0 +1,18 @@
+void processar(Int inicio, Int fim) {
+    for (var i = inicio; i < fim; i = i + 1) {
+        println("processado item " + i)
+    }
+}
+main() {
+    var app = web.app()
+    app.use {
+        log.info(method() + " " + path())
+        return null
+    }
+    app.get("/status") {
+        return "{\"method\": \"" + method() + "\", \"path\": \"" + path() + "\"}"
+    }
+    spawn processar(0, 10)
+    spawn processar(10, 20)
+    app.listen(8080)
+}

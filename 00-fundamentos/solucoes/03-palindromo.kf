@@ -1,0 +1,19 @@
+// Solução 03 — palíndromo (ASCII)
+Bool palindromo(String s) {
+    var t = s.toLowerCase()
+    var i = 0
+    var j = t.length - 1
+    while (i < j) {
+        if (t.charAt(i) != t.charAt(j)) {
+            return false
+        }
+        i = i + 1
+        j = j - 1
+    }
+    return true
+}
+main() {
+    println(palindromo("radar"))     // true
+    println(palindromo("Kof"))       // false
+    println(palindromo("RADAR"))     // true (ignora caixa)
+}

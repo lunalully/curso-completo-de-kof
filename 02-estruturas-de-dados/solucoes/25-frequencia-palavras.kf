@@ -1,0 +1,35 @@
+record Entry(String chave, Int valor)
+class Tabela {
+    List<Entry> entradas
+    constructor() {
+        entradas = listOf()
+    }
+    void incrementar(String chave) {
+        for (var i = 0; i < entradas.size; i = i + 1) {
+            if (entradas.get(i).chave == chave) {
+                entradas.set(i, Entry(chave, entradas.get(i).valor + 1))
+                return
+            }
+        }
+        entradas.add(Entry(chave, 1))
+    }
+    Int get(String chave) {
+        for (var e in entradas) {
+            if (e.chave == chave) {
+                return e.valor
+            }
+        }
+        return 0
+    }
+}
+main() {
+    var t = Tabela()
+    var frase = "kof e uma linguagem e kof compila"
+    var palavras = frase.split(" ")
+    for (var i = 0; i < palavras.length; i = i + 1) {
+        t.incrementar(palavras[i])
+    }
+    println(t.get("kof"))      // 2
+    println(t.get("e"))        // 2
+    println(t.get("linguagem"))// 1
+}

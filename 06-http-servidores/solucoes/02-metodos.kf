@@ -1,0 +1,10 @@
+main() {
+    var app = web.app()
+    app.get("/x") { return "get" }
+    app.post("/x") { return "post" }
+    app.put("/x") { return "put" }
+    app.delete("/x") { return "delete" }
+    app.patch("/x") { return "patch" }
+    app.options("/x") { return "options" }
+    app.listen(8080)
+}

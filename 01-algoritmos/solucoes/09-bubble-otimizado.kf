@@ -1,0 +1,25 @@
+void trocar(List<Int> l, Int i, Int j) {
+    var t = l.get(i)
+    l.set(i, l.get(j))
+    l.set(j, t)
+}
+List<Int> bubbleSortOtimizado(List<Int> l) {
+    var n = l.size
+    for (var i = 0; i < n - 1; i = i + 1) {
+        var trocou = false
+        for (var j = 0; j < n - 1 - i; j = j + 1) {
+            if (l.get(j) > l.get(j + 1)) {
+                trocar(l, j, j + 1)
+                trocou = true
+            }
+        }
+        if (!trocou) {
+            break
+        }
+    }
+    return l
+}
+main() {
+    println(bubbleSortOtimizado(listOf(1, 2, 3, 4, 5)))  // já ordenado: 1 passada
+    println(bubbleSortOtimizado(listOf(5, 4, 3, 2, 1)))
+}

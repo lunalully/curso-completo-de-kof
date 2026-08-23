@@ -1,0 +1,32 @@
+String capitalizar(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1)
+}
+Bool palindromo(String s) {
+    var i = 0
+    var j = s.length - 1
+    while (i < j) {
+        if (s.charAt(i) != s.charAt(j)) {
+            return false
+        }
+        i = i + 1
+        j = j - 1
+    }
+    return true
+}
+Int contarVogais(String s) {
+    var total = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var c = s.charAt(i)
+        if (c == 97 || c == 101 || c == 105 || c == 111 || c == 117) {
+            total = total + 1
+        }
+    }
+    return total
+}
+main() {
+    assert(capitalizar("kof") == "Kof", "capitalizar")
+    assert(palindromo("radar"), "palindromo")
+    assert(!palindromo("kof"), "nao palindromo")
+    assert(contarVogais("programacao") == 5, "vogais")
+    println("strings: PASS")
+}

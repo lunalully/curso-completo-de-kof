@@ -1,0 +1,192 @@
+// Análise de alturas/pesos — integrador da trilha
+record Ponto(Double x, Double y, String classe)
+record Distancia(Double d, String classe)
+record Regressao(Double a, Double b)
+
+Double raizQuadrada(Double n) {
+    if (n <= 0) {
+        return 0
+    }
+    var x = n
+    for (var i = 0; i < 100; i = i + 1) {
+        x = (x + n / x) / 2.0
+    }
+    return x
+}
+Double media(List<Double> dados) {
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + x
+    }
+    return soma / dados.size
+}
+List<Double> mergeSortD(List<Double> l) {
+    if (l.size <= 1) {
+        return l
+    }
+    var meio = l.size / 2
+    var esq = listOf<Double>()
+    var dir = listOf<Double>()
+    for (var i = 0; i < meio; i = i + 1) {
+        esq.add(l.get(i))
+    }
+    for (var i = meio; i < l.size; i = i + 1) {
+        dir.add(l.get(i))
+    }
+    return mergeD(mergeSortD(esq), mergeSortD(dir))
+}
+List<Double> mergeD(List<Double> a, List<Double> b) {
+    var r = listOf<Double>()
+    var i = 0
+    var j = 0
+    while (i < a.size && j < b.size) {
+        if (a.get(i) < b.get(j)) {
+            r.add(a.get(i))
+            i = i + 1
+        } else {
+            r.add(b.get(j))
+            j = j + 1
+        }
+    }
+    while (i < a.size) {
+        r.add(a.get(i))
+        i = i + 1
+    }
+    while (j < b.size) {
+        r.add(b.get(j))
+        j = j + 1
+    }
+    return r
+}
+Double mediana(List<Double> dados) {
+    var ord = mergeSortD(dados)
+    var meio = ord.size / 2
+    if (ord.size % 2 == 1) {
+        return ord.get(meio)
+    }
+    return (ord.get(meio - 1) + ord.get(meio)) / 2.0
+}
+Double desvioPadrao(List<Double> dados) {
+    var m = media(dados)
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + (x - m) * (x - m)
+    }
+    return raizQuadrada(soma / dados.size)
+}
+Double pearson(List<Double> x, List<Double> y) {
+    var mx = media(x)
+    var my = media(y)
+    var somaXY = 0.0
+    var somaXX = 0.0
+    var somaYY = 0.0
+    for (var i = 0; i < x.size; i = i + 1) {
+        var dx = x.get(i) - mx
+        var dy = y.get(i) - my
+        somaXY = somaXY + dx * dy
+        somaXX = somaXX + dx * dx
+        somaYY = somaYY + dy * dy
+    }
+    return somaXY / raizQuadrada(somaXX * somaYY)
+}
+Regressao ajustar(List<Double> x, List<Double> y) {
+    var mx = media(x)
+    var my = media(y)
+    var somaXY = 0.0
+    var somaXX = 0.0
+    for (var i = 0; i < x.size; i = i + 1) {
+        somaXY = somaXY + (x.get(i) - mx) * (y.get(i) - my)
+        somaXX = somaXX + (x.get(i) - mx) * (x.get(i) - mx)
+    }
+    var a = somaXY / somaXX
+    return Regressao(a, my - a * mx)
+}
+List<Double> zScore(List<Double> dados) {
+    var m = media(dados)
+    var d = desvioPadrao(dados)
+    var r = listOf<Double>()
+    for (var x in dados) {
+        r.add((x - m) / d)
+    }
+    return r
+}
+String classificar(List<Ponto> treino, Ponto novo, Int k) {
+    var distancias = listOf<Distancia>()
+    for (var p in treino) {
+        var dx = p.x - novo.x
+        var dy = p.y - novo.y
+        distancias.add(Distancia(raizQuadrada(dx * dx + dy * dy), p.classe))
+    }
+    var ord = mergeSortDist(distancias)
+    var ca = 0
+    var cb = 0
+    for (var i = 0; i < k && i < ord.size; i = i + 1) {
+        if (ord.get(i).classe == "tall") {
+            ca = ca + 1
+        } else {
+            cb = cb + 1
+        }
+    }
+    return if (ca >= cb) "tall" else "short"
+}
+List<Distancia> mergeSortDist(List<Distancia> l) {
+    if (l.size <= 1) {
+        return l
+    }
+    var meio = l.size / 2
+    var esq = listOf<Distancia>()
+    var dir = listOf<Distancia>()
+    for (var i = 0; i < meio; i = i + 1) {
+        esq.add(l.get(i))
+    }
+    for (var i = meio; i < l.size; i = i + 1) {
+        dir.add(l.get(i))
+    }
+    return mergeDist(mergeSortDist(esq), mergeSortDist(dir))
+}
+List<Distancia> mergeDist(List<Distancia> a, List<Distancia> b) {
+    var r = listOf<Distancia>()
+    var i = 0
+    var j = 0
+    while (i < a.size && j < b.size) {
+        if (a.get(i).d < b.get(j).d) {
+            r.add(a.get(i))
+            i = i + 1
+        } else {
+            r.add(b.get(j))
+            j = j + 1
+        }
+    }
+    while (i < a.size) {
+        r.add(a.get(i))
+        i = i + 1
+    }
+    while (j < b.size) {
+        r.add(b.get(j))
+        j = j + 1
+    }
+    return r
+}
+main() {
+    var alturas = listOf(150.0, 158.0, 165.0, 172.0, 180.0, 185.0, 150.0, 190.0, 170.0, 175.0)
+    var pesos = listOf(50.0, 55.0, 62.0, 70.0, 80.0, 86.0, 52.0, 92.0, 68.0, 74.0)
+
+    println("media altura: " + media(alturas))
+    println("mediana altura: " + mediana(alturas))
+    println("desvio peso: " + desvioPadrao(pesos))
+    println("pearson: " + pearson(alturas, pesos))
+
+    var r = ajustar(alturas, pesos)
+    println("peso previsto 178: " + (r.a * 178.0 + r.b))
+
+    var treino = listOf(
+        Ponto(150.0, 50.0, "short"),
+        Ponto(158.0, 55.0, "short"),
+        Ponto(165.0, 62.0, "short"),
+        Ponto(180.0, 80.0, "tall"),
+        Ponto(185.0, 86.0, "tall"),
+        Ponto(190.0, 92.0, "tall")
+    )
+    println("knn 162: " + classificar(treino, Ponto(162.0, 60.0, ""), 3))
+    println("knn 188: " + classificar(treino, Ponto(188.0, 90.0, ""), 3))
+}

@@ -1,0 +1,11 @@
+main() {
+    var db = db.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+    db.execute(db, "create table t(x int)")
+    transaction {
+        db.execute(db, "insert into t values (1)")
+        db.execute(db, "insert into t values (2)")
+    }
+    var rows = db.query(db, "select count(*) as n from t")
+    println(rows.get(0))
+    db.close(db)
+}

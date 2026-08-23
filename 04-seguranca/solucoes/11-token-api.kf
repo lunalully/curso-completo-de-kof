@@ -1,0 +1,17 @@
+record Credencial(String email, String senha)
+
+main() {
+    var email = "mel@kof.dev"
+    var hash = passwords.hash("admin")
+    var token = jwt.create("{\"sub\":\"" + email + "\",\"roles\":[\"admin\"],\"iss\":\"kof\",\"aud\":\"api\"}", "s3cret")
+
+    // simula rotas verificando o token
+    Bool autenticado = true
+    try {
+        var claims = jwt.verify(token, "s3cret", "kof", "aud")
+        autenticado = true
+    } catch (String e) {
+        autenticado = false
+    }
+    println("autenticado=" + autenticado)
+}

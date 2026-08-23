@@ -1,0 +1,33 @@
+// Solução 24 — finally nos 3 caminhos
+void normal() {
+    try {
+        println("caminho normal")
+    } finally {
+        println("finally (normal)")
+    }
+}
+void capturado() {
+    try {
+        throw "x"
+    } catch (String e) {
+        println("caminho catch")
+    } finally {
+        println("finally (catch)")
+    }
+}
+void propagacao() {
+    try {
+        throw "y"
+    } finally {
+        println("finally (propagacao)")
+    }
+}
+main() {
+    normal()
+    capturado()
+    try {
+        propagacao()
+    } catch (String e) {
+        println("pegou: " + e)
+    }
+}

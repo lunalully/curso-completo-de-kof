@@ -1,0 +1,40 @@
+record Produto(String nome, Double preco)
+class Carrinho {
+    List<Produto> itens
+    constructor() {
+        itens = listOf()
+    }
+    void adicionar(Produto p) {
+        itens.add(p)
+    }
+    Int tamanho() {
+        return itens.size
+    }
+    Double total() {
+        if (itens.size == 0) {
+            throw "carrinho vazio"
+        }
+        var soma = 0.0
+        for (var p in itens) {
+            soma = soma + p.preco
+        }
+        return soma
+    }
+}
+main() {
+    var c = Carrinho()
+    assert(c.tamanho() == 0, "comeca vazio")
+    c.adicionar(Produto("Cafe", 12.5))
+    c.adicionar(Produto("Cha", 8.0))
+    assert(c.tamanho() == 2, "tamanho")
+    var total = c.total()
+    assert(total >= 20.4 && total <= 20.6, "total")
+    try {
+        var vazio = Carrinho()
+        var descartado = vazio.total()
+        assert(false, "deveria lancar")
+    } catch (String e) {
+        assert(true, "vazio lanca")
+    }
+    println("carrinho: PASS")
+}

@@ -1,0 +1,39 @@
+// Sistema de pedidos — serviço de pedidos (porta 8081)
+// (Estoque roda em 02-servico-estoque.kf na porta 8082)
+record Pedido(Int id, String produto, Int qtd)
+
+class RepoPedidos {
+    List<Pedido> pedidos
+    constructor() {
+        pedidos = listOf()
+    }
+}
+
+main() {
+    var repo = RepoPedidos()
+    var app = web.app()
+
+    app.use {
+        log.info("pedidos: " + method() + " " + path())
+        return null
+    }
+
+    app.get("/health") {
+        return "{\"status\": \"ok\", \"servico\": \"pedidos\"}"
+    }
+
+    app.get("/pedidos") {
+        return json.encode(repo.pedidos)
+    }
+
+    app.post("/pedidos") {
+        var p = json.decode<Pedido>(body())
+        if (p.produto.length == 0) {
+            return "{\"error\": \"produto obrigatorio\"}"
+        }
+        repo.pedidos.add(p)
+        return "{\"ok\": true}"
+    }
+
+    app.listen(config.int("server.port", 8081))
+}

@@ -1,0 +1,10 @@
+record User(String name, Int age)
+
+main() {
+    var app = web.app()
+    app.post("/user") {
+        var user = json.decode<User>(body())
+        return json.encode(user)
+    }
+    app.listen(8080)
+}

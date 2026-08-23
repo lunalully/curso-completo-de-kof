@@ -1,0 +1,13 @@
+Int soma(Int a, Int b) {
+    return a + b
+}
+Int multiplica(Int a, Int b) {
+    return a * b
+}
+main() {
+    assert(soma(2, 3) == 5, "2+3")
+    assert(soma(-1, 1) == 0, "opostos")
+    assert(multiplica(3, 4) == 12, "3*4")
+    assert(multiplica(0, 99) == 0, "zero")
+    println("soma/multiplica: PASS")
+}

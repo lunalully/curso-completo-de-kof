@@ -1,0 +1,23 @@
+void trocar(Int[] a, Int i, Int j) {
+    var t = a[i]
+    a[i] = a[j]
+    a[j] = t
+}
+main() {
+    var arr = new Int[5]
+    arr[0] = 1
+    arr[1] = 2
+    arr[2] = 3
+    arr[3] = 4
+    arr[4] = 5
+    var i = 0
+    var j = arr.length - 1
+    while (i < j) {
+        trocar(arr, i, j)
+        i = i + 1
+        j = j - 1
+    }
+    for (var v in arr) {
+        println(v)
+    }
+}

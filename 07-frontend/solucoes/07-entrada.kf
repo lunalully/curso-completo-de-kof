@@ -1,0 +1,15 @@
+// janela com input — compile para JS
+class App {
+    static String nome = ""
+}
+main() {
+    var w = Window("Entrada")
+    var entrada = Input()
+    var saida = Label("digite seu nome")
+    w.bind(entrada)
+    w.bind(saida)
+    w.bind(Button("OK", () -> {
+        saida.text = "ola, " + App.nome
+    }))
+    w.show()
+}

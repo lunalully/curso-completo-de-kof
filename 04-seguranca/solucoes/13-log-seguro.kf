@@ -1,0 +1,5 @@
+main() {
+    var apiKey = secrets.get("API_KEY", "test-key")
+    log.info("conectando com " + secrets.redact(apiKey))
+    println("chave redigida para logs")
+}

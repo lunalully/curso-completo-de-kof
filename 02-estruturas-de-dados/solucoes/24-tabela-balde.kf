@@ -1,0 +1,43 @@
+record Item(String chave, Int valor)
+class TabelaHash {
+    List<List<Item>> baldes
+    constructor() {
+        baldes = listOf()
+        for (var i = 0; i < 26; i = i + 1) {
+            baldes.add(listOf())
+        }
+    }
+    Int hash(String chave) {
+        var c = chave.charAt(0)
+        if (c >= 97 && c <= 122) {
+            return c - 97
+        }
+        return 0
+    }
+    void put(String chave, Int valor) {
+        var lista = baldes.get(hash(chave))
+        for (var i = 0; i < lista.size; i = i + 1) {
+            if (lista.get(i).chave == chave) {
+                lista.set(i, Item(chave, valor))
+                return
+            }
+        }
+        lista.add(Item(chave, valor))
+    }
+    Int get(String chave) {
+        var lista = baldes.get(hash(chave))
+        for (var item in lista) {
+            if (item.chave == chave) {
+                return item.valor
+            }
+        }
+        throw "chave nao existe: " + chave
+    }
+}
+main() {
+    var t = TabelaHash()
+    t.put("banana", 3)
+    t.put("bola", 5)
+    println(t.get("banana"))
+    println(t.get("bola"))
+}

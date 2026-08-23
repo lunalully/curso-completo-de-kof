@@ -1,0 +1,16 @@
+void particionar(List<Int> l, List<Int> pares, List<Int> impares) {
+    for (var x in l) {
+        if (x % 2 == 0) {
+            pares.add(x)
+        } else {
+            impares.add(x)
+        }
+    }
+}
+main() {
+    var pares = listOf<Int>()
+    var impares = listOf<Int>()
+    particionar(listOf(1, 2, 3, 4, 5, 6), pares, impares)
+    println(pares)
+    println(impares)
+}

@@ -1,0 +1,20 @@
+Int buscarIndice(List<Int> lista, Int alvo) {
+    for (var i = 0; i < lista.size; i = i + 1) {
+        if (lista.get(i) == alvo) {
+            return i
+        }
+    }
+    throw "nao encontrado: " + alvo
+}
+Bool contem(List<Int> lista, Int alvo) {
+    for (var x in lista) {
+        if (x == alvo) {
+            return true
+        }
+    }
+    return false
+}
+main() {
+    println(buscarIndice(listOf(3, 7, 11), 7))  // 1
+    println(contem(listOf(3, 7, 11), 99))       // false
+}

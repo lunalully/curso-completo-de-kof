@@ -1,0 +1,5 @@
+// kof.io funciona em jvm e native
+main() {
+    writeFile("multi.txt", "funciona em todos os targets")
+    println(readFile("multi.txt"))
+}

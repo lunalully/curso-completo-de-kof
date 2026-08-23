@@ -1,0 +1,6 @@
+main() {
+    println(config.str("app.name", "fallback"))
+    println(config.int("server.port", 8080))
+    println(config.bool("app.debug", false))
+    println(config.has("missing.key"))
+}

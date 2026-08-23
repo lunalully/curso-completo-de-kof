@@ -1,0 +1,13 @@
+Double media(List<Double> dados) {
+    if (dados.size == 0) {
+        throw "conjunto vazio"
+    }
+    var soma = 0.0
+    for (var x in dados) {
+        soma = soma + x
+    }
+    return soma / dados.size
+}
+main() {
+    println(media(listOf(1.0, 2.0, 3.0, 4.0)))
+}

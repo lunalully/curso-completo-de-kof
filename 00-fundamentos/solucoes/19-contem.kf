@@ -1,0 +1,13 @@
+// Solução 19 — contem
+Bool contem(List<Int> lista, Int alvo) {
+    for (var x in lista) {
+        if (x == alvo) {
+            return true
+        }
+    }
+    return false
+}
+main() {
+    println(contem(listOf(1, 2, 3), 2))   // true
+    println(contem(listOf(1, 2, 3), 9))   // false
+}

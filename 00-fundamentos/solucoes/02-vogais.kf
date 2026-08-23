@@ -1,0 +1,15 @@
+// Solução 02 — conta vogais (a=97 e=101 i=105 o=111 u=117)
+Int vogais(String s) {
+    var total = 0
+    for (var i = 0; i < s.length; i = i + 1) {
+        var c = s.charAt(i)
+        if (c == 97 || c == 101 || c == 105 || c == 111 || c == 117) {
+            total = total + 1
+        }
+    }
+    return total
+}
+main() {
+    println(vogais("programacao"))   // 5
+    println(vogais("Kof"))           // 1
+}

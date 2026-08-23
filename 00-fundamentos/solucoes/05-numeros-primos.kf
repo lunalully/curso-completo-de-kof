@@ -1,0 +1,17 @@
+// Solução 05 — crivo de Eratóstenes
+List<Int> primosAte(Int n) {
+    var marcado = new Bool[n + 1]
+    var primos = listOf<Int>()
+    for (var i = 2; i <= n; i = i + 1) {
+        if (!marcado[i]) {
+            primos.add(i)
+            for (var j = i * 2; j <= n; j = j + i) {
+                marcado[j] = true
+            }
+        }
+    }
+    return primos
+}
+main() {
+    println(primosAte(20))
+}

@@ -1,0 +1,16 @@
+main() {
+    var app = web.app()
+    app.get("/users/:id") {
+        return "user " + param("id") + " q=" + query("name")
+    }
+    app.get("/agent") {
+        return "agent=" + header("user-agent")
+    }
+    app.get("/me") {
+        return method() + " " + path()
+    }
+    app.post("/echo") {
+        return "got:" + body()
+    }
+    app.listen(8080)
+}

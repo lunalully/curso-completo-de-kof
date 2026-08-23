@@ -1,0 +1,8 @@
+// Solução 06 — pares de 0 a 100
+main() {
+    for (var i = 0; i <= 100; i = i + 1) {
+        if (i % 2 == 0) {
+            println(i)
+        }
+    }
+}

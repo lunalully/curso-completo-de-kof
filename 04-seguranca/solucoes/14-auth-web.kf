@@ -1,0 +1,35 @@
+// 14-auth-web.kf — auth web com padrões VERIFICADOS no compilador 0.0.8.
+// WORKAROUND: auth.user()/auth.claims() disparam um bug de runtime no 0.0.8
+// ("JavaFX runtime components not found") — use auth.authenticated()/hasRole.
+main() {
+    var app = web.app()
+    auth.secret(secrets.get("JWT_SECRET", "dev-secret"))
+
+    // middleware global: autenticado ou rota de login
+    app.use {
+        if (auth.authenticated() || path() == "/login") {
+            return null
+        }
+        return "{\"error\": \"unauthorized\"}"
+    }
+
+    app.post("/login") {
+        return "{\"token\": \"" + jwt.create("{\"sub\":\"mel\",\"roles\":[\"admin\"],\"iss\":\"kof\",\"aud\":\"api\"}", "dev-secret") + "\"}"
+    }
+
+    // rota protegida (requer token válido via middleware)
+    app.get("/privado") {
+        return "{\"ok\": true, \"autenticado\": true}"
+    }
+
+    // autorização por role: atribua a var ANTES do if (evita bug de bytecode)
+    app.get("/admin") {
+        var admin = auth.hasRole("admin")
+        if (!admin) {
+            return "{\"error\": \"forbidden\"}"
+        }
+        return "{\"ok\": true}"
+    }
+
+    app.listen(8080)
+}

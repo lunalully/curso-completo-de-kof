@@ -1,0 +1,48 @@
+Int soma(Int a, Int b) {
+    return a + b
+}
+String capitalizar(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1)
+}
+Bool palindromo(String s) {
+    var i = 0
+    var j = s.length - 1
+    while (i < j) {
+        if (s.charAt(i) != s.charAt(j)) {
+            return false
+        }
+        i = i + 1
+        j = j - 1
+    }
+    return true
+}
+class Pilha {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(Int v) {
+        itens.add(v)
+    }
+    Int desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var t = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return t
+    }
+}
+main() {
+    assert(soma(2, 3) == 5, "soma")
+    assert(soma(-1, 1) == 0, "soma negativa")
+    assert(capitalizar("kof") == "Kof", "capitalizar")
+    assert(palindromo("radar"), "palindromo")
+    assert(!palindromo("kof"), "nao palindromo")
+    var p = Pilha()
+    p.empilhar(1)
+    p.empilhar(2)
+    assert(p.desempilhar() == 2, "pilha LIFO")
+    assert(p.desempilhar() == 1, "pilha LIFO 2")
+    println("todos os testes passaram")
+}

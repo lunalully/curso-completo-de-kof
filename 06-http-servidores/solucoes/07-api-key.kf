@@ -1,0 +1,17 @@
+Bool temChaveValida() {
+    return header("x-api-key") == secrets.get("API_KEY", "dev-key")
+}
+main() {
+    var app = web.app()
+    app.get("/publico") {
+        return "aberto"
+    }
+    app.get("/privado") {
+        var ok = temChaveValida()
+        if (!ok) {
+            return "{\"error\": \"forbidden\"}"
+        }
+        return "{\"dados\": [1, 2, 3]}"
+    }
+    app.listen(8080)
+}

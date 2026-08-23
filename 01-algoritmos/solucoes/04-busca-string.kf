@@ -1,0 +1,22 @@
+// List<String> são comparáveis por conteúdo (< funciona alfabeticamente)
+Int buscaBinariaString(List<String> lista, String alvo) {
+    var baixo = 0
+    var alto = lista.size - 1
+    while (baixo <= alto) {
+        var meio = (baixo + alto) / 2
+        var valor = lista.get(meio)
+        if (valor == alvo) {
+            return meio
+        }
+        if (valor < alvo) {
+            baixo = meio + 1
+        } else {
+            alto = meio - 1
+        }
+    }
+    throw "nao encontrado: " + alvo
+}
+main() {
+    var nomes = listOf("ada", "kof", "mel", "pedro")
+    println(buscaBinariaString(nomes, "kof"))   // 1
+}

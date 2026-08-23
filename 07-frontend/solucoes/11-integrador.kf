@@ -1,0 +1,36 @@
+// Lista de tarefas visual — compile para JS
+record Tarefa(String titulo, Bool concluida)
+
+class App {
+    static List<Tarefa> tarefas = listOf()
+    static Int total = 0
+}
+
+String listaComoTexto() {
+    var t = ""
+    for (var tarefa in App.tarefas) {
+        t = t + (if (tarefa.concluida) "[x] " else "[ ] ") + tarefa.titulo + "\n"
+    }
+    return t
+}
+
+main() {
+    var w = Window("Tarefas")
+    var entrada = Input()
+    var painel = Label("")
+    w.bind(entrada)
+    w.bind(Button("adicionar", () -> {
+        App.tarefas.add(Tarefa("tarefa " + App.total, false))
+        App.total = App.total + 1
+        painel.text = listaComoTexto()
+    }))
+    w.bind(Button("concluir", () -> {
+        if (App.tarefas.size > 0) {
+            var ultima = App.tarefas.get(App.tarefas.size - 1)
+            App.tarefas.set(App.tarefas.size - 1, Tarefa(ultima.titulo, true))
+            painel.text = listaComoTexto()
+        }
+    }))
+    w.bind(painel)
+    w.show()
+}

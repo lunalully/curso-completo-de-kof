@@ -1,0 +1,12 @@
+void processar(Int inicio, Int fim) {
+    for (var i = inicio; i < fim; i = i + 1) {
+        println("item " + i)
+    }
+}
+main() {
+    spawn processar(0, 25)
+    spawn processar(25, 50)
+    spawn processar(50, 75)
+    spawn processar(75, 100)
+    println("lote disparado")
+}

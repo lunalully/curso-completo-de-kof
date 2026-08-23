@@ -1,0 +1,25 @@
+// Capturar e imprimir erros de runtime comuns
+main() {
+    // divisão por zero
+    try {
+        var x = 10 / 0
+    } catch (String e) {
+        println("erro: " + e)
+    }
+
+    // array out of bounds
+    try {
+        var arr = new Int[2]
+        arr[5] = 1
+    } catch (String e) {
+        println("erro: " + e)
+    }
+
+    // null pointer
+    try {
+        var s = readFile("nao-existe.txt")
+        println(s.length())
+    } catch (String e) {
+        println("erro: " + e)
+    }
+}

@@ -1,0 +1,10 @@
+main() {
+    var c = Color(255, 0, 0)
+    println(c.red())
+    println(c.green())
+    println(c.blue())
+    println(c.alpha())
+    println(c.isOpaque())
+    println(c.toCss())
+    println(Color.rgba(10, 20, 30, 128).toCss())
+}
