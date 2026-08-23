@@ -1,0 +1,30 @@
+// seguranca.kf — kof.security: senhas, crypto, jwt, segredos
+// Run: kof run seguranca.kf
+
+main() {
+    // senhas: hash + verificação constant-time
+    var hash = passwords.hash("hunter2")
+    println(passwords.verify("hunter2", hash))   // true
+    println(passwords.verify("wrong", hash))     // false
+
+    // crypto: digests e HMAC (idênticos entre JVM/Native/JS)
+    println(crypto.sha256("kof"))
+    println(crypto.hmacSha256("key", "data"))
+
+    // AES-GCM round trip
+    var key = crypto.randomHex(32)
+    var ct = crypto.encryptAesGcm("segredo", key)
+    println(crypto.decryptAesGcm(ct, key) == "segredo")
+
+    // JWT HS256
+    var token = jwt.create("{\"sub\":\"u1\",\"roles\":[\"admin\"],\"iss\":\"kof\",\"aud\":\"api\"}", "s3cret")
+    var claims = jwt.verify(token, "s3cret", "kof", "api")
+    println(claims.contains("admin"))
+
+    // segredos + redação
+    println(secrets.get("KOF_DEMO", "default-value") == "default-value")
+    println(secrets.redact("sk-abcdefghijklmnop") == "sk-a********mnop")
+
+    // comparação constant-time
+    println(security.constantTimeEquals("abc", "abc"))
+}

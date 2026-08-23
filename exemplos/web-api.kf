@@ -1,0 +1,44 @@
+// web-api.kf — kof.web: rotas, middleware, contexto de request
+// Run: kof serve web-api.kf   (ou kof run web-api.kf — o programa escuta)
+
+record User(String name, Int age)
+
+main() {
+    var app = web.app()
+
+    // middleware: logging + autenticação simples por header
+    app.use {
+        log.info(method() + " " + path())
+        if (path() == "/publico" || header("x-auth") == "secret") {
+            return null
+        }
+        return "{\"error\": \"unauthorized\"}"
+    }
+
+    app.get("/publico") {
+        return "aberto"
+    }
+
+    app.get("/hello") {
+        return "Hello from Kof"
+    }
+
+    app.get("/users/:id") {
+        return "user " + param("id") + " q=" + query("name")
+    }
+
+    app.get("/me") {
+        return method() + " " + path()
+    }
+
+    app.post("/echo") {
+        return "got:" + body()
+    }
+
+    app.post("/user") {
+        var user = json.decode<User>(body())
+        return json.encode(user)
+    }
+
+    app.listen(8080)
+}

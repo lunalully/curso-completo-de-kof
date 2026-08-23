@@ -1,0 +1,89 @@
+// estruturas.kf — pilha, fila circular e List
+// Run: kof run estruturas.kf
+
+class Pilha {
+    List<Int> itens
+    constructor() {
+        itens = listOf()
+    }
+    void empilhar(Int valor) {
+        itens.add(valor)
+    }
+    Int desempilhar() {
+        if (itens.size == 0) {
+            throw "pilha vazia"
+        }
+        var topo = itens.get(itens.size - 1)
+        itens.remove(itens.size - 1)
+        return topo
+    }
+    Bool vazia() {
+        return itens.size == 0
+    }
+}
+
+class FilaCircular {
+    Int[] buffer
+    Int inicio
+    Int fim
+    Int n
+    constructor(Int capacidade) {
+        buffer = new Int[capacidade]
+        inicio = 0
+        fim = 0
+        n = 0
+    }
+    Bool cheia() {
+        return n == buffer.length
+    }
+    Bool vazia() {
+        return n == 0
+    }
+    void enfileirar(Int valor) {
+        if (cheia()) {
+            throw "fila cheia"
+        }
+        buffer[fim] = valor
+        fim = (fim + 1) % buffer.length
+        n = n + 1
+    }
+    Int desenfileirar() {
+        if (vazia()) {
+            throw "fila vazia"
+        }
+        var valor = buffer[inicio]
+        inicio = (inicio + 1) % buffer.length
+        n = n - 1
+        return valor
+    }
+}
+
+main() {
+    // pilha: LIFO
+    var pilha = Pilha()
+    pilha.empilhar(1)
+    pilha.empilhar(2)
+    pilha.empilhar(3)
+    println(pilha.desempilhar())   // 3
+    println(pilha.desempilhar())   // 2
+    println(pilha.desempilhar())   // 1
+
+    // fila circular: FIFO
+    var fila = FilaCircular(4)
+    fila.enfileirar(10)
+    fila.enfileirar(20)
+    fila.enfileirar(30)
+    println(fila.desenfileirar())  // 10
+    println(fila.desenfileirar())  // 20
+    fila.enfileirar(40)
+    println(fila.desenfileirar())  // 30
+    println(fila.desenfileirar())  // 40
+
+    // List<T>
+    var l = listOf(1, 2, 3)
+    l.add(4)
+    l.set(0, 9)
+    for (var v in l) {
+        println(v)
+    }
+}

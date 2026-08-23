@@ -1,0 +1,4 @@
+// hello.kf — primeiro programa
+main() {
+    println("Hello, Kof!")
+}

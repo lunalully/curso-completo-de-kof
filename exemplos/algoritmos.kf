@@ -1,0 +1,63 @@
+// algoritmos.kf — busca binária, ordenação e recursão
+// Run: kof run algoritmos.kf
+
+Int buscaBinaria(List<Int> lista, Int alvo) {
+    var baixo = 0
+    var alto = lista.size - 1
+    while (baixo <= alto) {
+        var meio = (baixo + alto) / 2
+        var valor = lista.get(meio)
+        if (valor == alvo) {
+            return meio
+        }
+        if (valor < alvo) {
+            baixo = meio + 1
+        } else {
+            alto = meio - 1
+        }
+    }
+    throw "nao encontrado: " + alvo
+}
+
+void trocar(List<Int> lista, Int i, Int j) {
+    var temp = lista.get(i)
+    lista.set(i, lista.get(j))
+    lista.set(j, temp)
+}
+
+List<Int> bubbleSort(List<Int> lista) {
+    var n = lista.size
+    for (var i = 0; i < n - 1; i = i + 1) {
+        for (var j = 0; j < n - 1 - i; j = j + 1) {
+            if (lista.get(j) > lista.get(j + 1)) {
+                trocar(lista, j, j + 1)
+            }
+        }
+    }
+    return lista
+}
+
+Int fatorial(Int n) {
+    if (n <= 1) {
+        return 1
+    }
+    return n * fatorial(n - 1)
+}
+
+Int fib(Int n) {
+    if (n <= 1) {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+
+main() {
+    var dados = listOf(3, 7, 11, 19, 42, 99)
+    println(buscaBinaria(dados, 42))
+
+    var bagunca = listOf(42, 7, 11, 3, 19, 1, 99)
+    println(bubbleSort(bagunca))
+
+    println(fatorial(5))
+    println(fib(10))
+}

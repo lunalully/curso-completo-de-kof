@@ -1,0 +1,77 @@
+// fundamentos.kf — sintaxe, tipos, funções, classes, records, fluxo
+// Run: kof run fundamentos.kf
+
+record Point(Int x, Int y)
+
+class User(String name, Int age) {
+    greeting(): String {
+        return "Hello " + name
+    }
+}
+
+Int soma(Int a, Int b) {
+    return a + b
+}
+
+String capitalizar(String s) {
+    return s.substring(0, 1).toUpperCase() + s.substring(1)
+}
+
+Bool ehPar(Int n) = n % 2 == 0
+
+main() {
+    // variáveis e inferência
+    var x = 10
+    String nome = "Mel"
+
+    // if-expr
+    var status = if (x > 5) "grande" else "pequeno"
+    println(status)
+
+    // strings
+    var s = "Hello World"
+    println(s.length)
+    println(s.contains("World"))
+    println(s.substring(0, 5))
+
+    // arrays
+    var arr = new Int[3]
+    arr[0] = 10
+    arr[1] = 20
+    arr[2] = 30
+    println(arr[1] + arr[2])
+
+    // for-in sobre array
+    for (var v in arr) {
+        println(v)
+    }
+
+    // loops
+    var total = 0
+    for (var i = 1; i <= 100; i = i + 1) {
+        total = total + i
+    }
+    println(total)
+
+    // records
+    var p = Point(3, 4)
+    println(p.x() + p.y())
+
+    // classes com construtor primário (sem new)
+    var u = User("Kof", 30)
+    println(u.greeting())
+
+    // funções
+    println(soma(2, 3))
+    println(capitalizar("kof"))
+    println(ehPar(42))
+
+    // exceções
+    try {
+        throw "boom"
+    } catch (String e) {
+        println("caught: " + e)
+    } finally {
+        println("finally")
+    }
+}

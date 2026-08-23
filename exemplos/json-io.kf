@@ -1,0 +1,28 @@
+// json-io.kf — json.encode/decode + kof.io
+// Run: kof run json-io.kf
+
+record User(String name, Int age)
+
+main() {
+    // JSON
+    var u = User("Mel", 26)
+    var j = json.encode(u)
+    println(j)
+
+    var d = json.decode<User>("{\"name\": \"Kof\", \"age\": 30}")
+    println(d.name())
+    println(d.age())
+
+    // listas JSON (funciona em todos os targets)
+    println(json.encode(listOf(1, 2, 3)))
+
+    // kof.io — escrever e ler arquivo
+    var rc = writeFile("curso-teste.txt", "kof io funciona")
+    println(rc)
+    var conteudo = readFile("curso-teste.txt")
+    println(conteudo)
+
+    // kof.time
+    var agora = now()
+    println(agora > 1700000000000)
+}
