@@ -91,7 +91,7 @@ Baseado na **0.1.0** (implementada, testada e verificada no compilador):
 | `val r = spawn f()` / `await r` | ✅ JVM |
 | `process.exit(code)` | ✅ 3 targets |
 | `kof.ui` (Color, Palette, Theme, Window, widgets) | ✅ JS/webview |
-| `Option<T>`, higher-order (`map`/`filter`), pattern matching | ⏳ planned — **não use** |
+| `Option<T>`, higher-order (`map`/`filter`), pattern matching | ⏳ planned — **não use** (plano: pattern matching via switch com tipos/destructuring; null safety via `Type?`, sem Option no core) |
 
 **Gaps de target** são reportados em compile-time com códigos
 (`DB001`, `CONF001`, `LOG001`, `SECN00x`, `CONC001/003`, `JSN002`, `ORM001`,
