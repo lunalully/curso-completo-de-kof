@@ -7,14 +7,25 @@
 | GET /produtos/:id | — | 200 `{"id":1,"qtd":10}` |
 | POST /produtos/:id/baixa | `{"qtd":1}` | 200 `{"ok":true}` |
 
-## WORKAROUND — cliente HTTP (gap)
+## Cliente HTTP nativo (0.1.0-beta)
 
-`kof.http` client é **planned** (0.0.8). Hoje, para o serviço `pedidos`
-chamar `estoque`:
+O serviço `pedidos` chama `estoque` com `kof.http`:
 
-1. Use um processo externo (ex.: `curl`) via `process.run` — documentado como WORKAROUND.
-2. Ou coloque um gateway/proxy na frente que roteia.
-3. Quando `kof.http` existir, troque por `http.get(...)` sem mudar o contrato.
+```kof
+// 1. consulta o produto
+var st = http.status("http://127.0.0.1:8082/produtos/" + id)
+if (st != 200) {
+    return "{\"error\": \"produto nao encontrado\"}"
+}
+
+// 2. dá a baixa
+var resposta = http.post("http://127.0.0.1:8082/produtos/" + id + "/baixa", "{\"qtd\":1}")
+```
+
+- Trate **status** antes de parsear o corpo (`http.status(url)`).
+- Native/JS reportam `HTTP002` em compile-time.
+- Termine o handler com expressão (`"" + resposta`), nunca `return resposta;`
+  nua — a rota não registra (nota #5a).
 
 ## Regra do curso
 

@@ -70,7 +70,7 @@ Se você precisar de HTML dinâmico, escape `<`, `>`, `&`, `"`, `'`.
 ## 4. Saída segura e informação vazada
 
 - Erros genéricos no cliente, detalhes no log.
-- Não exponha versões (`0.0.8-alpha`), stack traces, SQL, drivers.
+- Não exponha versões (`0.1.0-beta`), stack traces, SQL, drivers.
 - Não coloque segredos em respostas ou logs.
 
 ```kof

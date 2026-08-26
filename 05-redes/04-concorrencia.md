@@ -34,8 +34,27 @@ main() {
 
 ## Quando NÃO usar
 
-- Quando o resultado é necessário no fluxo principal (`await` é planned).
 - Quando a ordem importa.
+
+## Resultado de tarefa: `spawn` expressão + `await` (0.1.0-beta)
+
+Quando o resultado **é** necessário no fluxo principal, capture o handle:
+
+```kof
+Int trabalho() {
+    return 42
+}
+
+main() {
+    var r = spawn trabalho()
+    println(await r)        // 42
+}
+```
+
+- `spawn f()` retorna um handle tipado; `await r` espera e devolve o valor
+  (JVM: virtual threads).
+- Statement puro (`spawn tarefa()`) continua fire-and-forget com join
+  implícito no fim do programa.
 
 ## BAD — expor plataforma
 
@@ -76,15 +95,17 @@ main() {
 
 ## Limitações honestas
 
-- Resultado observável de tarefa: **planned** (`await`/join explícito).
-- Filas produtor/consumidor: **planned** (`kof.concurrent.Queue`).
-- Native: **CONC001** — use o target JVM por enquanto.
-- Lambdas sem captura (mesma limitação das lambdas).
+- Filas produtor/consumidor: `kof.mq` (`queue/push/pop`, `mq.publish/
+  subscribe`) — JVM, em memória.
+- Native: **CONC001** (statement e expressão) — use o target JVM.
+- JS: **CONC003** — spawn não suportado no target JS.
+- Lambda com captura **e** parâmetro tipado ainda falha em runtime
+  (`99-notas-workarounds.md` #8).
 
 ## Exercícios
 
 1. Dispare 3 `spawn` e confirme o join implícito (o programa espera).
 2. Processe uma lista de 100 itens em 4 lotes paralelos.
-3. (Reflexão) Por que o Kof esconde Thread? Que problema isso resolve?
+3. Use `spawn` expressão + `await` para somar resultados de duas tarefas.
 4. Compile para o target native um programa com `spawn` e observe o
    diagnostic `CONC001`.

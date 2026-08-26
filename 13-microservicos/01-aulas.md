@@ -44,22 +44,32 @@ Cada serviço tem:
 
 ## Aula 03 — Comunicação entre serviços
 
-O padrão é **HTTP**: o serviço A chama o serviço B via REST.
-
-**Gap real (0.0.8):** o Kof ainda **não tem cliente HTTP** (`kof.http` é
-planned). Para chamar outro serviço hoje:
+O padrão é **HTTP**: o serviço A chama o serviço B via REST. Desde a
+0.1.0-beta o Kof tem **cliente HTTP nativo**:
 
 ```kof
-// WORKAROUND — kof.http client é planned
-// Até existir: use o processo (ex.: curl) via processo externo,
-// ou um gateway/proxy. Documente o WORKAROUND.
+main() {
+    var app = web.app()
+
+    app.post("/pedidos") {
+        // chama o serviço de estoque
+        var st = http.status("http://127.0.0.1:8082/produtos/1")
+        if (st != 200) {
+            return "{\"error\": \"produto indisponivel\"}"
+        }
+        var baixa = http.post("http://127.0.0.1:8082/produtos/1/baixa", "{\"qtd\":1}")
+        return "" + baixa     // WORKAROUND: return de variável nua quebra a rota (nota #5a)
+    }
+
+    app.listen(config.int("server.port", 8081))
+}
 ```
 
-Quando `kof.http` chegar, o padrão esperado será:
-
-```kof
-var resposta = http.get("http://estoque:8082/produtos/1")   // futuro
-```
+- `http.get(url[, header])`, `http.post(url, body)`, `put/delete/patch`.
+- `http.status(url)` consulta o código HTTP sem baixar o corpo.
+- Headers customizados: argumento extra `"Header: valor"`.
+- Native/JS reportam `HTTP002` em compile-time — a comunicação entre
+  serviços é padrão JVM por ora.
 
 ## Aula 04 — API gateway
 
@@ -71,7 +81,7 @@ main() {
     app.get("/health") {
         return "{\"status\": \"gateway ok\"}"
     }
-    // roteamento para os serviços internos (via proxy/CLI até kof.http existir)
+    // roteamento/composição: o gateway chama os serviços com http.get/post
     app.listen(8080)
 }
 ```

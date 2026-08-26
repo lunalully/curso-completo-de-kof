@@ -16,8 +16,8 @@ projeto/
 
 - Um arquivo de teste por unidade: `pilha-test.kf` testa `pilha.kf`.
 - Nome claro: `<unidade>-test.kf`.
-- Cada `main()` de teste: vários `assert` + um `println("...: PASS")`.
-- Testes de exceção: `try/catch` + `assert`.
+- Cada bloco `test "nome" { }`: um comportamento, asserts com mensagem.
+- Testes de exceção: `try/catch` + `assert` dentro do bloco.
 
 ## Rodar a suíte
 
@@ -26,8 +26,8 @@ kof test testes/          # roda todos os arquivos da pasta
 kof test testes/pilha-test.kf   # um arquivo só
 ```
 
-`kof test` imprime `PASS`/`FAIL` por arquivo e um resumo
-(`N passed, M failed`), usando exit code.
+`kof test` imprime `PASS nome`/`FAIL nome: mensagem` por bloco `test`
+e um resumo (`N passed, M failed`); exit code ≠ 0 se houver falha.
 
 ## Regra
 

@@ -8,7 +8,7 @@
 |------------|-----|
 | `kof check` | type-check sem emitir código (pega erros de compilação) |
 | `kof run` | compila e roda (mostra erros de runtime com linha) |
-| `kof test` | testes (PASS/FAIL por exit code) — regressão |
+| `kof test` | testes (`test "nome" { }`, PASS/FAIL por teste) — regressão |
 | `kof debug` | servidor DAP (breakpoints, call stack) |
 | `kof lsp` | diagnostics em tempo real no editor |
 | `kof info` | ambiente (versões, targets) |

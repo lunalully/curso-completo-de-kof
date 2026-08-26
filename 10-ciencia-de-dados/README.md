@@ -18,10 +18,11 @@
 | Recurso | Estado |
 |---------|--------|
 | `List<T>`, arrays, `for-in` | ✅ base |
+| `Map<K,V>`, `Set<T>` | ✅ 0.1.0-beta |
 | `kof.io` (ler CSV de arquivo) | ✅ |
 | `json.encode/decode` (dados) | ✅ |
 | `now()` (medir) | ✅ |
-| `kof.observability` / `kof.metrics` | ⏳ planned |
+| `kof.observability` (`counter`/`gauge`/`health`) | ✅ JVM/Native/JS |
 | Bibliotecas de ML (pandas/numpy-like) | não existem — **implementamos** |
 
 **Por que isso é Kof:** sem bibliotecas externas, você *entende* o algoritmo.

@@ -83,7 +83,8 @@ main() {
     }
 
     app.get("/admin") {
-        if (!auth.hasRole("admin")) {
+        var admin = auth.hasRole("admin")
+        if (!admin) {      // WORKAROUND: atribua antes (nota #4)
             return "{\"error\": \"forbidden\"}"
         }
         return "{\"ok\": true}"
@@ -118,13 +119,17 @@ responda: quem atacou, quando, quantas vezes, de onde? Você consegue
 
 ```kof
 app.delete("/users/:id") {
-    if (!auth.hasRole("admin")) {
+    var admin = auth.hasRole("admin")
+    if (!admin) {          // WORKAROUND: atribua antes (nota #4)
         return "{\"error\": \"forbidden\"}"
     }
-    log.info("usuario " + auth.user() + " removeu id " + param("id"))
+    log.info("admin removeu id " + param("id"))
     return "{\"ok\": true}"
 }
 ```
+
+> `auth.user()` ainda quebra em handler (nota #5) — logue o papel/claims,
+> não o `sub`, até o bug fechar.
 
 **Reflexão:** o que um *audit trail* bem feito permite? (responsabilização,
 detecção, reconstrução de incidente).

@@ -6,31 +6,44 @@
 assert(condicao, "mensagem de falha")
 ```
 
-- Se `condicao` é falsa → o programa sai com exit code ≠ 0.
-- `kof test` considera **PASS** (exit 0) / **FAIL** (exit ≠ 0).
+- Se `condicao` é falsa → o programa (ou o bloco `test`) falha.
+- Com blocos `test`, cada teste reporta PASS/FAIL individualmente.
 
-## Um teste simples
+## Blocos `test` (0.1.0-beta)
 
 ```kof
 Int soma(Int a, Int b) {
     return a + b
 }
 
-main() {
+test "soma positivos" {
     assert(soma(2, 3) == 5, "2+3 deve ser 5")
+}
+
+test "soma opostos" {
     assert(soma(-1, 1) == 0, "opostos")
-    println("soma: PASS")
 }
 ```
 
 ```bash
-kof test teste-soma.kf    # PASS
+kof test teste-soma.kf    # PASS soma positivos / PASS soma opostos
 ```
+
+- O runner é sintetizado em compile-time; cada teste roda isolado
+  (falha em um não impede os outros) e o resumo mostra
+  `N passed, M failed`.
+- Exit code ≠ 0 se houver qualquer falha — pronto para CI.
+- Funciona nos 3 targets: `--target jvm|native|js`.
+
+## Estilo legado (exit code)
+
+Arquivos sem blocos `test` mantêm o contrato antigo: `main()` com asserts,
+PASS = exit 0. Útil para smoke tests de programa inteiro.
 
 ## Convenção
 
-- `main()` com vários `assert` e um `println` final.
-- Um arquivo por unidade (`busca-binaria-test.kf`, `pilha-test.kf`).
+- Um bloco `test` por comportamento; um arquivo por unidade
+  (`busca-binaria-test.kf`, `pilha-test.kf`).
 - Pasta `testes/` e rodar `kof test testes/`.
 
 ## Testando exceções
@@ -38,7 +51,7 @@ kof test teste-soma.kf    # PASS
 Como Kof não tem asserção de exceção embutida, use `try/catch`:
 
 ```kof
-main() {
+test "divisao por zero lanca" {
     try {
         dividir(1, 0)
         assert(false, "deveria ter lancado")

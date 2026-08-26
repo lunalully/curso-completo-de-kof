@@ -1,20 +1,37 @@
-# Módulo 02 · Aula 6 — Tabela Hash (WORKAROUND até Map)
+# Módulo 02 · Aula 6 — Tabela Hash e `Map`
 
-> `Map` é **planned**, não existe. Este módulo ensina o *conceito* de hash e
-> um índice prático com `List<record>` — marcado como `WORKAROUND` (não idiom).
+> O `Map<K,V>` **existe** desde a 0.1.0-beta (3 targets). Este módulo ensina
+> o *conceito* de hash — e mostra por que o `Map` da linguagem é o padrão.
 
 ## O conceito
 
 Uma tabela hash mapeia **chave → valor** usando uma função hash para espalhar
 as chaves em "baldes". Busca média O(1).
 
-Em Kof, sem `Map`, o padrão realista é:
+## A abstração da linguagem (o padrão)
 
-1. **`List<Entry(chave, valor)>` + busca linear** — simples, O(n).
-2. **Índice por balde** — espalha por um campo calculado (ex.: primeira letra)
-   para busca mais rápida.
+```kof
+main() {
+    var m = mapOf()
+    m.put("mel", 26)
+    m.put("kof", 30)
+    println(m.get("mel"))      // 26
+    println(m.contains("kof")) // true
+    println(m.size())          // 2
+    var chaves = m.keys()      // List<String>
+    for (var k in chaves) {
+        println(k + " = " + m.get(k))
+    }
+}
+```
 
-## Padrão 1: lista de entradas (WORKAROUND)
+O domínio é "chave → valor" — a intenção é o `Map`. Como a plataforma
+implementa baldes é detalhe interno.
+
+## Padrão 1: lista de entradas (para entender o custo)
+
+Antes do `Map`, o padrão era busca linear sobre `List<record>` — útil para
+*entender* o que o `Map` resolve:
 
 ```kof
 record Entry(String chave, Int valor)
@@ -44,31 +61,14 @@ class Tabela {
         }
         throw "chave nao existe: " + chave
     }
-
-    Bool contem(String chave) {
-        for (var e in entradas) {
-            if (e.chave == chave) {
-                return true
-            }
-        }
-        return false
-    }
-
-    Int tamanho() {
-        return entradas.size
-    }
-}
-
-main() {
-    var t = Tabela()
-    t.put("mel", 26)
-    t.put("kof", 30)
-    println(t.get("mel"))      // 26
-    println(t.contem("kof"))   // true
 }
 ```
 
+Busca **O(n)** — cada `get` percorre a lista inteira.
+
 ## Padrão 2: índice por balde (hash simples por primeira letra)
+
+É assim que uma tabela hash funciona por dentro:
 
 ```kof
 record Item(String chave, Int valor)
@@ -118,20 +118,23 @@ class TabelaHash {
 ```
 
 > A busca agora só percorre o balde da primeira letra — em média ~n/26.
+> É o mesmo princípio do `Map` nativo (com função de hash melhor).
 
-## Quando isso deixa de ser WORKAROUND
+## Regra do curso
 
-Quando `Map` for implementado, o curso atualiza e o padrão vira:
+Use `mapOf()`/`setOf()` para dicionários e conjuntos reais. Os Padrões 1 e 2
+existem para você entender *custo* e *mecânica* — não como substitutos do
+`Map`.
 
-```kof
-var m = mapOf("mel" to 26, "kof" to 30)   // futuro
-```
-
-Enquanto isso, marque qualquer uso como `WORKAROUND` no seu código.
+> Nota: a API de `Map`/`Set` é de métodos (`size()`, `keys()`), e a forma de
+> propriedade `m.size` ainda gera bytecode inválido — ver
+> `00-fundamentos/99-notas-workarounds.md` (#9).
 
 ## Exercícios
 
-1. Adicione `remove(chave)` e `chaves()` ao `Tabela`.
+1. Adicione `remove(chave)` ao `Tabela` (Padrão 1).
 2. Melhore o hash do Padrão 2 para usar a soma dos caracteres mod 26.
-3. Conte a frequência de palavras de uma string usando `Tabela` (chave = palavra).
-4. Compare (com `now()`) a busca no Padrão 1 vs Padrão 2 com 1000 entradas.
+3. Reescreva a contagem de frequência de palavras usando `Map<String, Int>`
+   e compare com a versão em `Tabela`.
+4. Compare (com `now()`) a busca no Padrão 1 vs Padrão 2 vs `Map.get` com
+   1000 entradas.

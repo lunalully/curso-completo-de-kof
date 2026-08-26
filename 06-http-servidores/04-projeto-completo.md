@@ -25,10 +25,12 @@ main() {
 
     // autenticação global (exceto login)
     app.use {
-        if (auth.authenticated() || path() == "/login") {
-            return null
+        var rotaLogin = path() == "/login"
+        var logado = auth.authenticated()
+        if (!logado && !rotaLogin) {
+            return "{\"error\": \"unauthorized\"}"
         }
-        return "{\"error\": \"unauthorized\"}"
+        return null
     }
 
     // POST /login → emite token

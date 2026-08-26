@@ -8,7 +8,7 @@ kof build app.kf --target native  --output out-native
 kof build app.kf --target js      --output out-js
 kof run app.kf                    # compila e roda (JVM)
 kof check app.kf                  # type-check rápido (CI)
-kof test testes/                  # testes (PASS/FAIL por exit code)
+kof test testes/                  # testes (PASS/FAIL por bloco test)
 ```
 
 - O **mesmo código** gera JVM bytecode, ELF nativo x86-64 e ES Modules.
@@ -47,7 +47,7 @@ Regras do projeto:
 - **Fonte única:** arquivo `VERSION` na raiz.
 - `scripts/bump-version.sh` sincroniza `VERSION` → `pom.xml` (`<revision>`)
   → resource empacotado.
-- Formato `MAJOR.MINOR.PATCH` com sufixo de estágio (`0.0.8-alpha`).
+- Formato `MAJOR.MINOR.PATCH` com sufixo de estágio (`0.1.0-beta`).
 - Tags `kof-<versão>`; commit de bump com `[skip ci]`.
 - `scripts/package.sh` empacota `bin/ lib/ jdk/ tooling/ editor/ docs/ VERSION`
   em tarball + `SHA256SUMS`.
@@ -55,9 +55,9 @@ Regras do projeto:
   `...-macos-x86_64.tar.gz`.
 
 ```bash
-./scripts/bump-version.sh 0.0.9-alpha
+./scripts/bump-version.sh 0.1.1-beta
 ./scripts/package.sh
-# gera kof-0.0.9-alpha-linux-x86_64.tar.gz + SHA256SUMS
+# gera kof-0.1.1-beta-linux-x86_64.tar.gz + SHA256SUMS
 ```
 
 ## Aula 04 — Containers e deploy

@@ -12,7 +12,8 @@
 
 ```kof
 app.get("/admin") {
-    if (!auth.hasRole("admin")) {
+    var admin = auth.hasRole("admin")
+    if (!admin) {          // WORKAROUND: atribua antes (nota #4)
         return "{\"error\": \"forbidden\"}"
     }
     return "{\"ok\": true}"
@@ -110,9 +111,9 @@ app.post("/login") {
 
 **O que é:** o servidor faz requests a destinos controlados pelo atacante.
 
-**Em Kof:** como o cliente HTTP é planned, o risco é menor hoje — mas quando
-`kof.http` chegar: valide destinos, bloqueie IPs internos, whitelist de
-URLs.
+**Em Kof:** o cliente HTTP existe desde a 0.1.0-beta (`http.get/post/...`),
+então o risco é real: valide destinos, bloqueie IPs internos, whitelist de
+URLs antes de repassar input do usuário para `http.*`.
 
 ## Exercícios
 

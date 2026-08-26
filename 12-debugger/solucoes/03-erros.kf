@@ -1,8 +1,10 @@
 // Capturar e imprimir erros de runtime comuns
 main() {
-    // divisão por zero
+    // divisão por zero (via variável: `10 / 0` constante vira ARITH001
+    // em compile-time)
+    var zero = 0
     try {
-        var x = 10 / 0
+        var x = 10 / zero
     } catch (String e) {
         println("erro: " + e)
     }

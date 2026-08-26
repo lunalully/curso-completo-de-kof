@@ -2,7 +2,7 @@
 
 > **Trilha isolada.** Pré-requisito: Trilha 00 e 01. Ao terminar, você
 > escolhe e implementa a estrutura certa para cada problema — usando o que a
-> linguagem oferece e marcando `WORKAROUND` onde `Map`/`Set` ainda não existem.
+> linguagem oferece (`Array`, `List<T>`, `Map<K,V>`, `Set<T>` na 0.1.0-beta).
 
 ## O que você vai dominar
 

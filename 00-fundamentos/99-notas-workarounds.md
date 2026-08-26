@@ -1,77 +1,146 @@
-# Notas — Workarounds do compilador 0.0.8-alpha
+# Notas — Workarounds do compilador 0.1.0-beta
 
-> Bugs reais encontrados ao validar as soluções do curso. Todos são
+> Bugs reais encontrados ao validar as soluções do curso contra a
+> **0.1.0-beta** (verificados executando o compilador). Todos são
 > `WORKAROUND` — quando corrigidos no compilador, remova os desvios.
 
-## 1. Campo `Long` em classes → COMP002 (crash)
+## 1. Campo `Long` em comparação → COMP002 (crash) — ABERTO
 
-**Sintoma:** carregar um campo `Long` de uma classe (`this.meuCampoLong`) em
-comparação/retorno crasha o compilador (`Internal compiler error: Index -1
-out of bounds`).
+**Sintoma:** comparar um campo `Long` de uma classe com um literal/variável
+`Int` em `if`/`while` crasha o compilador (`frame crash ... Index -1 out of
+bounds`).
 
-**Workaround:** use campo `Int` e compare com `Long` (funciona):
+**Workaround:** compare com outro campo `Int`, ou copie para variável local
+`Long` e use-a nos dois lados:
 ```kof
 class R {
     Int janelaMs   // Int, não Long
 }
-// agora - t.quando < janelaMs   // Long expr < Int field: OK
+// agora: t.quando < r.janelaMs compila
 ```
 
-## 2. `assert(Double == Double)` → falha de runtime
+## 2. ~~`assert(Double == Double)` → falha de runtime~~ — CORRIGIDO ✅
 
-**Sintoma:** `assert(soma == 20.5, "msg")` com `Double` falha em runtime
-(a mensagem "JavaFX runtime components not found" é um falso positivo do
-launcher).
+Corrigido no compilador (verificado na 0.1.0-beta): `assert(soma == 10.5)`
+com `Double` funciona normalmente. Comparar por faixa segue sendo boa
+prática para ponto flutuante em geral.
 
-**Workaround:** compare por faixa OU por string OU com Int:
-```kof
-var t = total()
-assert(t >= 20.4 && t <= 20.6, "total")   // faixa
-```
-
-## 3. Método `Double` chamado como statement → falha de runtime
+## 3. Método `Double` chamado como statement → VerifyError — ABERTO
 
 **Sintoma:** `algoQueRetornaDouble()` como statement (descartando o retorno)
-falha em runtime.
+compila e falha em runtime (`VerifyError: Bad type on operand stack`).
 
 **Workaround:** atribua a uma variável:
 ```kof
 var descartado = algoQueRetornaDouble()
 ```
 
-## 4. `!auth.hasRole(...)` direto no `if` → VerifyError
+## 4. `!auth.hasRole(...)` direto no `if` de rota → VerifyError — ABERTO
 
 **Sintoma:** `if (!auth.hasRole("admin"))` em lambda de rota web gera
-bytecode inválido (VerifyError).
+bytecode inválido (VerifyError, operand stack underflow).
 
 **Workaround:** atribua antes:
 ```kof
 var admin = auth.hasRole("admin")
 if (!admin) { ... }
 ```
+Verificado: o padrão com atribuição funciona; a negação direta não.
 
-## 5. `auth.user()` / `auth.claims()` → falha de runtime
+## 5. `auth.user()` em handler web → derruba o servidor — ABERTO
 
-**Sintoma:** `auth.user()` falha em runtime no 0.0.8. `auth.authenticated()`
-e `auth.hasRole(...)` funcionam.
+**Sintoma:** chamar `auth.user()` dentro de um handler quebra a classe
+gerada (`VerifyError`) e o servidor morre no primeiro request.
 
-**Workaround:** use `auth.authenticated()` para confirmar identidade;
-documente a limitação para `auth.user()`.
+**Workaround:** trabalhe com `auth.claims()`/**`auth.hasRole(...)`**/
+`auth.authenticated()` (com atribuição prévia) — `claims()` verificado
+funcionando; documente a limitação de `auth.user()`.
 
-## 6. `split("|")` usa regex
+### 5a. `return <variável>` nu em rota web → rota não registra — ABERTO
 
-`"a|b".split("|")` quebra (regex). Use `split("\\|")`.
+**Sintoma:** terminar o corpo de uma rota/middleware com `return x;`
+(uma variável local nua) faz a rota retornar 404 — ela não registra.
 
-## Regra do curso
+```kof
+app.get("/t") {
+    var x = "abc"
+    return x          // BUG: rota vira 404
+}
+```
 
-Sempre que usar um workaround: **marque `WORKAROUND`** e cite a versão.
-Quando o bug for corrigido, o exemplo oficial é atualizado e o rótulo removido.
-## 7. Retorno `Double` de divisão Int → falha de runtime
+**Workaround:** retorne uma expressão (concatenação/literal):
+```kof
+return "" + x       // ou monte a resposta com concatenação
+```
+Verificado: `jwt.create(...)` **dentro** de handler funciona quando o
+retorno é concatenação (`"{\"token\": \"" + token + "\"}"`).
+
+## 6. Resultado de `.split(...)` → bytecode inválido no JVM — ABERTO
+
+**Sintoma:** usar o resultado de `"a,b".split(",")` (`get(0)`, `size()`)
+gera classe inválida (`ClassFormatError: Illegal class name ""`). Chamar
+`.split` sem usar o resultado compila.
+
+Além disso, `split` continua **regex**: `"a|b".split("|")` quebra — use
+`split("\\|")`.
+
+**Workaround prático:** prefira `indexOf`/`substring` para parsing simples
+no curso até o bug fechar.
+
+## 7. Retorno `Double` de divisão `Int` → VerifyError — ABERTO
 
 **Sintoma:** `return soma / dados.size` (Int/Int) com retorno `Double`
-falha em runtime.
+falha em runtime (`VerifyError`).
 
 **Workaround:** force divisão Double com `* 1.0`:
 ```kof
 return (soma * 1.0) / dados.size
 ```
+
+## 8. Lambda com captura + parâmetro tipado → VerifyError — ABERTO
+
+**Sintoma:** `(x: Int) -> x * fator` capturando variável local compila e
+falha em runtime (`VerifyError: Bad local variable type`).
+
+**Funciona (verificado):**
+- captura de campo/campo estático em lambda sem parâmetros:
+  ```kof
+  var inc = () -> { c.n = c.n + 1 return c.n }
+  ```
+- lambda com parâmetro tipado **sem** captura: `(x: Int) -> x * 2`.
+
+**Workaround:** passe o valor capturado como parâmetro, ou capture apenas
+em lambdas sem parâmetros.
+
+## 9. `Map`/`Set`: use `.size()` método, não propriedade — ABERTO
+
+**Sintoma:** `m.size` (sem parênteses) sobre `Map`/`Set` gera bytecode
+inválido. A API oficial é de métodos:
+
+```kof
+var m = mapOf()
+m.put("a", 1)
+m.get("a")        // 1
+m.contains("a")   // true
+m.remove("a")
+m.keys().size()   // keys()/values() retornam List
+m.clear()
+m.isEmpty()
+
+var s = setOf(1, 2)
+s.add(3)
+s.contains(2)
+s.remove(1)
+s.size()          // sempre com ()
+```
+
+## Nota estrutural: diretório = módulo
+
+`kof run <arquivo>` compila **todos os `.kf` do diretório** do arquivo como
+um único módulo — dois `main()` no mesmo diretório viram
+`PKG002: module has N main() functions`. Um programa = um diretório.
+
+## Regra do curso
+
+Sempre que usar um workaround: **marque `WORKAROUND`** e cite a versão.
+Quando o bug for corrigido, o exemplo oficial é atualizado e o rótulo removido.

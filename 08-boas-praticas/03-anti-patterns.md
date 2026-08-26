@@ -74,9 +74,11 @@ Int findIndex(String key) { ...; throw "key not found: " + key }
 | `users.map(u -> u.name)` | `for-in` + `List` |
 | `[1, 2, 3]` (array literal) | `new Int[n]` + atribuição |
 | `Option.of(x)` | exceção ou WORKAROUND |
-| `HashMap` / `setOf` | `List<record>` |
-| `async`/`await` | `spawn` (sem resultado) |
+| `async`/`await` estilo JS | `spawn f()` + `await r` (JVM) |
 | `Thread` | `spawn` |
+
+> `HashMap`/`setOf` de Java não existem — os equivalentes Kof são
+> `mapOf()`/`setOf()` (API de métodos: `put/get/contains/remove/size()`).
 
 ## 6. Premature optimization
 

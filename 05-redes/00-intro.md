@@ -31,10 +31,10 @@ A intenção é a rota.
 | Capacidade | Estado |
 |------------|--------|
 | Servidor HTTP (`kof serve`, `web.app()`) | ✅ JVM |
-| Concorrência (`spawn`) | ✅ JVM |
+| Cliente HTTP (`kof.http`: get/post/put/delete/patch) | ✅ JVM (HTTP002 Native/JS) |
+| Concorrência (`spawn`, `spawn` expr + `await`) | ✅ JVM |
+| TLS/HTTPS (`web.listenSecure(port)`, `kof.http` HTTPS) | ✅ JVM (WEB002 Native/JS) |
 | Sockets crus expostos ao programador | ⏳ planned — não invente |
-| Cliente HTTP | ⏳ planned — veja `kof.http` planejado |
-| TLS/HTTPS | ⏳ planned (roadmap G12) |
 
 Se algo não existe, o Kof reporta em compile-time — e o curso marca
 `WORKAROUND`/planned.

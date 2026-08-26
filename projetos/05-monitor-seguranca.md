@@ -79,7 +79,8 @@ main() {
     }
 
     app.get("/reporte") {
-        if (!auth.hasRole("admin")) {
+        var admin = auth.hasRole("admin")
+        if (!admin) {
             return "{\"error\": \"forbidden\"}"
         }
         return json.encode(monitor.eventos)

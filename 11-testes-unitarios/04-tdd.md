@@ -21,12 +21,20 @@ Bool ehPrimo(Int n) {
     return false   // stub para ver falhar
 }
 
-main() {
+test "2 eh primo" {
     assert(ehPrimo(2), "2 primo")
+}
+
+test "3 eh primo" {
     assert(ehPrimo(3), "3 primo")
+}
+
+test "4 nao eh primo" {
     assert(!ehPrimo(4), "4 nao primo")
+}
+
+test "1 nao eh primo" {
     assert(!ehPrimo(1), "1 nao primo")
-    println("ehPrimo: PASS")
 }
 ```
 

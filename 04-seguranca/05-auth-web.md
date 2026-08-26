@@ -14,33 +14,38 @@ contexto do usuário autenticado:
 | `auth.token()` | o token Bearer da request (String) |
 | `auth.authenticated()` | Bool — há token válido |
 | `auth.claims()` | claims verificadas (String JSON) |
-| `auth.user()` | identificador do usuário (sub) |
+| `auth.user()` | identificador do usuário (sub) — **quebrado em handler** (nota #5); use `auth.claims()` |
 | `auth.hasRole("admin")` | Bool |
 | `auth.hasPermission("write")` | Bool |
 
 ## Autenticação via middleware
 
 ```kof
-record User(String name, Int age)
-
 main() {
     var app = web.app()
     auth.secret(secrets.get("JWT_SECRET", "dev-secret"))
 
     // middleware global: tudo que passa por aqui está autenticado
     app.use {
-        if (auth.authenticated()) {
-            return null            // segue
+        var logado = auth.authenticated()
+        if (!logado) {
+            return "{\"error\": \"unauthorized\"}"
         }
-        return "{\"error\": \"unauthorized\"}"
+        return null            // segue
     }
 
     app.get("/me") {
-        return "usuario: " + auth.user()
+        var logado = auth.authenticated()
+        if (!logado) {
+            return "{\"error\": \"unauthorized\"}"
+        }
+        var claims = auth.claims()
+        return "{\"claims\": " + claims + "}"
     }
 
     app.get("/admin") {
-        if (!auth.hasRole("admin")) {
+        var admin = auth.hasRole("admin")
+        if (!admin) {
             return "{\"error\": \"forbidden\"}"
         }
         return "{\"ok\": true}"
@@ -49,6 +54,13 @@ main() {
     app.listen(8080)
 }
 ```
+
+> **WORKAROUND (0.1.0-beta):** atribua o resultado antes do `if`.
+> A forma direta `if (!auth.hasRole("admin"))` gera bytecode inválido, e
+> `auth.user()` dentro de handler derruba o servidor (`VerifyError`) —
+> use `auth.claims()` e leia o `sub` do JSON. Detalhes em
+> [`00-fundamentos/99-notas-workarounds.md`](../00-fundamentos/99-notas-workarounds.md)
+> (#4 e #5).
 
 Teste:
 
@@ -60,6 +72,8 @@ curl -H "Authorization: Bearer $TOKEN" localhost:8080/me
 ## Login (emissão de token)
 
 ```kof
+record Login(String email, String senha)
+
 main() {
     var app = web.app()
 
@@ -67,15 +81,19 @@ main() {
         // na prática: verifique usuário/senha com passwords.verify
         var u = json.decode<Login>(body())
         if (passwords.verify(u.senha, hashDoUsuario)) {
-            var token = jwt.create("{\"sub\":\"" + u.email + "\",\"roles\":[\"admin\"]}", secrets.get("JWT_SECRET", "dev-secret"))
+            var token = jwt.create("{\"sub\":\"" + u.email + "\",\"roles\":[\"admin\"]}",
+                                   secrets.get("JWT_SECRET", "dev-secret"))
             return "{\"token\": \"" + token + "\"}"
         }
-        return null   // 404 — veja a trilha de cibersegurança para status
+        return "{\"error\": \"credenciais invalidas\"}"
     }
 
     app.listen(8080)
 }
 ```
+
+> **Atenção:** o retorno do handler deve ser **expressão** (concatenação).
+> `return token;` com variável nua faz a rota não registrar (nota #5a).
 
 ## Comparação `==` vs `constantTimeEquals`
 

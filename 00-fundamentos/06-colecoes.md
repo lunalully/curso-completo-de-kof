@@ -1,6 +1,7 @@
 # Módulo 00 · Aula 6 — Coleções
 
-> `List<T>` é a coleção ordenada da linguagem. `Map`/`Set` ainda não existem.
+> `List<T>` é a coleção ordenada da linguagem. `Map<K,V>` e `Set<T>`
+> também existem (0.1.0-beta, nos 3 targets).
 
 ## Criar e usar uma lista
 
@@ -17,7 +18,8 @@ l.clear()
 var vazio = listOf<Int>()
 ```
 
-Disponível em JVM (ArrayList) e Native (implementação própria) com a mesma API.
+Disponível nos 3 targets (JVM: ArrayList; Native: implementação própria em
+asm; JS: runtime embarcado) com a mesma API.
 
 ## Tipos de elementos
 
@@ -62,17 +64,35 @@ class Registry {
 O domínio é "uma sequência de entradas" — represente o domínio, não nós
 encadeados.
 
-## `Map` e `Set` (planned — não use)
+## `Map<K,V>` e `Set<T>` (0.1.0-beta)
 
-`Map` e `Set` **não existem ainda**. Não finja que existem:
+`Map` e `Set` fazem parte da linguagem — a API é de **métodos**:
 
 ```kof
-// NÃO COMPILA
-var m = HashMap()
-var s = setOf(1, 2, 3)
+var m = mapOf()             // Map vazio
+m.put("a", 1)
+println(m.get("a"))         // 1
+println(m.contains("b"))    // false
+println(m.size())           // sempre () — m.size quebra (ver notas)
+var chaves = m.keys()       // List<String>
+var valores = m.values()    // List<Int>
+println(m.remove("a"))      // 1
+println(m.isEmpty())        // false
+m.clear()
+
+var s = setOf(1, 2, 3)      // Set com elementos
+s.add(3)                    // duplicado: não cresce
+println(s.size())           // 3
+println(s.contains(2))      // true
+s.remove(1)
 ```
 
-Para associações nome-valor, use `List<record>` com busca linear:
+> `WORKAROUND`: use `m.size()` — a forma de propriedade `m.size` sobre
+> `Map`/`Set` gera bytecode inválido (`99-notas-workarounds.md` #9).
+
+Para associações nome-valor simples, agora o idiom é o `Map`. A alternativa
+com `List<record>` continua válida quando a entrada já vem em formato de
+lista ou quando a ordem importa:
 
 ```kof
 record Entry(String key, String value)

@@ -8,7 +8,7 @@
 
 | Aula | Tema |
 |------|------|
-| [01-fundamentos.md](01-fundamentos.md) | `assert`, `kof test`, exit code |
+| [01-fundamentos.md](01-fundamentos.md) | `assert`, blocos `test "nome" { }`, `kof test` |
 | [02-casos.md](02-casos.md) | casos de borda, valores limite, testes de exceção |
 | [03-organizacao.md](03-organizacao.md) | organização de suítes por arquivo/pasta |
 | [04-tdd.md](04-tdd.md) | TDD (Red-Green-Refactor) em Kof |

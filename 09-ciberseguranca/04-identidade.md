@@ -38,11 +38,13 @@ main() {
 
 ## Autorização (AuthZ)
 
-O que você pode fazer? Roles e permissions:
+O que você pode fazer? Roles e permissions (atribua antes do `if` —
+workaround da nota #4):
 
 ```kof
 app.use {
-    if (!auth.authenticated()) {
+    var logado = auth.authenticated()
+    if (!logado) {
         return "{\"error\": \"unauthorized\"}"
     }
     return null
@@ -53,14 +55,16 @@ app.get("/users") {
 }
 
 app.get("/admin") {
-    if (!auth.hasRole("admin")) {
+    var admin = auth.hasRole("admin")
+    if (!admin) {
         return "{\"error\": \"forbidden\"}"
     }
     return "{\"ok\": true}"
 }
 
 app.delete("/users/:id") {
-    if (!auth.hasPermission("write")) {
+    var pode = auth.hasPermission("write")
+    if (!pode) {
         return "{\"error\": \"forbidden\"}"
     }
     return "{\"ok\": true}"
@@ -74,7 +78,7 @@ app.delete("/users/:id") {
 | `auth.authenticated()` | Bool — há token válido |
 | `auth.token()` | o token Bearer |
 | `auth.claims()` | claims verificadas (JSON) |
-| `auth.user()` | `sub` (identificador) |
+| `auth.user()` | `sub` (identificador) — quebrado em handler (nota #5); use `claims()` |
 | `auth.hasRole("admin")` | Bool |
 | `auth.hasPermission("write")` | Bool |
 

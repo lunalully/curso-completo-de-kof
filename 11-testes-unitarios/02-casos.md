@@ -15,13 +15,14 @@ Bugs clássicos aparecem nas **fronteiras**:
 ## Teste os dois lados de cada limite
 
 ```kof
-main() {
+test "fatorial limites" {
     // fatorial: 0, 1 e normal
     assert(fatorial(0) == 1, "fat 0")
     assert(fatorial(1) == 1, "fat 1")
     assert(fatorial(5) == 120, "fat 5")
+}
 
-    // divisão por zero lança
+test "divisao por zero lanca" {
     try {
         dividir(1, 0)
         assert(false, "deveria lancar")

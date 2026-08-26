@@ -18,7 +18,7 @@
 - `kof debug <file.kf>` — servidor DAP sobre stdio (breakpoints por linha,
   call stack com funções/linhas Kof, continue, disconnect).
 - `kof check` — type-check sem emitir código.
-- `kof test` — PASS/FAIL por exit code.
+- `kof test` — blocos `test "nome" { }` com PASS/FAIL por teste.
 - `kof lsp` — diagnostics no editor.
 - `kof info` — ambiente.
 

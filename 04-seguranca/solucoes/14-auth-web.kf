@@ -1,6 +1,6 @@
-// 14-auth-web.kf — auth web com padrões VERIFICADOS no compilador 0.0.8.
-// WORKAROUND: auth.user()/auth.claims() disparam um bug de runtime no 0.0.8
-// ("JavaFX runtime components not found") — use auth.authenticated()/hasRole.
+// 14-auth-web.kf — auth web com padrões VERIFICADOS no compilador 0.1.0-beta.
+// WORKAROUND: auth.user() em handler derruba o servidor (VerifyError) —
+// use auth.authenticated()/hasRole/claims (com atribuição antes do if).
 main() {
     var app = web.app()
     auth.secret(secrets.get("JWT_SECRET", "dev-secret"))

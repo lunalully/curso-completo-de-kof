@@ -70,15 +70,30 @@ println(h())                // 99
 
 Lambdas compilam para classes sintéticas com um método `invoke`.
 
-**Limitação real:** lambdas **não capturam** variáveis do escopo ainda
-(planned). Isto **não compila**:
+**Capturas (0.1.0-beta):** lambdas capturam variáveis do escopo. O caso
+sólido é capturar campos em lambda **sem parâmetros**:
 
 ```kof
-var offset = 10
-var f = (x: Int) -> x + offset   // ERROR: captura não suportada
+class Contador {
+    Int n
+}
+
+main() {
+    var c = Contador()
+    c.n = 0
+    var inc = () -> {
+        c.n = c.n + 1
+        return c.n
+    }
+    inc()
+    inc()
+    println(c.n)            // 2
+}
 ```
 
-Use lambdas apenas com parâmetros e literais por enquanto.
+> `WORKAROUND` — lambda com captura **e** parâmetro tipado
+> (`(x: Int) -> x + offset`) ainda falha em runtime (VerifyError). Passe o
+> valor como parâmetro. Detalhes em `99-notas-workarounds.md` (#8).
 
 ## Parâmetros
 

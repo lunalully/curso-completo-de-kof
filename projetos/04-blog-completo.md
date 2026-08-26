@@ -26,8 +26,9 @@ record Comentario(Int id, Int postId, String texto, String autor)
 | POST | `/posts/:id/comentarios` | comenta (autenticado) |
 | DELETE | `/posts/:id` | remove (autor ou admin) |
 
-**Regra de autorização:** só o autor (ou admin) remove — valide
-`auth.user() == post.autor` (evita IDOR, módulo 09).
+**Regra de autorização:** só o autor (ou admin) remove — valide o dono via
+`auth.claims()` (ler `sub` do JSON; `auth.user()` ainda quebra em handler,
+nota #5) comparado a `post.autor` (evita IDOR, módulo 09).
 
 ## Frontend (kof.ui)
 
@@ -40,12 +41,12 @@ main() {
 }
 ```
 
-> **Nota real:** o Kof ainda **não tem cliente HTTP** (`kof.http` é planned).
-> O frontend `kof.ui` renderiza no JS. Para consumir a API hoje, o padrão
-> honesto é um `WORKAROUND` (fetch via JS exposto pela plataforma, ou servidor
-> servindo a página e a UI lendo de estado do servidor). **Documente a
-> escolha.** O importante do projeto é modelar a integração e respeitar a
-> separação backend/frontend.
+> **Nota real:** o cliente HTTP nativo existe desde a 0.1.0-beta no **JVM**
+> (`http.get/post`). O frontend `kof.ui` renderiza via target JS, onde
+> `kof.http` reporta `HTTP002` em compile-time. O padrão honesto do projeto:
+> o backend JVM serve a API; a UI consome estado servido ou usa `WORKAROUND`
+> documentado (fetch exposto pela plataforma). O importante é modelar a
+> integração e respeitar a separação backend/frontend.
 
 ## Passo a passo
 

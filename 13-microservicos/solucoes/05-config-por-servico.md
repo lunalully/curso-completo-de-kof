@@ -39,7 +39,9 @@ curl localhost:8082/health
 log.info("pedidos: " + method() + " " + path())
 ```
 
-## Observabilidade (planejado)
+## Observabilidade
 
-- `kof.metrics`/`kof.observability`: ⏳ planned (health já está).
-- TLS entre serviços: ⏳ planned (G12).
+- `kof.observability`: ✅ (`health/readiness/liveness`, `counter(name)`,
+  `gauge(name, value)`, `requestId()`/`correlationId()`) — JVM/Native/JS.
+- TLS entre serviços: `web.listenSecure(port)` no servidor e `kof.http`
+  HTTPS no cliente — **JVM** (Native/JS reportam `WEB002`).

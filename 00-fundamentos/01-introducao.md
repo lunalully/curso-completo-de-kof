@@ -57,7 +57,7 @@ Observações importantes:
 | `kof check a.kf` | type-check sem emitir código |
 | `kof build dir --target jvm\|native\|js` | compila para um target |
 | `kof serve a.kf [--port N]` | sobe servidor HTTP |
-| `kof test a.kf` | roda testes (exit code = PASS/FAIL) |
+| `kof test a.kf` | roda blocos `test "nome" { }` (PASS/FAIL por teste) |
 | `kof lsp` | language server (LSP 3.x, stdio) |
 | `kof info` | relatório do ambiente |
 
@@ -68,5 +68,5 @@ Observações importantes:
 
 1. Todo exemplo é verificável — **rode e veja a saída**.
 2. Código que compila ≠ código idiomático. Prefira sempre a forma Kof.
-3. Se uma feature não existe (`Map`, `Set`, `map()`, captura em lambda),
+3. Se uma feature não existe (`Option<T>`, `map()`, pattern matching),
    **não invente** — o compilador rejeita e o curso marca `WORKAROUND`.

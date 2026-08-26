@@ -10,22 +10,26 @@ kof build app.kf --target js --output out/
 kof run app.kf --target js
 ```
 
-## Cobertura do target JS (0.0.x)
+## Cobertura do target JS
 
 | Recurso | JS |
 |---------|----|
 | classes, records, herança, interfaces | ✅ |
 | lambdas (com capturas) | ✅ |
 | if-expr, switch, loops, for-in | ✅ |
-| `List`, JSON | ✅ |
+| `List`, `Map`, `Set`, JSON | ✅ |
 | `kof.io` | ✅ |
 | try/catch/finally | ✅ |
+| `kof.security` (passwords/crypto/jwt) | ✅ |
 | `kof.ui` (widgets → DOM) | ✅ |
-| `spawn` | ⏳ planned |
+| `kof.web` / `kof.http` | ❌ `WEB001` / `HTTP002` |
+| `spawn` | ❌ `CONC003` |
 
-> **Nota:** no JS as lambdas podem capturar variáveis do escopo — uma
-> diferença real de capacidade entre targets que a plataforma expõe
-> honestamente.
+> Gaps de target são diagnósticos **em compile-time** — o programa não
+> compila para JS com `spawn`; a plataforma diz, nunca silencia.
+
+> **Nota:** lambdas com capturas funcionam nos dois targets (JVM e JS) —
+> a paridade de captura foi fechada na 0.1.0-beta.
 
 ## kof.ui no JS
 
