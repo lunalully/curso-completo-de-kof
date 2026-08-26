@@ -70,7 +70,7 @@ println(h())                // 99
 
 Lambdas compilam para classes sintéticas com um método `invoke`.
 
-**Capturas (0.1.0-beta):** lambdas capturam variáveis do escopo. O caso
+**Capturas (0.1.0):** lambdas capturam variáveis do escopo. O caso
 sólido é capturar campos em lambda **sem parâmetros**:
 
 ```kof

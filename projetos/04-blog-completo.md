@@ -41,7 +41,7 @@ main() {
 }
 ```
 
-> **Nota real:** o cliente HTTP nativo existe desde a 0.1.0-beta no **JVM**
+> **Nota real:** o cliente HTTP nativo existe desde a 0.1.0 no **JVM**
 > (`http.get/post`). O frontend `kof.ui` renderiza via target JS, onde
 > `kof.http` reporta `HTTP002` em compile-time. O padrão honesto do projeto:
 > o backend JVM serve a API; a UI consome estado servido ou usa `WORKAROUND`

@@ -60,13 +60,13 @@ kof debug app.kf            # sessão DAP (breakpoints, call stack)
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.1.0-beta
+Todas as **soluções compilam e rodam** no compilador real 0.1.0
 (verificadas nesta trilha). Workarounds para bugs reais do compilador estão
 em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.1.0-beta** (implementada, testada e verificada no compilador):
+Baseado na **0.1.0** (implementada, testada e verificada no compilador):
 
 | Capacidade | Estado |
 |------------|--------|
@@ -75,6 +75,7 @@ Baseado na **0.1.0-beta** (implementada, testada e verificada no compilador):
 | if-expr, switch, loops, for-in, default parameters | ✅ |
 | `List<T>`, `listOf`, arrays `new Int[n]` | ✅ |
 | `Map<K,V>` (`mapOf`, put/get/remove/keys/values), `Set<T>` (`setOf`) | ✅ 3 targets |
+| `enum` (+ `values`/`valueOf`/`name`, `==` por conteúdo, switch exaustivo) | ✅ 3 targets |
 | Strings (`+`, `==`, API completa) | ✅ |
 | Exceções `throw "msg"` / try/catch/finally | ✅ |
 | `assert`, `test "nome" { }` + `kof test` | ✅ 3 targets |

@@ -1,7 +1,7 @@
-# Notas — Workarounds do compilador 0.1.0-beta
+# Notas — Workarounds do compilador 0.1.x
 
-> Bugs reais encontrados ao validar as soluções do curso contra a
-> **0.1.0-beta** (verificados executando o compilador). Todos são
+> Bugs reais encontrados ao validar as soluções do curso contra a linha
+> **0.1.x** (verificados executando o compilador). Todos são
 > `WORKAROUND` — quando corrigidos no compilador, remova os desvios.
 
 ## 1. Campo `Long` em comparação → COMP002 (crash) — ABERTO
@@ -21,7 +21,7 @@ class R {
 
 ## 2. ~~`assert(Double == Double)` → falha de runtime~~ — CORRIGIDO ✅
 
-Corrigido no compilador (verificado na 0.1.0-beta): `assert(soma == 10.5)`
+Corrigido no compilador (verificado na 0.1.0): `assert(soma == 10.5)`
 com `Double` funciona normalmente. Comparar por faixa segue sendo boa
 prática para ponto flutuante em geral.
 

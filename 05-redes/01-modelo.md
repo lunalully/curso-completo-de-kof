@@ -60,7 +60,7 @@ O runtime gera um accept loop com **virtual threads** (JVM) — detalhe interno.
 
 ## Do lado do cliente
 
-A 0.1.0-beta trouxe o cliente HTTP nativo:
+A 0.1.0 trouxe o cliente HTTP nativo:
 
 ```kof
 var corpo = http.get("http://127.0.0.1:8080/hello")

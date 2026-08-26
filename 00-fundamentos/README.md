@@ -26,7 +26,7 @@
 ## Ambiente
 
 ```bash
-kof version          # 0.1.0-beta
+kof version          # 0.1.0 (release) / 0.1.1-alpha (ciclo de dev)
 kof info             # ambiente completo
 kof run aula.kf      # roda
 kof check aula.kf    # type-check rápido

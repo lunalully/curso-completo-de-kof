@@ -88,6 +88,35 @@ switch (x) {
 }
 ```
 
+## switch exaustivo sobre `enum`
+
+Com um `enum` como sujeito, o compilador **verifica a exaustividade** —
+os rótulos podem ser qualificados (`Cor.Vermelho`) ou não (`Verde`):
+
+```kof
+enum Cor { Vermelho, Verde, Azul }
+
+String nome(Cor c) {
+    var r = ""
+    switch (c) {
+        case Cor.Vermelho: { r = "vermelho" }
+        case Verde: { r = "verde" }
+        case Azul: { r = "azul" }
+    }
+    return r
+}
+```
+
+Se faltar um caso **e** não houver `default`, o programa **não compila**:
+
+```text
+error: switch sobre 'Cor' não cobre: Verde, Azul
+       (adicione default ou os casos faltantes) [SEM031]
+```
+
+> Isso é a filosofia em ação: adicionar uma constante nova ao enum quebra
+> em compile-time todos os switches incompletos — não em runtime.
+
 ## break / continue
 
 `break` sai do loop; `continue` pula para a próxima iteração. Usados com

@@ -47,7 +47,8 @@ Regras do projeto:
 - **Fonte única:** arquivo `VERSION` na raiz.
 - `scripts/bump-version.sh` sincroniza `VERSION` → `pom.xml` (`<revision>`)
   → resource empacotado.
-- Formato `MAJOR.MINOR.PATCH` com sufixo de estágio (`0.1.0-beta`).
+- Formato `MAJOR.MINOR.PATCH`; releases sem sufixo (`0.1.0`), ciclos de
+  desenvolvimento com sufixo de estágio (`0.1.1-alpha`).
 - Tags `kof-<versão>`; commit de bump com `[skip ci]`.
 - `scripts/package.sh` empacota `bin/ lib/ jdk/ tooling/ editor/ docs/ VERSION`
   em tarball + `SHA256SUMS`.
@@ -55,9 +56,9 @@ Regras do projeto:
   `...-macos-x86_64.tar.gz`.
 
 ```bash
-./scripts/bump-version.sh 0.1.1-beta
+./scripts/bump-version.sh 0.1.1
 ./scripts/package.sh
-# gera kof-0.1.1-beta-linux-x86_64.tar.gz + SHA256SUMS
+# gera kof-0.1.1-linux-x86_64.tar.gz + SHA256SUMS
 ```
 
 ## Aula 04 — Containers e deploy

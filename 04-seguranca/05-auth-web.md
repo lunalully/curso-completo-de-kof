@@ -55,7 +55,7 @@ main() {
 }
 ```
 
-> **WORKAROUND (0.1.0-beta):** atribua o resultado antes do `if`.
+> **WORKAROUND (0.1.0):** atribua o resultado antes do `if`.
 > A forma direta `if (!auth.hasRole("admin"))` gera bytecode inválido, e
 > `auth.user()` dentro de handler derruba o servidor (`VerifyError`) —
 > use `auth.claims()` e leia o `sub` do JSON. Detalhes em

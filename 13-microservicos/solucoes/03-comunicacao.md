@@ -7,7 +7,7 @@
 | GET /produtos/:id | — | 200 `{"id":1,"qtd":10}` |
 | POST /produtos/:id/baixa | `{"qtd":1}` | 200 `{"ok":true}` |
 
-## Cliente HTTP nativo (0.1.0-beta)
+## Cliente HTTP nativo (0.1.0)
 
 O serviço `pedidos` chama `estoque` com `kof.http`:
 

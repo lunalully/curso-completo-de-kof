@@ -1,4 +1,4 @@
-// 14-auth-web.kf — auth web com padrões VERIFICADOS no compilador 0.1.0-beta.
+// 14-auth-web.kf — auth web com padrões VERIFICADOS no compilador 0.1.0.
 // WORKAROUND: auth.user() em handler derruba o servidor (VerifyError) —
 // use auth.authenticated()/hasRole/claims (com atribuição antes do if).
 main() {

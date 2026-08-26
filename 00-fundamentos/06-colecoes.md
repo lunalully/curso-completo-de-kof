@@ -1,7 +1,7 @@
 # Módulo 00 · Aula 6 — Coleções
 
 > `List<T>` é a coleção ordenada da linguagem. `Map<K,V>` e `Set<T>`
-> também existem (0.1.0-beta, nos 3 targets).
+> também existem (0.1.0, nos 3 targets).
 
 ## Criar e usar uma lista
 
@@ -64,7 +64,7 @@ class Registry {
 O domínio é "uma sequência de entradas" — represente o domínio, não nós
 encadeados.
 
-## `Map<K,V>` e `Set<T>` (0.1.0-beta)
+## `Map<K,V>` e `Set<T>` (0.1.0)
 
 `Map` e `Set` fazem parte da linguagem — a API é de **métodos**:
 

@@ -17,7 +17,7 @@ kof run app.kf --target js
 | classes, records, herança, interfaces | ✅ |
 | lambdas (com capturas) | ✅ |
 | if-expr, switch, loops, for-in | ✅ |
-| `List`, `Map`, `Set`, JSON | ✅ |
+| `List`, `Map`, `Set`, `enum`, JSON | ✅ |
 | `kof.io` | ✅ |
 | try/catch/finally | ✅ |
 | `kof.security` (passwords/crypto/jwt) | ✅ |
@@ -29,7 +29,7 @@ kof run app.kf --target js
 > compila para JS com `spawn`; a plataforma diz, nunca silencia.
 
 > **Nota:** lambdas com capturas funcionam nos dois targets (JVM e JS) —
-> a paridade de captura foi fechada na 0.1.0-beta.
+> a paridade de captura foi fechada na 0.1.0.
 
 ## kof.ui no JS
 

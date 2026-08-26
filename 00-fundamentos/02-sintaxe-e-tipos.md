@@ -36,6 +36,26 @@ interface Speaker {
 }
 ```
 
+### Enum (0.1.x)
+
+```kof
+enum Cor { Vermelho, Verde, Azul }
+```
+
+Constantes com `==` por conteúdo e API própria:
+
+```kof
+var c = Cor.Verde
+c.name()                  // "Verde"
+println(c)                // Verde
+Cor.values()              // List<Cor> — [Vermelho, Verde, Azul]
+Cor.valueOf("Azul")       // Cor.Azul (inválido → null)
+c == Cor.Verde            // true — comparação por conteúdo
+```
+
+Enum brilha com **switch exaustivo** (aula 3): o compilador exige que todos
+os casos sejam cobertos (`SEM031`).
+
 ### Variável
 
 ```kof

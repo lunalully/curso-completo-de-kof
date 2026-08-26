@@ -1,6 +1,6 @@
 # Módulo 02 · Aula 6 — Tabela Hash e `Map`
 
-> O `Map<K,V>` **existe** desde a 0.1.0-beta (3 targets). Este módulo ensina
+> O `Map<K,V>` **existe** desde a 0.1.0 (3 targets). Este módulo ensina
 > o *conceito* de hash — e mostra por que o `Map` da linguagem é o padrão.
 
 ## O conceito

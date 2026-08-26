@@ -45,7 +45,7 @@ Cada serviço tem:
 ## Aula 03 — Comunicação entre serviços
 
 O padrão é **HTTP**: o serviço A chama o serviço B via REST. Desde a
-0.1.0-beta o Kof tem **cliente HTTP nativo**:
+0.1.0 o Kof tem **cliente HTTP nativo**:
 
 ```kof
 main() {

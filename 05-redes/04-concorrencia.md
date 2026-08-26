@@ -36,7 +36,7 @@ main() {
 
 - Quando a ordem importa.
 
-## Resultado de tarefa: `spawn` expressão + `await` (0.1.0-beta)
+## Resultado de tarefa: `spawn` expressão + `await` (0.1.0)
 
 Quando o resultado **é** necessário no fluxo principal, capture o handle:
 
