@@ -47,6 +47,33 @@ class User {
 }
 ```
 
+## Sobrecarga de construtores (0.2.4+)
+
+Construtores podem ser sobrecarregados — múltiplos construtores com
+assinaturas diferentes na mesma classe:
+
+```kof
+class User {
+    String name
+    Int age
+
+    public constructor(String name, Int age) {
+        this.name = name
+        this.age = age
+    }
+
+    public constructor(String name) {
+        this.name = name
+        this.age = 0
+    }
+}
+
+main() {
+    var u1 = User("Mel", 26)
+    var u2 = User("Kof")
+}
+```
+
 ## Records — dados imutáveis com zero cerimônia
 
 ```kof

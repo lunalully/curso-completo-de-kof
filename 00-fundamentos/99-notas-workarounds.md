@@ -1,4 +1,4 @@
-# Notas — Workarounds do compilador 0.2.x
+# Notas — Workarounds do compilador 0.2.x (verificados até 0.2.5-beta)
 
 > Bugs reais encontrados ao validar as soluções do curso contra a linha
 > **0.2.x** (verificados executando o compilador). Todos são
@@ -87,15 +87,10 @@ Além disso, `split` continua **regex**: `"a|b".split("|")` quebra — use
 **Workaround prático:** prefira `indexOf`/`substring` para parsing simples
 no curso até o bug fechar.
 
-## 7. Retorno `Double` de divisão `Int` → VerifyError — ABERTO
+## 7. ~~Retorno `Double` de divisão `Int` → VerifyError~~ — CORRIGIDO ✅
 
-**Sintoma:** `return soma / dados.size` (Int/Int) com retorno `Double`
-falha em runtime (`VerifyError`).
-
-**Workaround:** force divisão Double com `* 1.0`:
-```kof
-return (soma * 1.0) / dados.size
-```
+Corrigido no compilador 0.2.4-beta (widening de return): `return soma /
+dados.size` (Int/Int) com retorno `Double` funciona normalmente.
 
 ## 8. Lambda com captura + parâmetro tipado → VerifyError — ABERTO
 

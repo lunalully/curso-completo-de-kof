@@ -23,6 +23,7 @@ kof debug app.kf            # sessão DAP (breakpoints, call stack)
 kof bench [paths...] [--target jvm|native|js] [--iterations N]  # benchmarks
 kof profile <file.kf> [--target jvm|native|js]   # CPU, RSS, GC
 kof inspect <file.kf> [--json]  # estatísticas de IR
+kof fmt <file.kf|dir> [-w]  # formatador (parser real, idempotente)
 kof script <file.ks|kf> [--target jvm|native|js]  # KofScript (let top-level, repl)
 kof repl                    # REPL KofScript interativo
 kof c <file.c>              # KofC: subset C -> ELF nativo
@@ -70,13 +71,13 @@ kof version
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.2.3-beta
+Todas as **soluções compilam e rodam** no compilador real 0.2.5-beta
 (verificadas nesta trilha). Workarounds para bugs reais do compilador estão
 em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.2.3-beta** (implementada, testada e verificada no compilador — 658 testes):
+Baseado na **0.2.5-beta** (implementada, testada e verificada no compilador — 663+ testes):
 
 | Capacidade | Estado |
 |------------|--------|
@@ -101,6 +102,8 @@ Baseado na **0.2.3-beta** (implementada, testada e verificada no compilador — 
 | `kof.config`, `kof.log` | ✅ JVM/Native (CONF001/LOG001 JS) |
 | `spawn` (stmt) / `val r = spawn f()` / `await r` / `poll/done/cancel/selectAny` | ✅ JVM (CONC001 Native, CONC003 JS) |
 | `process.exit(code)` / `readLine()` | ✅ 3 targets |
+| `process.run(cmd, args...)` / `process.spawn(cmd, args...)` | ✅ JVM/JS (PROC001 Native) |
+| `kof fmt <file\|dir> [-w]` (formatador, parser real) | ✅ 3 targets |
 | `kof.ui` (Color, Palette, Theme, Window, widgets) | ✅ JS/webview |
 | Pattern matching `switch case String s`, `case Point(x,y)`, `instanceof` | ✅ 3 targets |
 | Null safety `String?`, `Int?` + `if (x != null)` narrowing | ✅ 3 targets |

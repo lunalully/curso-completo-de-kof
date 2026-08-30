@@ -159,6 +159,29 @@ main() {
 }
 ```
 
+## Processos externos: `process.run` e `process.spawn` (0.2.4+)
+
+`process.run` executa um processo externo e bloqueia até ele terminar:
+
+```kof
+var r = process.run("git", "status")
+println(r.output)
+println(r.exitCode)
+```
+
+`process.spawn` lança um processo com **stdin/stdout vivos** (F10):
+
+```kof
+var h = process.spawn("sh", "-c", "read x; echo got=$x")
+h.write("hello\n")           // envia para stdin
+var line = h.readLine()      // lê stdout
+h.kill()                     // destrói o processo
+```
+
+- `process.run`: JVM e JS ✅; Native: **PROC001** (gap documentado).
+- `process.spawn`: JVM e JS ✅; Native: **PROC001** (gap documentado).
+- `process.exit(code)`: ✅ 3 targets.
+
 ## Limitações honestas
 
 - Filas produtor/consumidor: `kof.mq` (`queue/push/pop`, `mq.publish/

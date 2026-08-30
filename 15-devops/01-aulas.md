@@ -15,6 +15,7 @@ kof test testes/ [--target jvm|native|js]   # PASS/FAIL por bloco test
 kof bench testes/ [--target jvm|native|js]  # benchmarks
 kof profile app.kf [--target jvm|native|js] # CPU, RSS, GC
 kof inspect app.kf [--json]           # estatísticas IR
+kof fmt app.kf [-w]                   # formatador (parser real, idempotente)
 ```
 
 - O **mesmo código** gera JVM bytecode, ELF nativo x86-64/RISC-V/ARM64, ES Modules, e C subset.
