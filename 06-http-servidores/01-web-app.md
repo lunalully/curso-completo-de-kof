@@ -80,6 +80,30 @@ A resposta detecta JSON automaticamente quando o corpo começa com `{` ou `[`
 | `String` | 200 com o corpo |
 | `null` | **404 Not Found** |
 
+### Resposta rica: `status()` + `headerSet()` (0.2.0+)
+
+```kof
+main() {
+    var app = web.app()
+
+    app.get("/created") {
+        return status(201, "criado")   // 201 Created
+    }
+
+    app.get("/custom") {
+        headerSet("X-Custom", "value")
+        return "com header"
+    }
+
+    app.get("/json") {
+        headerSet("Content-Type", "application/json")
+        return status(200, json.encode(User("Mel", 26)))
+    }
+
+    app.listen(8080)
+}
+```
+
 ## Servidor
 
 ```kof

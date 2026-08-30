@@ -14,12 +14,22 @@ tudo guiado pela **filosofia Kof**:
 Todo código deste curso é **verificável** com o compilador Kof real:
 
 ```bash
-kof run <arquivo>.kf        # compila e executa (JVM)
+kof run <arquivo>.kf [--target jvm|native|js|native.risc|native.arm] [--release]
 kof check <arquivo>.kf      # type-check sem emitir código
-kof build <dir> --target jvm   # múltiplos targets: jvm | native | js
-kof serve app.kf            # sobe um servidor HTTP
-kof test <arquivo.kf>       # roda testes (PASS/FAIL por teste)
+kof build <dir> --target jvm|native|js|native.risc|native.arm|kofc [--release] [--output <dir>]
+kof serve app.kf            # sobe um servidor HTTP (web.app + TLS)
+kof test <arquivo.kf|dir> [--target jvm|native|js]  # PASS/FAIL por teste
 kof debug app.kf            # sessão DAP (breakpoints, call stack)
+kof bench [paths...] [--target jvm|native|js] [--iterations N]  # benchmarks
+kof profile <file.kf> [--target jvm|native|js]   # CPU, RSS, GC
+kof inspect <file.kf> [--json]  # estatísticas de IR
+kof script <file.ks|kf> [--target jvm|native|js]  # KofScript (let top-level, repl)
+kof repl                    # REPL KofScript interativo
+kof c <file.c>              # KofC: subset C -> ELF nativo
+kof info [--json]           # ambiente completo
+kof lsp                     # Language Server Protocol
+kof install <dir>           # instala distribuição local
+kof version
 ```
 
 ---
@@ -60,42 +70,45 @@ kof debug app.kf            # sessão DAP (breakpoints, call stack)
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.1.0
+Todas as **soluções compilam e rodam** no compilador real 0.2.3-beta
 (verificadas nesta trilha). Workarounds para bugs reais do compilador estão
 em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.1.0** (implementada, testada e verificada no compilador):
+Baseado na **0.2.3-beta** (implementada, testada e verificada no compilador — 658 testes):
 
 | Capacidade | Estado |
 |------------|--------|
-| Classes, records, interfaces, herança, dispatch virtual | ✅ |
-| Funções (todas as formas, sem `fun`), lambdas **com capturas** | ✅ |
-| if-expr, switch, loops, for-in, default parameters | ✅ |
-| `List<T>`, `listOf`, arrays `new Int[n]` | ✅ |
-| `Map<K,V>` (`mapOf`, put/get/remove/keys/values), `Set<T>` (`setOf`) | ✅ 3 targets |
+| Classes, records, interfaces, herança, dispatch virtual | ✅ 3 targets |
+| Funções (todas as formas, sem `fun`), lambdas com capturas | ✅ 3 targets |
+| if-expr, switch, loops, for-in, default parameters | ✅ 3 targets |
+| `List<T>`, `listOf`, arrays `new Int[n]` | ✅ 3 targets |
+| `Map<K,V>` (`mapOf`, put/get/remove/keys/values/size), `Set<T>` (`setOf`) | ✅ 3 targets |
 | `enum` (+ `values`/`valueOf`/`name`, `==` por conteúdo, switch exaustivo) | ✅ 3 targets |
-| Strings (`+`, `==`, API completa) | ✅ |
-| Exceções `throw "msg"` / try/catch/finally | ✅ |
+| Strings (`+`, `==`, API completa) | ✅ 3 targets |
+| Exceções `throw "msg"` / try/catch/finally | ✅ 3 targets |
 | `assert`, `test "nome" { }` + `kof test` | ✅ 3 targets |
-| JSON `json.encode` / `json.decode<T>` (objetos só JVM) | ✅ |
-| `kof.io` (File/Path/Directory), `kof.time` (`now()`, scheduler) | ✅ |
-| `kof.web` (`web.app()`, rotas, middleware) | ✅ JVM |
-| `kof.http` client (`http.get/post/...`) | ✅ JVM (HTTP002 Native/JS) |
-| `kof.db` (JDBC idiomático, `transaction {}`) + SQLite nativo | ✅ JVM/Native |
+| JSON `json.encode` / `json.decode<T>` (objetos JVM/JS) | ✅ JVM/JS (JSN002 Native) |
+| `kof.io` (File/Path/Directory, `readLine()`) | ✅ 3 targets |
+| `kof.time` (`now()`, `sleep`, `interval`, `every`/`at` scheduler) | ✅ JVM/JS (SCHED001 Native) |
+| `kof.web` (`web.app()`, rotas, middleware, `status()`, `headerSet()`, TLS) | ✅ JVM (WEB002 Native/JS) |
+| `kof.http` client (`http.get/post/put/delete/status/timeout`) | ✅ JVM/JS (HTTP002 Native) |
+| `kof.cache` (`cache.get/set/ttl/delete/clear`) | ✅ 3 targets |
+| `kof.db` (JDBC, `transaction {}`, `query<T>`) + SQLite nativo | ✅ JVM/Native (DB001 JS) |
 | `kof.orm` (`entity`, CRUD, `where`, migrations, MongoDB) | ✅ JVM (ORM001 Native/JS) |
-| `kof.security` (passwords, crypto, jwt, secrets, auth) | ✅ 3 targets |
-| `kof.config`, `kof.log` | ✅ JVM/Native (CONF001/LOG001 no JS) |
-| `spawn` (statement) | ✅ JVM (CONC001 Native, CONC003 JS) |
-| `val r = spawn f()` / `await r` | ✅ JVM |
-| `process.exit(code)` | ✅ 3 targets |
+| `kof.security` (passwords, crypto, jwt, secrets, auth, rateLimit) | ✅ 3 targets |
+| `kof.config`, `kof.log` | ✅ JVM/Native (CONF001/LOG001 JS) |
+| `spawn` (stmt) / `val r = spawn f()` / `await r` / `poll/done/cancel/selectAny` | ✅ JVM (CONC001 Native, CONC003 JS) |
+| `process.exit(code)` / `readLine()` | ✅ 3 targets |
 | `kof.ui` (Color, Palette, Theme, Window, widgets) | ✅ JS/webview |
-| `Option<T>`, higher-order (`map`/`filter`), pattern matching | ⏳ planned — **não use** (plano: pattern matching via switch com tipos/destructuring; null safety via `Type?`, sem Option no core) |
+| Pattern matching `switch case String s`, `case Point(x,y)`, `instanceof` | ✅ 3 targets |
+| Null safety `String?`, `Int?` + `if (x != null)` narrowing | ✅ 3 targets |
+| `List.map/filter/reduce` (higher-order) | ✅ 3 targets |
 
 **Gaps de target** são reportados em compile-time com códigos
-(`DB001`, `CONF001`, `LOG001`, `SECN00x`, `CONC001/003`, `JSN002`, `ORM001`,
-`WEB001/002`, `HTTP002`) — nunca de forma silenciosa. É parte da filosofia:
+(`DB001`, `CONF001`, `LOG001`, `SECN00x`, `CONC001/003`, `JSN001/002`, `ORM001`,
+`WEB001/002`, `HTTP002`, `SCHED001`, `AND001`) — nunca de forma silenciosa. É parte da filosofia:
 a plataforma diz o que consegue fazer.
 
 ## Licença

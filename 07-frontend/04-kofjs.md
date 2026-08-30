@@ -22,14 +22,14 @@ kof run app.kf --target js
 | try/catch/finally | ✅ |
 | `kof.security` (passwords/crypto/jwt) | ✅ |
 | `kof.ui` (widgets → DOM) | ✅ |
-| `kof.web` / `kof.http` | ❌ `WEB001` / `HTTP002` |
+| `kof.web` / `kof.http` | ❌ `WEB002` / ✅ (`HTTP002` Native, JS via Java HttpClient) |
 | `spawn` | ❌ `CONC003` |
 
 > Gaps de target são diagnósticos **em compile-time** — o programa não
 > compila para JS com `spawn`; a plataforma diz, nunca silencia.
-
-> **Nota:** lambdas com capturas funcionam nos dois targets (JVM e JS) —
-> a paridade de captura foi fechada na 0.1.0.
+> 
+> **Nota:** lambdas com capturas funcionam nos três targets (JVM, Native, JS) —
+> a paridade de captura foi fechada na 0.2.0.
 
 ## kof.ui no JS
 

@@ -3,17 +3,24 @@
 ## Aula 01 — Build multi-target
 
 ```bash
-kof build app.kf --target jvm     --output out-jvm
-kof build app.kf --target native  --output out-native
-kof build app.kf --target js      --output out-js
-kof run app.kf                    # compila e roda (JVM)
-kof check app.kf                  # type-check rápido (CI)
-kof test testes/                  # testes (PASS/FAIL por bloco test)
+kof build app.kf --target jvm          --output out-jvm
+kof build app.kf --target native       --output out-native
+kof build app.kf --target native.risc  --output out-risc
+kof build app.kf --target native.arm   --output out-arm
+kof build app.kf --target js           --output out-js
+kof build app.kf --target kofc         --output out-c
+kof run app.kf [--target jvm|native|js|native.risc|native.arm] [--release]
+kof check app.kf                      # type-check rápido (CI)
+kof test testes/ [--target jvm|native|js]   # PASS/FAIL por bloco test
+kof bench testes/ [--target jvm|native|js]  # benchmarks
+kof profile app.kf [--target jvm|native|js] # CPU, RSS, GC
+kof inspect app.kf [--json]           # estatísticas IR
 ```
 
-- O **mesmo código** gera JVM bytecode, ELF nativo x86-64 e ES Modules.
-- Gaps de target (`DB001`, `CONC001`, `SECN00x`, `WEB001`...) são reportados
+- O **mesmo código** gera JVM bytecode, ELF nativo x86-64/RISC-V/ARM64, ES Modules, e C subset.
+- Gaps de target (`DB001`, `CONC001`, `SECN00x`, `WEB001/002`, `HTTP002`, `SCHED001`, `ORM001`...) são reportados
   em compile-time — o build falha com diagnóstico claro, nunca silencioso.
+- `--release` remove metadata de debug (SourceFile/LineNumberTable no JVM, source map no JS).
 - No CI: compile todos os targets para **provar** que o código é multi-target.
 
 ## Aula 02 — Integração contínua (GitHub Actions)
@@ -47,8 +54,8 @@ Regras do projeto:
 - **Fonte única:** arquivo `VERSION` na raiz.
 - `scripts/bump-version.sh` sincroniza `VERSION` → `pom.xml` (`<revision>`)
   → resource empacotado.
-- Formato `MAJOR.MINOR.PATCH`; releases sem sufixo (`0.1.0`), ciclos de
-  desenvolvimento com sufixo de estágio (`0.1.1-alpha`).
+- Formato `MAJOR.MINOR.PATCH`; releases sem sufixo (`0.2.0`), ciclos de
+  desenvolvimento com sufixo de estágio (`0.2.1-beta`).
 - Tags `kof-<versão>`; commit de bump com `[skip ci]`.
 - `scripts/package.sh` empacota `bin/ lib/ jdk/ tooling/ editor/ docs/ VERSION`
   em tarball + `SHA256SUMS`.
@@ -56,9 +63,9 @@ Regras do projeto:
   `...-macos-x86_64.tar.gz`.
 
 ```bash
-./scripts/bump-version.sh 0.1.1
+./scripts/bump-version.sh 0.2.1
 ./scripts/package.sh
-# gera kof-0.1.1-linux-x86_64.tar.gz + SHA256SUMS
+# gera kof-0.2.1-linux-x86_64.tar.gz + SHA256SUMS
 ```
 
 ## Aula 04 — Containers e deploy
@@ -88,8 +95,8 @@ CMD ["bash", "-c", "java -jar /app/lib/kof.jar serve /app/app.kf --port 8080"]
 
 - `/health` em cada serviço (módulo 13).
 - `kof.log` com níveis (`KOF_LOG_LEVEL`), requestId.
-- `kof bench` / `kof profile` para performance.
-- Planejado: `kof.metrics` / `kof.observability`.
+- `kof.observability` (`health/readiness/liveness`, `counter/increment/gauge`, `requestId/correlationId`) — ✅ 3 targets.
+- `kof bench` / `kof profile` / `kof inspect` para performance e IR.
 
 ## Checkpoint
 

@@ -98,6 +98,36 @@ var agora = now()        // epoch milliseconds (Long)
 println(agora > 1700000000000)
 ```
 
+### Scheduler: `every` / `at` (0.2.0+)
+
+Agendamento de tarefas recorrentes ou em horário específico (JVM/JS):
+
+```kof
+// a cada 30 segundos
+every(30s) {
+    println("tick")
+}
+
+// às 03:00 todo dia (cron)
+at("0 3 * * *") {
+    backup()
+}
+```
+
+> Native reporta `SCHED001` (gap documentado).
+
+### `readLine()` (0.2.0+)
+
+Leitura de linha do stdin:
+
+```kof
+main() {
+    println("Digite seu nome:")
+    var nome = readLine()
+    println("Olá, " + nome)
+}
+```
+
 ## Exercícios
 
 1. Escreva um programa que salva uma lista de nomes em `nomes.txt` e depois lê.

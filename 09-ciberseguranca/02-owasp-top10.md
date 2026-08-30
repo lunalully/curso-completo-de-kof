@@ -111,7 +111,7 @@ app.post("/login") {
 
 **O que é:** o servidor faz requests a destinos controlados pelo atacante.
 
-**Em Kof:** o cliente HTTP existe desde a 0.1.0 (`http.get/post/...`),
+**Em Kof:** o cliente HTTP existe desde a 0.1.0 (`http.get/post/...`), agora em **JVM e JS**,
 então o risco é real: valide destinos, bloqueie IPs internos, whitelist de
 URLs antes de repassar input do usuário para `http.*`.
 

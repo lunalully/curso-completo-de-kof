@@ -36,7 +36,7 @@ main() {
 
 - Quando a ordem importa.
 
-## Resultado de tarefa: `spawn` expressão + `await` (0.1.0)
+## Resultado de tarefa: `spawn` expressão + `await` (0.1.0+)
 
 Quando o resultado **é** necessário no fluxo principal, capture o handle:
 
@@ -55,6 +55,72 @@ main() {
   (JVM: virtual threads).
 - Statement puro (`spawn tarefa()`) continua fire-and-forget com join
   implícito no fim do programa.
+
+## Verificação não-bloqueante: `poll` / `done` (0.2.0+)
+
+```kof
+val r = spawn trabalho()
+if (done(r)) {
+    println("pronto: " + poll(r))
+}
+```
+
+- `poll(r)` devolve o valor se pronto; **default do tipo** (0/false) para
+  primitivos não-prontos, `null` para referências. Use `done()` para
+  distinguir "não pronto" de um valor default.
+- `done(r)` → `Bool`.
+
+## Exceções atravessam `await`
+
+A exceção lançada dentro da tarefa chega **com a mensagem original** no
+ponto do `await`:
+
+```kof
+Int quebra() { throw "boom" }
+
+main() {
+    val r = spawn quebra()
+    try {
+        await r
+    } catch (String e) {
+        println(e)   // "boom"
+    }
+}
+```
+
+## Cancelamento cooperativo (0.2.0+)
+
+```kof
+Int trabalho() {
+    var i = 0
+    while (i < 10000 && !cancelled()) {
+        time.sleep(1)
+        i++
+    }
+    return i
+}
+
+main() {
+    val r = spawn trabalho()
+    time.sleep(30)
+    assert(cancel(r))       // marca a tarefa
+    await r                 // a tarefa sai do loop cedo
+}
+```
+
+- `cancel(r)` marca o handle; **a tarefa decide quando sair** consultando
+  `cancelled()` dentro do próprio corpo.
+- `cancelled()` fora de uma tarefa devolve `false`.
+
+## `selectAny` — primeiro que chegar (0.2.0+)
+
+```kof
+val a = spawn lenta()      // 300ms
+val b = spawn rapida()     // imediata
+println(selectAny(a, b))   // valor da rapida
+```
+
+Bloqueia até **qualquer** handle completar e devolve o valor dele.
 
 ## BAD — expor plataforma
 

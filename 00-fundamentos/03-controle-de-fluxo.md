@@ -117,6 +117,35 @@ error: switch sobre 'Cor' não cobre: Verde, Azul
 > Isso é a filosofia em ação: adicionar uma constante nova ao enum quebra
 > em compile-time todos os switches incompletos — não em runtime.
 
+## Pattern Matching (0.2.0+)
+
+O `switch` suporta **type patterns** e **record destructuring**:
+
+```kof
+record Ponto(Int x, Int y)
+record Pessoa(String nome, Int idade)
+
+String descreve(Object o) {
+    switch (o) {
+        case Ponto(x, y): { return "ponto " + x + "," + y }
+        case Pessoa(nome, idade): { return nome + " " + idade }
+        case String s: { return "texto: " + s }
+        default: { return "outro" }
+    }
+}
+```
+
+Também funciona com `instanceof` com padrão:
+
+```kof
+Object obj = "kof"
+if (obj instanceof String s) {
+    println("é string: " + s)
+}
+```
+
+Sintaxe: `case Tipo var:` (com `:` e bloco `{ }`), não `case Tipo var ->`.
+
 ## break / continue
 
 `break` sai do loop; `continue` pula para a próxima iteração. Usados com

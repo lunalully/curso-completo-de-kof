@@ -42,8 +42,8 @@ try {
 
 - Fluxo normal → `if`.
 - Validação simples → `if` + retorno.
-- **`Option<T>` não existe** (planned). Não invente sentinelas quando uma
-  exceção comunica o erro melhor.
+- **Ausência como valor** → use `String?` / `Int?` com guarda `if (x != null)` (0.2.0+).
+  Não invente sentinelas quando um tipo anulável expressa a intenção melhor.
 
 ## BAD — sentinela (string vazia como "não encontrado")
 

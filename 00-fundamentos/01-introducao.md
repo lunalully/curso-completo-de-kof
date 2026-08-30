@@ -6,11 +6,12 @@
 ## O que é Kof?
 
 Kof é uma linguagem **compilada**, **fortemente** e **estaticamente tipada**,
-orientada a objetos, que compila para **JVM**, **nativo x86-64** e **JS**
-(ES Modules). Um mesmo código-fonte gera programas para os três mundos:
+orientada a objetos, que compila para **JVM**, **nativo x86-64**, **nativo RISC-V**,
+**nativo ARM64**, **JS** (ES Modules), **KofScript** e **KofC**. Um mesmo código-fonte
+gera programas para múltiplos mundos:
 
 ```
-Source (.kf) → Kof Compiler → Kof IR → JVM | Native | JS
+Source (.kf) → Kof Compiler → Kof IR → JVM | Native | Native.risc | Native.arm | JS | KofScript | KofC
 ```
 
 Sem transpilar para Java. O compilador tem lexer, parser, AST, sistema de
@@ -53,13 +54,22 @@ Observações importantes:
 
 | Comando | Faz o quê |
 |---------|-----------|
-| `kof run a.kf` | compila e executa (JVM) |
+| `kof run a.kf [--target jvm\|native\|js\|native.risc\|native.arm] [--release] [args...]` | compila e executa |
 | `kof check a.kf` | type-check sem emitir código |
-| `kof build dir --target jvm\|native\|js` | compila para um target |
-| `kof serve a.kf [--port N]` | sobe servidor HTTP |
-| `kof test a.kf` | roda blocos `test "nome" { }` (PASS/FAIL por teste) |
+| `kof build dir --target jvm\|native\|js\|native.risc\|native.arm\|kofc [--release] [--output <dir>]` | compila para target |
+| `kof serve a.kf [--port N]` | sobe servidor HTTP (web.app + TLS) |
+| `kof test a.kf [--target jvm\|native\|js]` | roda blocos `test "nome" { }` (PASS/FAIL por teste) |
+| `kof debug a.kf` | sessão DAP (breakpoints, call stack) |
+| `kof bench [paths...] [--target jvm\|native\|js] [--iterations N]` | benchmarks com validação |
+| `kof profile a.kf [--target jvm\|native\|js]` | métricas de execução (CPU, RSS, GC) |
+| `kof inspect a.kf [--json]` | estatísticas de IR (antes/depois otimização) |
+| `kof script a.ks [--target jvm\|native\|js]` | KofScript (let top-level, repl) |
+| `kof repl` | REPL KofScript interativo |
+| `kof c a.c` | KofC: subset C -> ELF nativo |
 | `kof lsp` | language server (LSP 3.x, stdio) |
-| `kof info` | relatório do ambiente |
+| `kof info [--json]` | relatório do ambiente |
+| `kof install <dir>` | instala distribuição local |
+| `kof version` | versão do compilador |
 
 > No curso, a maioria dos exemplos roda com `kof run`. Quando um recurso é
 > específico de target, o texto avisa (ex.: `kof.db` é JVM-only hoje).
@@ -68,5 +78,4 @@ Observações importantes:
 
 1. Todo exemplo é verificável — **rode e veja a saída**.
 2. Código que compila ≠ código idiomático. Prefira sempre a forma Kof.
-3. Se uma feature não existe (`Option<T>`, `map()`, pattern matching),
-   **não invente** — o compilador rejeita e o curso marca `WORKAROUND`.
+3. Se uma feature não existe (`Option<T>`), **não invente** — o compilador rejeita e o curso marca `WORKAROUND`.

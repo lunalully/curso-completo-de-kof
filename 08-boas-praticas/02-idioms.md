@@ -145,6 +145,58 @@ String listarUsers() {
 }
 ```
 
+## 11. Pattern matching sobre tipo e record (0.2.0+)
+
+```kof
+// BAD — instanceof + cast manual
+if (obj instanceof String) {
+    String s = (String) obj
+    println(s)
+}
+
+// GOOD — pattern matching
+if (obj instanceof String s) {
+    println(s)
+}
+
+// GOOD — switch com destructuring de record
+switch (forma) {
+    case Ponto(x, y): { println("ponto " + x + "," + y) }
+    case Circulo(r): { println("circulo raio " + r) }
+    default: {}
+}
+```
+
+## 12. Null safety com `String?` / `Int?` (0.2.0+)
+
+```kof
+// BAD — sentinela string vazia
+String find(String k) { ...; return "" }
+
+// GOOD — tipo anulável
+String? find(String k) { ...; return null }
+
+// uso
+var r = find("x")
+if (r != null) {
+    println(r.length)   // r é String aqui (narrowing)
+}
+```
+
+## 13. Transformações com `map`/`filter`/`reduce` (0.2.0+)
+
+```kof
+// BAD — loop manual
+var pares = listOf<Int>()
+for (var n in nums) {
+    if (n % 2 == 0) pares.add(n)
+}
+
+// GOOD — pipeline funcional
+var pares = nums.filter((n: Int) -> n % 2 == 0)
+var soma = nums.reduce(0, (a: Int, n: Int) -> a + n)
+```
+
 ## Exercícios
 
 1. Refatore cada BAD acima para GOOD no seu editor.

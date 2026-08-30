@@ -70,7 +70,7 @@ println(h())                // 99
 
 Lambdas compilam para classes sintéticas com um método `invoke`.
 
-**Capturas (0.1.0):** lambdas capturam variáveis do escopo. O caso
+**Capturas (0.1.0+):** lambdas capturam variáveis do escopo. O caso
 sólido é capturar campos em lambda **sem parâmetros**:
 
 ```kof
@@ -97,9 +97,24 @@ main() {
 
 ## Parâmetros
 
-Não há sobrecarga de funções top-level nem argumentos nomeados/opcionais em
-funções definidas pelo usuário (verifique o que compila antes de usar). Para
-valores padrão em classes, veja o exemplo do `Style` em `07-frontend`.
+Funções suportam **parâmetros com valor padrão** (default parameters):
+
+```kof
+String saudacao(String nome = "mundo") {
+    return "Olá, " + nome
+}
+
+main() {
+    println(saudacao())        // Olá, mundo
+    println(saudacao("Kof"))   // Olá, Kof
+}
+```
+
+Não há sobrecarga de funções top-level nem argumentos nomeados.
+
+> `WORKAROUND` — lambda com captura **e** parâmetro tipado
+> (`(x: Int) -> x + offset`) pode falhar em runtime (VerifyError). Passe o
+> valor como parâmetro. Detalhes em `99-notas-workarounds.md` (#8).
 
 ## Exercícios
 

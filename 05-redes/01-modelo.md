@@ -60,7 +60,7 @@ O runtime gera um accept loop com **virtual threads** (JVM) — detalhe interno.
 
 ## Do lado do cliente
 
-A 0.1.0 trouxe o cliente HTTP nativo:
+O cliente HTTP nativo funciona em **JVM e JS** (Native: `HTTP002`):
 
 ```kof
 var corpo = http.get("http://127.0.0.1:8080/hello")
@@ -70,7 +70,7 @@ http.post("http://127.0.0.1:8080/user", "{\"nome\":\"Mel\"}")
 ```
 
 TLS/HTTPS existe no servidor (`web.listenSecure(port)`) e no cliente
-(`kof.http` HTTPS, trust-all) — **JVM**; Native/JS reportam `WEB002`.
+(`kof.http` HTTPS, trust-all) — **JVM**; Native/JS reportam `WEB002`/`HTTP002`.
 
 ## O que ainda não existe
 

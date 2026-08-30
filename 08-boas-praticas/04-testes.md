@@ -11,7 +11,7 @@ assert(condicao, "mensagem de falha")
 
 O programa sai com exit code ≠ 0 quando o assert falha.
 
-## Blocos `test` (0.1.0)
+## Blocos `test` (0.1.0+)
 
 ```kof
 test "soma simples" {

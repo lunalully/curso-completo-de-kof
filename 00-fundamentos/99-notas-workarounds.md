@@ -1,7 +1,7 @@
-# Notas — Workarounds do compilador 0.1.x
+# Notas — Workarounds do compilador 0.2.x
 
 > Bugs reais encontrados ao validar as soluções do curso contra a linha
-> **0.1.x** (verificados executando o compilador). Todos são
+> **0.2.x** (verificados executando o compilador). Todos são
 > `WORKAROUND` — quando corrigidos no compilador, remova os desvios.
 
 ## 1. Campo `Long` em comparação → COMP002 (crash) — ABERTO

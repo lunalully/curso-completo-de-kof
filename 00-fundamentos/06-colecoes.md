@@ -1,7 +1,7 @@
 # Módulo 00 · Aula 6 — Coleções
 
 > `List<T>` é a coleção ordenada da linguagem. `Map<K,V>` e `Set<T>`
-> também existem (0.1.0, nos 3 targets).
+> também existem (nos 3 targets).
 
 ## Criar e usar uma lista
 
@@ -39,6 +39,34 @@ for (var item in listOf("a", "b", "c")) {
 
 `for-in` funciona sobre `List<T>` **e** arrays (`new Int[5]`).
 
+## Transformações funcionais: `map`, `filter`, `reduce` (0.2.0+)
+
+`List<T>` expõe operações de alta ordem diretas — sem expor `Stream`:
+
+```kof
+main() {
+    var nums = listOf(1, 2, 3, 4, 5)
+
+    var dobrados = nums.map((x: Int) -> x * 2)          // [2,4,6,8,10]
+    println(dobrados.get(1))                       // 4
+
+    var pares = nums.filter((x: Int) -> x % 2 == 0)     // [2,4]
+    println(pares.size())                          // 2
+
+    var soma = nums.reduce(0, (acc: Int, x: Int) -> acc + x) // 15
+    println(soma)
+
+    // encadeando:
+    var r = listOf(1, 2, 3, 4)
+        .filter((x: Int) -> x > 1)
+        .map((x: Int) -> x * 10)
+    println(r.get(0))   // 20
+}
+```
+
+Todos os três métodos rodam em JVM, Native e JS com a mesma semântica.
+O tipo do elemento é preservado pela pipeline inteira.
+
 ## Quando NÃO usar coleção manual
 
 ```kof
@@ -64,7 +92,7 @@ class Registry {
 O domínio é "uma sequência de entradas" — represente o domínio, não nós
 encadeados.
 
-## `Map<K,V>` e `Set<T>` (0.1.0)
+## `Map<K,V>` e `Set<T>`
 
 `Map` e `Set` fazem parte da linguagem — a API é de **métodos**:
 

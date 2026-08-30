@@ -8,13 +8,13 @@
 | Aula | O que você aprende | Nível da trilha |
 |------|--------------------|-----------------|
 | [01-introducao.md](01-introducao.md) | O que é Kof, filosofia, CLI | entrada |
-| [02-sintaxe-e-tipos.md](02-sintaxe-e-tipos.md) | declarações, tipos, operadores, strings, arrays | base |
-| [03-controle-de-fluxo.md](03-controle-de-fluxo.md) | if-expr, loops, for-in, switch | base |
-| [04-funcoes-e-lambdas.md](04-funcoes-e-lambdas.md) | funções top-level, lambdas, limites | base |
+| [02-sintaxe-e-tipos.md](02-sintaxe-e-tipos.md) | declarações, tipos, operadores, strings, arrays, **tipos anuláveis** | base |
+| [03-controle-de-fluxo.md](03-controle-de-fluxo.md) | if-expr, loops, for-in, switch, **pattern matching** | base |
+| [04-funcoes-e-lambdas.md](04-funcoes-e-lambdas.md) | funções top-level, lambdas, **parâmetros padrão**, limites | base |
 | [05-classes-records.md](05-classes-records.md) | classes, records, herança, interfaces, JSON | base |
-| [06-colecoes.md](06-colecoes.md) | `List<T>`, `listOf`, iteração | base |
+| [06-colecoes.md](06-colecoes.md) | `List<T>`, `listOf`, iteração, **map/filter/reduce** | base |
 | [07-erros.md](07-erros.md) | exceções (Strings), try/catch/finally | base |
-| [08-json-io.md](08-json-io.md) | JSON, `kof.io`, `kof.time` | base |
+| [08-json-io.md](08-json-io.md) | JSON, `kof.io`, `kof.time` (**scheduler every/at**, **readLine**) | base |
 
 ## Como estudar
 
@@ -26,9 +26,9 @@
 ## Ambiente
 
 ```bash
-kof version          # 0.1.0 (release) / 0.1.1-alpha (ciclo de dev)
+kof version          # 0.2.3-beta (release)
 kof info             # ambiente completo
-kof run aula.kf      # roda
+kof run aula.kf      # roda (--target jvm|native|js|native.risc|native.arm)
 kof check aula.kf    # type-check rápido
 ```
 

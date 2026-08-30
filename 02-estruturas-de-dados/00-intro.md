@@ -19,9 +19,10 @@ fila, grafo são bons exemplos de aprendizado e de necessidade real).
 |-----------|--------|-----|
 | `Array` (`new Int[n]`) | ✅ | tamanho fixo, acesso indexado, sem crescimento |
 | `List<T>` + `listOf` | ✅ | sequência dinâmica (JVM: ArrayList) |
+| `List.map/filter/reduce` | ✅ 0.2.0 | transformações funcionais |
 | `Map<K,V>` + `mapOf` | ✅ 0.1.0 | chave → valor (API de métodos: `size()`) |
 | `Set<T>` + `setOf` | ✅ 0.1.0 | conjunto sem duplicatas |
-| `Option<T>` / null safety | ⏳ planned | use exceção ou `WORKAROUND` documentado |
+| Null safety `String?`, `Int?` | ✅ 0.2.0 | tipos anuláveis com narrowing |
 
 ## Sumário de aulas
 

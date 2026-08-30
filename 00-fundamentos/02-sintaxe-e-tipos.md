@@ -36,7 +36,7 @@ interface Speaker {
 }
 ```
 
-### Enum (0.1.x)
+### Enum
 
 ```kof
 enum Cor { Vermelho, Verde, Azul }
@@ -77,6 +77,26 @@ String nome = "Mel" // explícito
 | `Char` | 4 | code point UTF-32 |
 | `String` | referência | texto imutável |
 | `Void` | — | sem retorno |
+
+## Tipos anuláveis (`String?`, `Int?`, etc.)
+
+Desde a 0.2.0, Kof suporta **tipos anuláveis** com sufixo `?`:
+
+```kof
+var nome: String? = null        // pode ser null
+var idade: Int? = 25            // pode ser null ou Int
+
+// guarda de null (narrowing) — após o check, o tipo vira não-anulável
+if (nome != null) {
+    println(nome.length)        // seguro: nome é String aqui
+} else {
+    println("sem nome")
+}
+```
+
+- `kof check` exige o `if (x != null)` antes de dereferenciar.
+- No runtime, `String?` faz erasure para `String` (mesma representação).
+- Interop Java: métodos que podem retornar `null` mapeiam para `String?`.
 
 ## Operadores
 

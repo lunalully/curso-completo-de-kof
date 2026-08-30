@@ -18,7 +18,7 @@
 | Recurso | Estado |
 |---------|--------|
 | `List<T>`, arrays, `for-in` | ✅ base |
-| `Map<K,V>`, `Set<T>` | ✅ 0.1.0 |
+| `Map<K,V>`, `Set<T>` | ✅ |
 | `kof.io` (ler CSV de arquivo) | ✅ |
 | `json.encode/decode` (dados) | ✅ |
 | `now()` (medir) | ✅ |

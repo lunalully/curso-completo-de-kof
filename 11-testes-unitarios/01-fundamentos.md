@@ -9,7 +9,7 @@ assert(condicao, "mensagem de falha")
 - Se `condicao` é falsa → o programa (ou o bloco `test`) falha.
 - Com blocos `test`, cada teste reporta PASS/FAIL individualmente.
 
-## Blocos `test` (0.1.0)
+## Blocos `test` (0.1.0+)
 
 ```kof
 Int soma(Int a, Int b) {
