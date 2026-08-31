@@ -77,5 +77,5 @@ cd solucoes
 kof run 29-integrador.kf
 ```
 
-Cada solução compila e roda no compilador real (0.2.5-beta). Estude a solução
+Cada solução compila e roda no compilador real (0.2.6-beta). Estude a solução
 **após** tentar — e reescreva com suas palavras.

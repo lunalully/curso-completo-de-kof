@@ -118,6 +118,41 @@ Cada conexão é tratada numa **virtual thread** (JVM). Handlers são síncronos
 o runtime decide a estratégia. O contexto é por-request (ThreadLocal) —
 handlers concorrentes não compartilham estado.
 
+## WebSocket (0.2.6+)
+
+```kof
+main() {
+    var app = web.app()
+
+    app.ws("/chat") {
+        // handler WebSocket — conexão persistente
+        return "ok"
+    }
+
+    app.listen(8080)
+}
+```
+
+- `app.ws(path, handler)` — rota WebSocket (RFC 6455).
+- **JVM**: disponível; Native/JS: WEB003/WEB004 (gap documentado).
+
+## SSE — Server-Sent Events (0.2.6+)
+
+```kof
+main() {
+    var app = web.app()
+
+    app.sse("/events") {
+        sse.send("hello")   // envia evento
+    }
+
+    app.listen(8080)
+}
+```
+
+- `app.sse(path, handler)` — rota SSE nativa (JVM).
+- **JVM**: disponível; Native/JS: WEB003/WEB004 (gap documentado).
+
 ## Exercícios
 
 1. Monte uma API com rotas para os 6 métodos e teste cada uma com `curl`.

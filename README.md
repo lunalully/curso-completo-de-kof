@@ -71,13 +71,13 @@ kof version
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.2.5-beta
+Todas as **soluções compilam e rodam** no compilador real 0.2.6-beta
 (verificadas nesta trilha). Workarounds para bugs reais do compilador estão
 em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.2.5-beta** (implementada, testada e verificada no compilador — 663+ testes):
+Baseado na **0.2.6-beta** (implementada, testada e verificada no compilador — 661 testes):
 
 | Capacidade | Estado |
 |------------|--------|
@@ -94,12 +94,14 @@ Baseado na **0.2.5-beta** (implementada, testada e verificada no compilador — 
 | `kof.io` (File/Path/Directory, `readLine()`) | ✅ 3 targets |
 | `kof.time` (`now()`, `sleep`, `interval`, `every`/`at` scheduler) | ✅ JVM/JS (SCHED001 Native) |
 | `kof.web` (`web.app()`, rotas, middleware, `status()`, `headerSet()`, TLS) | ✅ JVM (WEB002 Native/JS) |
+| `kof.web` WebSocket (`app.ws("/chat") { }`) + SSE nativo | ✅ JVM (WEB003/WEB004 Native/JS) |
 | `kof.http` client (`http.get/post/put/delete/status/timeout`) | ✅ JVM/JS (HTTP002 Native) |
 | `kof.cache` (`cache.get/set/ttl/delete/clear`) | ✅ 3 targets |
 | `kof.db` (JDBC, `transaction {}`, `query<T>`) + SQLite nativo | ✅ JVM/Native (DB001 JS) |
 | `kof.orm` (`entity`, CRUD, `where`, migrations, MongoDB) | ✅ JVM (ORM001 Native/JS) |
 | `kof.security` (passwords, crypto, jwt, secrets, auth, rateLimit) | ✅ 3 targets |
 | `kof.config`, `kof.log` | ✅ JVM/Native (CONF001/LOG001 JS) |
+| `kof.config` interpolação `${key}` | ✅ 3 targets |
 | `spawn` (stmt) / `val r = spawn f()` / `await r` / `poll/done/cancel/selectAny` | ✅ JVM (CONC001 Native, CONC003 JS) |
 | `process.exit(code)` / `readLine()` | ✅ 3 targets |
 | `process.run(cmd, args...)` / `process.spawn(cmd, args...)` | ✅ JVM/JS (PROC001 Native) |
