@@ -185,7 +185,7 @@ var d = json.decode<Point>("{\"x\": 10, \"y\": 20}")
 ```
 
 **Limitação:** JSON de objetos/records no target Native não é suportado
-(diagnostic `JSN002`). Primitivos/lists funcionam em ambos.
+JSON de objetos/records agora funciona nos 3 targets (JSN002 fechado). Primitivos/lists funcionam em ambos.
 
 ## Exercícios
 

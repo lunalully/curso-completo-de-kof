@@ -26,7 +26,7 @@
 ## Ambiente
 
 ```bash
-kof version          # 0.2.6-beta (release)
+kof version          # 0.2.8-beta (release)
 kof info             # ambiente completo
 kof run aula.kf      # roda (--target jvm|native|js|native.risc|native.arm)
 kof check aula.kf    # type-check rápido

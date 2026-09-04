@@ -68,7 +68,7 @@ main() {
 - `http.get(url[, header])`, `http.post(url, body)`, `put/delete/patch`.
 - `http.status(url)` consulta o código HTTP sem baixar o corpo.
 - Headers customizados: argumento extra `"Header: valor"`.
-- Native/JS reportam `HTTP002` em compile-time — a comunicação entre
+- HTTP client funciona nos 3 targets (HTTP002 fechado, 0.2.8-beta) — a comunicação entre
   serviços é padrão JVM por ora.
 
 ## Aula 04 — API gateway

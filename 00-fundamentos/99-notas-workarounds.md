@@ -1,4 +1,4 @@
-# Notas — Workarounds do compilador 0.2.x (verificados até 0.2.6-beta)
+# Notas — Workarounds do compilador 0.2.x (verificados até 0.2.8-beta)
 
 > Bugs reais encontrados ao validar as soluções do curso contra a linha
 > **0.2.x** (verificados executando o compilador). Todos são

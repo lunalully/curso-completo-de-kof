@@ -31,9 +31,9 @@ A intenção é a rota.
 | Capacidade | Estado |
 |------------|--------|
 | Servidor HTTP (`kof serve`, `web.app()`) | ✅ JVM |
-| Cliente HTTP (`kof.http`: get/post/put/delete/patch) | ✅ JVM (HTTP002 Native/JS) |
+| Cliente HTTP (`kof.http`: get/post/put/delete/patch) | ✅ 3 targets (HTTP002 fechado) |
 | Concorrência (`spawn`, `spawn` expr + `await`) | ✅ JVM |
-| TLS/HTTPS (`web.listenSecure(port)`, `kof.http` HTTPS) | ✅ JVM (WEB002 Native/JS) |
+| TLS/HTTPS (`web.listenSecure(port)`, `kof.http` HTTPS) | ✅ JVM/Native (WEB001 JS) |
 | Sockets crus expostos ao programador | ⏳ planned — não invente |
 
 Se algo não existe, o Kof reporta em compile-time — e o curso marca

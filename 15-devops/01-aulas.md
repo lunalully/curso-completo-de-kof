@@ -19,7 +19,7 @@ kof fmt app.kf [-w]                   # formatador (parser real, idempotente)
 ```
 
 - O **mesmo código** gera JVM bytecode, ELF nativo x86-64/RISC-V/ARM64, ES Modules, e C subset.
-- Gaps de target (`DB001`, `CONC001`, `SECN00x`, `WEB001/002`, `HTTP002`, `SCHED001`, `ORM001`...) são reportados
+- Gaps de target (`DB001`, `SECN00x`, `WEB001`, `ORM001`, `AND001`...) são reportados
   em compile-time — o build falha com diagnóstico claro, nunca silencioso.
 - `--release` remove metadata de debug (SourceFile/LineNumberTable no JVM, source map no JS).
 - No CI: compile todos os targets para **provar** que o código é multi-target.

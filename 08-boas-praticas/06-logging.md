@@ -59,7 +59,7 @@ log.info("conectando com " + secrets.redact(apiKey))
 ## Estado por target
 
 - JVM: ✅ completo (níveis, off).
-- Native/JS: `LOG001` (gap em compile-time) — use JVM hoje.
+- Kof.log agora funciona nos 3 targets (LOG001 fechado, 0.2.8-beta).
 
 ## Exercícios
 

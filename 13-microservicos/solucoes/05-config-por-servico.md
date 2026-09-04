@@ -44,4 +44,4 @@ log.info("pedidos: " + method() + " " + path())
 - `kof.observability`: ✅ (`health/readiness/liveness`, `counter(name)`,
   `gauge(name, value)`, `requestId()`/`correlationId()`) — JVM/Native/JS.
 - TLS entre serviços: `web.listenSecure(port)` no servidor e `kof.http`
-  HTTPS no cliente — **JVM** (Native/JS reportam `WEB002`).
+  HTTPS no cliente — **JVM e Native** (WEB001 JS residual).

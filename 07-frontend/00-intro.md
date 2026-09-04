@@ -22,7 +22,7 @@ Kof source → Kof Compiler → Kof IR → KofJS → DOM real (webview/browser)
 | `Column`, `Row`, `View`, `Style` | ✅ JS |
 | Ações por lambda | ✅ JS |
 | Renderização | sempre via KofJS → DOM (webview/browser); JVM/Native ponte para o mesmo runtime |
-| `spawn` no JS | ❌ `CONC003` em compile-time |
+| `spawn` no JS | ✅ `CONC003` fechado (async/await real, 0.2.8-beta) |
 
 A renderização é **KofJS**: widgets → DOM real no webview nativo
 (`bin/kof-webview`, WebKitGTK) ou no browser. Sem JavaFX, sem AWT.

@@ -22,8 +22,8 @@ kof run app.kf --target js
 | try/catch/finally | ✅ |
 | `kof.security` (passwords/crypto/jwt) | ✅ |
 | `kof.ui` (widgets → DOM) | ✅ |
-| `kof.web` / `kof.http` | ❌ `WEB002` / ✅ (`HTTP002` Native, JS via Java HttpClient) |
-| `spawn` | ❌ `CONC003` |
+| `kof.web` / `kof.http` | ✅ (`HTTP002` fechado, `WEB001` JS residual) |
+| `spawn` | ✅ `CONC003` fechado (async/await real) |
 
 > Gaps de target são diagnósticos **em compile-time** — o programa não
 > compila para JS com `spawn`; a plataforma diz, nunca silencia.

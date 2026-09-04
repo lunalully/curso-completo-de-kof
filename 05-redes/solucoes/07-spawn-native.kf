@@ -1,5 +1,5 @@
-// Compile para o target native e observe o diagnostic CONC001:
-//   kof build 07-spawn-native.kf --target native --output out
+// Compile para o target native — spawn agora funciona via pthread (CONC001 fechado):
+//   kof run 07-spawn-native.kf --target native
 void tarefa() {
     println("x")
 }

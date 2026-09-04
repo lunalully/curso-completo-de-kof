@@ -24,7 +24,7 @@
 
 - ★★ [05-spawn.kf](solucoes/05-spawn.kf) — 3 `spawn` de funções + join implícito.
 - ★★ [06-spawn-lote.kf](solucoes/06-spawn-lote.kf) — processe 100 itens em 4 lotes paralelos.
-- ★★★ [07-spawn-native.kf](solucoes/07-spawn-native.kf) — compile para native e **observe o diagnostic `CONC001`** (documente a saída).
+- ★★★ [07-spawn-native.kf](solucoes/07-spawn-native.kf) — compile para native e **valide que spawn funciona** via pthread (CONC001 fechado, 0.2.8-beta).
 
 ## Desafio integrador
 

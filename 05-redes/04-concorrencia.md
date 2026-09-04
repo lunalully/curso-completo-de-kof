@@ -25,7 +25,7 @@ main() {
 - O programa **espera as tarefas antes de sair** (join implícito).
 - O retorno da função é descartado (fire-and-forget).
 - Exceção na tarefa **não derruba** o programa.
-- **Native ainda não suporta** (diagnostic `CONC001`) — use JVM.
+- **Native suporta** via pthread (CONC001 fechado, 0.2.8-beta) — use `kof run --target native`.
 
 ## Quando usar
 
@@ -178,16 +178,16 @@ var line = h.readLine()      // lê stdout
 h.kill()                     // destrói o processo
 ```
 
-- `process.run`: JVM e JS ✅; Native: **PROC001** (gap documentado).
-- `process.spawn`: JVM e JS ✅; Native: **PROC001** (gap documentado).
+- `process.run`: ✅ 3 targets (PROC001 fechado, 0.2.8-beta).
+- `process.spawn`: ✅ 3 targets (PROC001 fechado, 0.2.8-beta).
 - `process.exit(code)`: ✅ 3 targets.
 
 ## Limitações honestas
 
 - Filas produtor/consumidor: `kof.mq` (`queue/push/pop`, `mq.publish/
-  subscribe`) — JVM, em memória.
-- Native: **CONC001** (statement e expressão) — use o target JVM.
-- JS: **CONC003** — spawn não suportado no target JS.
+  subscribe`) — 3 targets (MQ001 fechado, 0.2.8-beta).
+- Native: **CONC001 fechado** (pthread, 0.2.8-beta) — spawn/await funciona.
+- JS: **CONC003 fechado** — concorrência real via async/await/Promise (0.2.8-beta).
 - Lambda com captura **e** parâmetro tipado ainda falha em runtime
   (`99-notas-workarounds.md` #8).
 
@@ -196,5 +196,5 @@ h.kill()                     // destrói o processo
 1. Dispare 3 `spawn` e confirme o join implícito (o programa espera).
 2. Processe uma lista de 100 itens em 4 lotes paralelos.
 3. Use `spawn` expressão + `await` para somar resultados de duas tarefas.
-4. Compile para o target native um programa com `spawn` e observe o
-   diagnostic `CONC001`.
+4. Compile para o target native um programa com `spawn` e confirme que funciona
+   via pthread (CONC001 fechado, 0.2.8-beta).

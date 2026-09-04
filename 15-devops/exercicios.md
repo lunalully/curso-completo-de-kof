@@ -6,7 +6,7 @@
 
 - ★ [01-hello-multi.kf](solucoes/01-hello-multi.kf) — compile para `jvm`, `native` e `js`; verifique a saída de cada um.
 - ★★ [02-multi-target.kf](solucoes/02-multi-target.kf) — programa com `kof.io`; compile para jvm E native e rode os dois binários.
-- ★★★ compile um programa que usa `spawn` para native e documente o `CONC001` (gap honesto).
+- ★★★ compile um programa que usa `spawn` para native e documente que funciona via pthread (CONC001 fechado, 0.2.8-beta).
 
 ## CI (aula 02)
 

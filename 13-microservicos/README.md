@@ -16,7 +16,7 @@
 | Capacidade | Estado |
 |------------|--------|
 | Servidor HTTP (`web.app()`) | ✅ JVM |
-| **Cliente HTTP** (`kof.http`: get/post/put/delete/patch) | ✅ JVM (HTTP002 Native/JS) |
+| **Cliente HTTP** (`kof.http`: get/post/put/delete/patch) | ✅ 3 targets (HTTP002 fechado) |
 | `kof.config` (per-serviço via env/arquivo) | ✅ JVM |
 | `kof.log` (per-serviço) | ✅ JVM |
 | `spawn` (paralelismo dentro do serviço) | ✅ JVM |

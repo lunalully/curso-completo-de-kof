@@ -19,7 +19,7 @@ println(d.x())                      // 10
 ```
 
 **Gaps documentados (compile-time, nunca silenciosos):**
-- `JSN002` — JSON de objetos/records no target Native.
+- JSON de objetos/records agora funciona nos 3 targets (JSN002 fechado, 0.2.8-beta).
 - `JSN001` — `json.encode(1.5)` (Float/Double) ainda não compila; converta
   para String ou use Int.
 
@@ -114,7 +114,7 @@ at("0 3 * * *") {
 }
 ```
 
-> Native reporta `SCHED001` (gap documentado).
+> kof.time agora funciona nos 3 targets (TIME001 fechado, 0.2.8-beta).
 
 ### `readLine()` (0.2.0+)
 
