@@ -60,7 +60,7 @@ O runtime gera um accept loop com **virtual threads** (JVM) — detalhe interno.
 
 ## Do lado do cliente
 
-O cliente HTTP nativo funciona nos **3 targets** (HTTP002 fechado, 0.2.8-beta):
+O cliente HTTP nativo funciona nos **3 targets** (HTTP002 fechado, 0.3.0-beta):
 
 ```kof
 var corpo = http.get("http://127.0.0.1:8080/hello")

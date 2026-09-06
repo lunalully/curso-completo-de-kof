@@ -25,7 +25,7 @@ main() {
 - O programa **espera as tarefas antes de sair** (join implícito).
 - O retorno da função é descartado (fire-and-forget).
 - Exceção na tarefa **não derruba** o programa.
-- **Native suporta** via pthread (CONC001 fechado, 0.2.8-beta) — use `kof run --target native`.
+- **Native suporta** via pthread (CONC001 fechado, 0.3.0-beta) — use `kof run --target native`.
 
 ## Quando usar
 
@@ -178,16 +178,16 @@ var line = h.readLine()      // lê stdout
 h.kill()                     // destrói o processo
 ```
 
-- `process.run`: ✅ 3 targets (PROC001 fechado, 0.2.8-beta).
-- `process.spawn`: ✅ 3 targets (PROC001 fechado, 0.2.8-beta).
+- `process.run`: ✅ 3 targets (PROC001 fechado, 0.3.0-beta).
+- `process.spawn`: ✅ 3 targets (PROC001 fechado, 0.3.0-beta).
 - `process.exit(code)`: ✅ 3 targets.
 
 ## Limitações honestas
 
 - Filas produtor/consumidor: `kof.mq` (`queue/push/pop`, `mq.publish/
-  subscribe`) — 3 targets (MQ001 fechado, 0.2.8-beta).
-- Native: **CONC001 fechado** (pthread, 0.2.8-beta) — spawn/await funciona.
-- JS: **CONC003 fechado** — concorrência real via async/await/Promise (0.2.8-beta).
+  subscribe`) — 3 targets (MQ001 fechado, 0.3.0-beta).
+- Native: **CONC001 fechado** (pthread, 0.3.0-beta) — spawn/await funciona.
+- JS: **CONC003 fechado** — concorrência real via async/await/Promise (0.3.0-beta).
 - Lambda com captura **e** parâmetro tipado ainda falha em runtime
   (`99-notas-workarounds.md` #8).
 
@@ -197,4 +197,4 @@ h.kill()                     // destrói o processo
 2. Processe uma lista de 100 itens em 4 lotes paralelos.
 3. Use `spawn` expressão + `await` para somar resultados de duas tarefas.
 4. Compile para o target native um programa com `spawn` e confirme que funciona
-   via pthread (CONC001 fechado, 0.2.8-beta).
+   via pthread (CONC001 fechado, 0.3.0-beta).

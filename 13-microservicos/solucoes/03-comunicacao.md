@@ -23,7 +23,7 @@ var resposta = http.post("http://127.0.0.1:8082/produtos/" + id + "/baixa", "{\"
 ```
 
 - Trate **status** antes de parsear o corpo (`http.status(url)`).
-- HTTP client funciona nos 3 targets (HTTP002 fechado, 0.2.8-beta).
+- HTTP client funciona nos 3 targets (HTTP002 fechado, 0.3.0-beta).
 - Termine o handler com expressão (`"" + resposta`), nunca `return resposta;`
   nua — a rota não registra (nota #5a).
 

@@ -71,13 +71,13 @@ kof version
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.2.8-beta
+Todas as **soluções compilam e rodam** no compilador real 0.3.0-beta
 (verificadas nesta trilha). Workarounds para bugs reais do compilador estão
 em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.2.8-beta** (implementada, testada e verificada no compilador — 910 testes):
+Baseado na **0.3.0-beta** (implementada, testada e verificada no compilador — 913+ testes):
 
 | Capacidade | Estado |
 |------------|--------|
@@ -90,19 +90,19 @@ Baseado na **0.2.8-beta** (implementada, testada e verificada no compilador — 
 | Strings (`+`, `==`, API completa, `lastIndexOf`) | ✅ 3 targets |
 | Exceções `throw "msg"` / try/catch/finally | ✅ 3 targets |
 | `assert`, `test "nome" { }` + `kof test` | ✅ 3 targets |
-| JSON `json.encode` / `json.decode<T>` (objetos/records/arrays) | ✅ 3 targets (JSN001/JSN002 fechados) |
+| JSON `json.encode` / `json.decode<T>` (objetos/records/arrays) | ✅ 3 targets (JSN001/JSN002 fechados; NATIVE002-stdlib riscv64/aarch64) |
 | `kof.io` (File/Path/Directory, `readLine()`, `File.readRange()`) | ✅ 3 targets |
 | `kof.time` (`now()`, `sleep`, `interval`, `every`/`at` scheduler) | ✅ 3 targets (TIME001 fechado) |
 | `kof.web` (`web.app()`, rotas, middleware, `status()`, `headerSet()`, TLS, accept loop nativo) | ✅ JVM/Native (WEB003/WEB004 JS) |
 | `kof.web` WebSocket (`app.ws("/chat") { }`) + SSE nativo | ✅ JVM (WEB003/WEB004 Native/JS) |
-| `kof.http` client (`http.get/post/put/delete/status/timeout`) | ✅ 3 targets (HTTP002 fechado) |
+| `kof.http` client (`http.get/post/put/delete/status/timeout`) | ✅ 3 targets (HTTP002 fechado; NATIVE002-stdlib riscv64/aarch64) |
 | `kof.cache` (`cache.get/set/ttl/delete/clear`) | ✅ 3 targets |
 | `kof.db` (JDBC, `transaction {}` commit/rollback real, `query<T>`) + SQLite nativo | ✅ JVM/Native (DB001 JS) |
 | `kof.orm` (`entity`, CRUD, `where`, migrations, MongoDB, Query DSL tipada) | ✅ JVM/Native (ORM001 JS) |
 | `kof.security` (passwords, crypto, jwt, secrets, auth, rateLimit) | ✅ 3 targets |
 | `kof.config`, `kof.log` | ✅ 3 targets (LOG001 fechado) |
 | `kof.config` interpolação `${key}` | ✅ 3 targets |
-| `spawn` (stmt) / `val r = spawn f()` / `await r` / `poll/done/cancel/selectAny` | ✅ 3 targets (CONC001/CONC003 fechados) |
+| `spawn` (stmt) / `val r = spawn f()` / `await r` / `poll/done/cancel/selectAny` | ✅ 3 targets (CONC001/CONC003 fechados; NATIVE002-stdlib riscv64/aarch64) |
 | `process.exit(code)` / `readLine()` | ✅ 3 targets |
 | `process.run(cmd, args...)` / `process.spawn(cmd, args...)` | ✅ 3 targets (PROC001 fechado) |
 | `kof fmt <file\|dir> [-w]` (formatador, parser real) | ✅ 3 targets |
@@ -116,6 +116,7 @@ Baseado na **0.2.8-beta** (implementada, testada e verificada no compilador — 
 | `application {}` lifecycle (onStart/onShutdown) | ✅ 3 targets |
 | W3C spans (spanStart/spanEnd) | ✅ 3 targets |
 | package manager MVP (`kof deps`) | ✅ disponível |
+| `kof init` (package manager) | 🚧 em desenvolvimento |
 
 **Gaps de target** são reportados em compile-time com códigos
 (`DB001`, `SECN00x`, `WEB001`, `ORM001`, `AND001`) — nunca de forma silenciosa. É parte da filosofia:
