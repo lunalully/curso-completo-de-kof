@@ -28,8 +28,10 @@ kof run app.kf --target js
 > Gaps de target são diagnósticos **em compile-time** — o programa não
 > compila para JS com `spawn`; a plataforma diz, nunca silencia.
 > 
-> **Nota:** lambdas com capturas funcionam nos três targets (JVM, Native, JS) —
-> a paridade de captura foi fechada na 0.2.0.
+> **Nota:** lambdas com capturas funcionam nos 5 alvos (JVM/Native/riscv/aarch64/JS) —
+> paridade de captura fechada na 0.3.0 (3 níveis aninhados).
+
+> **0.3.7:** `kof.strings`/`kof.encoding`/`kof.random`/`kof.net` funcionam no JS (5-6 alvos); `kof.ui` widgets Table/Select/Textarea/Canvas disponíveis — ver `training/idioms/ui.md`.
 
 ## kof.ui no JS
 

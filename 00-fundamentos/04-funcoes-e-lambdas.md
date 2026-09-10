@@ -70,8 +70,7 @@ println(h())                // 99
 
 Lambdas compilam para classes sintéticas com um método `invoke`.
 
-**Capturas (0.1.0+):** lambdas capturam variáveis do escopo. O caso
-sólido é capturar campos em lambda **sem parâmetros**:
+**Capturas (0.3.0+):** lambdas capturam variáveis do escopo — inclusive com parâmetros tipados e em 3 níveis de aninhamento. Capturas mutáveis usam `Box` (`mutação fora reflete dentro`):
 
 ```kof
 class Contador {
@@ -89,11 +88,15 @@ main() {
     inc()
     println(c.n)            // 2
 }
-```
 
-> `WORKAROUND` — lambda com captura **e** parâmetro tipado
-> (`(x: Int) -> x + offset`) ainda falha em runtime (VerifyError). Passe o
-> valor como parâmetro. Detalhes em `99-notas-workarounds.md` (#8).
+var offset = 10
+var f = (x: Int) -> x + offset   // captura + param tipado ✅ (0.3.0)
+offset = 20
+println(f(5))                // 25
+
+var make = (x: Int) -> ((y: Int) -> x + y)
+println(make(5)(3))          // 8 — lambdas aninhados ✅
+```
 
 ## Parâmetros
 
@@ -110,11 +113,7 @@ main() {
 }
 ```
 
-Não há sobrecarga de funções top-level nem argumentos nomeados.
-
-> `WORKAROUND` — lambda com captura **e** parâmetro tipado
-> (`(x: Int) -> x + offset`) pode falhar em runtime (VerifyError). Passe o
-> valor como parâmetro. Detalhes em `99-notas-workarounds.md` (#8).
+Não há sobrecarga de funções top-level nem argumentos nomeados. `fn`/`fun`/`func` são palavras reservadas — não existem em Kof (dão `PARSE085`). Use `String nome(...) { }` ou `nome(...): String { }`.
 
 ## Exercícios
 

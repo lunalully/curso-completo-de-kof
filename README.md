@@ -24,8 +24,8 @@ kof bench [paths...] [--target jvm|native|js] [--iterations N]  # benchmarks
 kof profile <file.kf> [--target jvm|native|js]   # CPU, RSS, GC
 kof inspect <file.kf> [--json]  # estatísticas de IR
 kof fmt <file.kf|dir> [-w]  # formatador (parser real, idempotente)
-kof script <file.ks|kf> [--target jvm|native|js]  # KofScript (let top-level, repl)
-kof repl                    # REPL KofScript interativo
+kof script <file.ks|kf> [--target jvm|native|js]  # KofScript: Kof puro via KofInterpreter (sem let/const)
+kof repl                    # REPL KofScript interativo (Kof puro)
 kof c <file.c>              # KofC: subset C -> ELF nativo
 kof info [--json]           # ambiente completo
 kof lsp                     # Language Server Protocol
@@ -71,13 +71,13 @@ kof version
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.3.0-beta
-(verificadas nesta trilha). Workarounds para bugs reais do compilador estão
+Todas as **soluções compilam e rodam** no compilador real 0.3.7-beta
+(verificadas nesta trilha). Workarounds residuais para bugs raros estão
 em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.3.0-beta** (implementada, testada e verificada no compilador — 913+ testes):
+Baseado na **0.3.7-beta** (implementada, testada e verificada no compilador — 1350+ testes: JVM/Native/JS/KofScript):
 
 | Capacidade | Estado |
 |------------|--------|
@@ -111,8 +111,14 @@ Baseado na **0.3.0-beta** (implementada, testada e verificada no compilador — 
 | Null safety `String?`, `Int?` + `if (x != null)` narrowing | ✅ 3 targets |
 | `List.map/filter/reduce` (higher-order) | ✅ 3 targets |
 | `kof.mq` (pub/sub em memória) | ✅ 3 targets (MQ001 fechado) |
-| `kof.validation` (13 predicados) | ✅ 3 targets |
+| `kof.validation` (30+ predicados: isCpf/isCnpj, isIpv4/v6, Luhn, isDomain) | ✅ 4-5 targets |
 | `kof.observability` (health, counter/gauge/histogram) | ✅ 3 targets |
+| `kof.strings` (escapeJson/unescapeHtml, word converters, pad/repeat) | ✅ 5 targets |
+| `kof.encoding` (base64/hex/urlEncode) | ✅ 5 targets |
+| `kof.random` (randomInt/randomBoolean) | ✅ 5 targets |
+| `kof.net` (URI parse + fetch) | ✅ 6 alvos (NET001 fechado) |
+| `kof.uuid` v4 | ✅ 5 alvos (SECN000 cross) |
+| arrays multidimensionais `new T[a][b]` | ✅ 5 alvos (MULTIANEWARRAY) |
 | `application {}` lifecycle (onStart/onShutdown) | ✅ 3 targets |
 | W3C spans (spanStart/spanEnd) | ✅ 3 targets |
 | package manager MVP (`kof deps`) | ✅ disponível |

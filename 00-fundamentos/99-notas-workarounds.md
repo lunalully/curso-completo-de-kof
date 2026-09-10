@@ -1,8 +1,8 @@
-# Notas — Workarounds do compilador 0.2.x (verificados até 0.3.0-beta)
+# Notas — Workarounds do compilador 0.2.x–0.3.x (verificados até 0.3.7-beta)
 
 > Bugs reais encontrados ao validar as soluções do curso contra a linha
-> **0.2.x** (verificados executando o compilador). Todos são
-> `WORKAROUND` — quando corrigidos no compilador, remova os desvios.
+> **0.2.x–0.3.x** (verificados executando o compilador). Todos são
+> `WORKAROUND` — quando corrigidos no compilador, remova os desvios. Desde 0.3.0, muitos foram fechados (ver lista abaixo); os restantes são raros e documentados aqui.
 
 ## 1. Campo `Long` em comparação → COMP002 (crash) — ABERTO
 
@@ -92,25 +92,14 @@ no curso até o bug fechar.
 Corrigido no compilador 0.2.4-beta (widening de return): `return soma /
 dados.size` (Int/Int) com retorno `Double` funciona normalmente.
 
-## 8. Lambda com captura + parâmetro tipado → VerifyError — ABERTO
+## 8. ~~Lambda com captura + parâmetro tipado → VerifyError~~ — CORRIGIDO ✅ (0.3.0)
 
-**Sintoma:** `(x: Int) -> x * fator` capturando variável local compila e
-falha em runtime (`VerifyError: Bad local variable type`).
+Corrigido: lambda com captura + parâmetro tipado funciona nos 3 targets, incluindo lambdas aninhados 3 níveis. Ver `00-fundamentos/04-funcoes-e-lambdas.md`.
 
-**Funciona (verificado):**
-- captura de campo/campo estático em lambda sem parâmetros:
-  ```kof
-  var inc = () -> { c.n = c.n + 1 return c.n }
-  ```
-- lambda com parâmetro tipado **sem** captura: `(x: Int) -> x * 2`.
+## 9. `Map`/`Set`: use `.size()` método, não propriedade — ABERTO (parcial)
 
-**Workaround:** passe o valor capturado como parâmetro, ou capture apenas
-em lambdas sem parâmetros.
-
-## 9. `Map`/`Set`: use `.size()` método, não propriedade — ABERTO
-
-**Sintoma:** `m.size` (sem parênteses) sobre `Map`/`Set` gera bytecode
-inválido. A API oficial é de métodos:
+**Sintoma (0.2.x):** `m.size` (sem parênteses) sobre `Map`/`Set` gerava bytecode
+inválido. Em 0.3.x, `List.size` como propriedade funciona; `Map`/`Set` exigem `size()` (método). A API oficial é de métodos:
 
 ```kof
 var m = mapOf()

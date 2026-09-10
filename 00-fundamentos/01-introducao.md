@@ -7,12 +7,22 @@
 
 Kof é uma linguagem **compilada**, **fortemente** e **estaticamente tipada**,
 orientada a objetos, que compila para **JVM**, **nativo x86-64**, **nativo RISC-V**,
-**nativo ARM64**, **JS** (ES Modules), **KofScript** e **KofC**. Um mesmo código-fonte
+**nativo ARM64**, **JS** (ES Modules), **KofScript** (execução direta via `KofInterpreter`) e **KofC** (subset C → ELF). Um mesmo código-fonte
 gera programas para múltiplos mundos:
 
 ```
-Source (.kf) → Kof Compiler → Kof IR → JVM | Native | Native.risc | Native.arm | JS | KofScript | KofC
+Linguagem Kof (definida pela especificação)
+      │
+Kof Compiler (uma implementação)
+      │
+   Kof IR (máquina de pilha linear, 30 ops)
+      │
+ ┌────┼───────────────┬──────────────┐
+JVM  Native (x86_64/riscv64/aarch64)  JS
+                KofScript (IR)  KofC (C→ELF)
 ```
+
+**A linguagem não muda. O target muda.** `KofScript` não é JavaScript (`let`/`const`/`async`/`fn` não existem — dão `PARSE085`).
 
 Sem transpilar para Java. O compilador tem lexer, parser, AST, sistema de
 tipos, análise semântica, IR e geração de código próprios.
@@ -22,6 +32,8 @@ tipos, análise semântica, IR e geração de código próprios.
 > **Menos código. Mais intenção.** O código expressa *o que* quer; a
 > plataforma (linguagem + compilador + runtime + stdlib) decide *como*, por
 > target e por convenção.
+
+> **Kof é orientada à intenção — o extremo da OO, não um paradigma formal.** A cadeia é `intenção → Kof → compilador → backend`. Você escreve `spawn tarefa()` (não `Thread`), `app.get("/users/:id")` (não servlet container), `json.decode<User>(body)` (não parser manual), `Palette.red` (não `0xFF0000FF`). Se um target não consegue realizar a intenção, ele diagnostica em compile-time com código de gap (`CONC001`, `DB001`, `SECN000`...) — nunca silenciosamente. Ver `docs/philosophy.md` e `training/idioms/`.
 
 ## Seu primeiro programa
 
@@ -45,9 +57,9 @@ Observações importantes:
 
 ## Onde as coisas moram
 
-- **`docs/`** — documentação técnica (estado, arquitetura, segurança).
-- **`learn/`** — trilha para humanos (numerada: 00 → 37).
-- **`training/`** — corpus para LLMs (fatos, idioms, anti-patterns, exemplos).
+- **`docs/`** — documentação técnica (estado, arquitetura, segurança, performance, debugging, distribuição). A separação **linguagem ≠ compilador ≠ target** é o eixo (ver `docs/language-reference/` e `docs/compiler-architecture.md`).
+- **`learn/`** — trilha para humanos (numerada: 00 → 39_stdlib, + native/).
+- **`training/`** — corpus para LLMs (fatos, idioms, anti-patterns, exemplos, migration, tooling, releases).
 - **`kof --help` / `kof info`** — ambiente instalado.
 
 ## Comandos da CLI
@@ -63,8 +75,8 @@ Observações importantes:
 | `kof bench [paths...] [--target jvm\|native\|js] [--iterations N]` | benchmarks com validação |
 | `kof profile a.kf [--target jvm\|native\|js]` | métricas de execução (CPU, RSS, GC) |
 | `kof inspect a.kf [--json]` | estatísticas de IR (antes/depois otimização) |
-| `kof script a.ks [--target jvm\|native\|js]` | KofScript (let top-level, repl) |
-| `kof repl` | REPL KofScript interativo |
+| `kof script a.ks [--target jvm\|native\|js]` | KofScript: Kof puro via KofInterpreter (sem let/const/fn) |
+| `kof repl` | REPL KofScript interativo (Kof puro) |
 | `kof c a.c` | KofC: subset C -> ELF nativo |
 | `kof lsp` | language server (LSP 3.x, stdio) |
 | `kof info [--json]` | relatório do ambiente |

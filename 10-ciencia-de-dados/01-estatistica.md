@@ -6,7 +6,7 @@
 
 ```kof
 Double media(List<Double> dados) {
-    if (dados.size == 0) {
+    if (dados.isEmpty()) {
         throw "conjunto vazio"
     }
     var soma = 0.0
@@ -23,7 +23,7 @@ Requer **ordenação**. Adapte o merge sort do módulo 01 para `Double`:
 
 ```kof
 Double mediana(List<Double> dados) {
-    if (dados.size == 0) {
+    if (dados.isEmpty()) {
         throw "conjunto vazio"
     }
     var ord = mergeSort(dados)
@@ -48,10 +48,10 @@ Double variancia(List<Double> dados) {
 }
 
 Double desvioPadrao(List<Double> dados) {
-    // raiz quadrada — verifique no seu compilador a função; se não houver,
-    // implemente `sqrt` com o método de Newton (exercício).
-    return raizQuadrada(variancia(dados))
+    return raizQuadrada(variancia(dados)) // 0.3.7: use `math.sqrt` quando disponível? ainda não — mantenha Newton
 }
+
+> **0.3.7 dica:** gere amostras com `kof.random` (`randomInt(0,100)`) para testar estatística com dados sintéticos — 5 alvos.
 ```
 
 ## Moda

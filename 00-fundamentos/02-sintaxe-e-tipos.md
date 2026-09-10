@@ -155,13 +155,30 @@ s.split(" ")                // String[]
 s == "Hello World"          // true (conteúdo)
 ```
 
-**Diferença por target:** no Native, `length` conta **bytes UTF-8**; no JVM,
-conta **unidades UTF-16**. Não assuma contagem de caracteres para strings com
-acentos quando o target importa.
+**Correção 0.3.1 (bug 43):** `String.length` agora conta **unidades UTF-16** nos 5 alvos (paridade JVM/JS/Native/riscv/aarch64; `café` → 4, `a😀b` → 4 por STR001). `charAt` idem.
+
+> `fn`/`fun`/`func` são **palavras reservadas** (SG-001) — não existem em nenhuma posição. `let`/`const` não existem (`PARSE085`); use `var`/`val`.
+
+## Novidades 0.3.5–0.3.7 (kof.strings / kof.encoding / arrays multidimensionais)
+
+```kof
+// kof.strings — 5 alvos
+strings.escapeJson("a\"b")   // "a\"b" (RFC 8259)
+strings.unescapeHtml("&lt;b&gt;") // "<b>"
+strings.toCamelCase("hello-world") // "helloWorld"
+
+// kof.encoding — 5 alvos
+encoding.base64Encode("oi") // "b2k="
+encoding.hexEncode("oi")    // "6f69"
+
+// arrays multidimensionais — 5 alvos
+var m = new Int[2][3]
+println(m[0].length)        // 3
+```
 
 ## Limitações reais (não invente)
 
-- `replace` só existe como `replace(Char, Char)`.
+- `replace` existe como `replace(Char, Char)` e `replace(String, String)` (0.3.0+ cross).
 - `split` retorna `String[]`.
 - Não existe `StringBuilder` — use `+` (concatenar é intenção).
 

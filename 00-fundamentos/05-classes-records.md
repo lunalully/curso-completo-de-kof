@@ -174,18 +174,40 @@ class Dog implements Speaker {
 
 `public`, `private`, `protected`, `static`, `final`.
 
-## JSON com records
+> **0.3.7 — SEM046 (SG-013):** `private`/`protected` são validados em compile-time. Acesso fora do escopo → diagnóstico, nunca acesso silencioso.
 
-Records são suportados por `json.encode` / `json.decode<T>` no **JVM**:
+## Dimensões múltiplas (0.3.5+ — KofNewMultiArray)
+
+```kof
+var m = new Int[2][3]          // todas as dims alocadas (MULTIANEWARRAY JVM, Array.newInstance interp)
+println(m.length)               // 2
+println(m[0].length)            // 3
+var cubo = new Int[2][3][4]
+```
+
+> Antes só a 1ª dim era alocada. Agora `new T[a][b][c]` cria TODAS as dimensões (bug 71 fechado, 5 alvos).
+
+## JSON com records (✅ 3 targets — JSN002 fechado)
 
 ```kof
 var p = Point(3, 4)
 var j = json.encode(p)   // {"x":3,"y":4}
 var d = json.decode<Point>("{\"x\": 10, \"y\": 20}")
+println(d.x())            // 10 — funciona em JVM/Native/JS
 ```
 
-**Limitação:** JSON de objetos/records no target Native não é suportado
-JSON de objetos/records agora funciona nos 3 targets (JSN002 fechado). Primitivos/lists funcionam em ambos.
+> Desde 0.3.0, JSON de objetos/records funciona nos 3 targets, incluindo riscv64/aarch64 (NATIVE002-stdlib). Para List de records use `json.decode<List<Point>>`.
+
+## Imutabilidade de records (0.3.5+ — SEM038)
+
+```kof
+record Point(Int x, Int y)
+var p = Point(3, 4)
+p.x = 99   // ERRO de compilação SEM038: record é imutável
+this.x = 99 // permitido SÓ dentro do construtor de record
+```
+
+> `val` também é imutável (SEM037). `record` + `val` são garantias de compile-time — violar vira diagnóstico, não runtime.
 
 ## Exercícios
 

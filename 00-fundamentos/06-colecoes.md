@@ -115,8 +115,7 @@ println(s.contains(2))      // true
 s.remove(1)
 ```
 
-> `WORKAROUND`: use `m.size()` — a forma de propriedade `m.size` sobre
-> `Map`/`Set` gera bytecode inválido (`99-notas-workarounds.md` #9).
+> `m.size()` é a forma estável (método). `m.size` (propriedade) só funciona para `List` — ver notas #9.
 
 Para associações nome-valor simples, agora o idiom é o `Map`. A alternativa
 com `List<record>` continua válida quando a entrada já vem em formato de

@@ -146,6 +146,18 @@ if (obj instanceof String s) {
 
 Sintaxe: `case Tipo var:` (com `:` e bloco `{ }`), não `case Tipo var ->`.
 
+### Guardas em pattern matching (0.3.7+ — SG-014)
+
+```kof
+switch (obj) {
+    case String s if s.length > 5: { return "longa: " + s }
+    case String s: { return "curta: " + s }
+    default: { return "outro" }
+}
+```
+
+> `if cond` após o pattern filtra o caso — se a guarda falha, o switch tenta o próximo `case`. Sem guarda, o caso casa sempre.
+
 ## break / continue
 
 `break` sai do loop; `continue` pula para a próxima iteração. Usados com
