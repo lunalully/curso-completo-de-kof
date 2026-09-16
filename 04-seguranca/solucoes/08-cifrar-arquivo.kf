@@ -1,5 +1,5 @@
 main() {
-    var chave = secrets.get("COFRE_KEY", "0123456789abcdef0123456789abcdef")
+    var chave = secrets.get("COFRE_KEY", "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
     var texto = "conteudo secreto"
     var cifrado = crypto.encryptAesGcm(texto, chave)
     writeFile("segredo.enc", cifrado)

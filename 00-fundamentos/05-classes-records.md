@@ -13,6 +13,13 @@ class User {
 }
 ```
 
+Uma classe **sem construtor** tem construtor padrão **vazio** — os campos se
+preenchem por atribuição (`var u = User(); u.name = "Mel"`). Para construir
+com argumentos `User("Mel", 26)` você **precisa** do construtor primário
+(abaixo) ou de um `constructor(...)` explícito; chamar com args uma classe
+sem eles é erro (na 0.4.x o `check` ainda deixa passar e falha em runtime —
+bug real, evite).
+
 ## Construtor primário (idiomático)
 
 ```kof
@@ -196,7 +203,11 @@ var d = json.decode<Point>("{\"x\": 10, \"y\": 20}")
 println(d.x())            // 10 — funciona em JVM/Native/JS
 ```
 
-> Desde 0.3.0, JSON de objetos/records funciona nos 3 targets, incluindo riscv64/aarch64 (NATIVE002-stdlib). Para List de records use `json.decode<List<Point>>`.
+> Desde 0.3.0, JSON de objetos/records funciona nos 3 targets. **Na 0.4.x:**
+> `json.decode<Map<String,T>>` ganhou decoder real em JVM/Script/JS (no
+> Native é gap honesto `JSN004`), e `json.decode<List<Record>>` também é
+> `JSN004` no Native — para esses casos compile para JVM/JS. Record no topo
+> funciona nos 4 targets.
 
 ## Imutabilidade de records (0.3.5+ — SEM038)
 

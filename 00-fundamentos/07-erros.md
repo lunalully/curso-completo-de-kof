@@ -110,7 +110,9 @@ try {
 }
 ```
 
-`finally` roda no caminho normal, no caminho capturado e na propagação.
+`finally` roda no caminho normal, no caminho capturado e na propagação —
+**inclusive no caminho do `return`** (DD-01, corrigido nos 4 targets na
+0.4.x; `finally` aninhado e em lambda/método também).
 
 ## Limitações honestas
 

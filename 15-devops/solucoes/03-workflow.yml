@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: '25'   # compilar o repo = JDK 25 (D-BASELINE); rodar .kf = JVM 21+
       - name: build
         run: |
           mvn -q clean package -DskipTests

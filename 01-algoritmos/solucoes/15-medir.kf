@@ -64,7 +64,7 @@ main() {
         println("bubble n=" + n + ": " + (t2 - t1) + " ms")
 
         var t3 = now()
-        var o2 = mergeSort(listOf<Int>() + dados)
+        var o2 = mergeSort(dados)
         var t4 = now()
         println("merge n=" + n + ": " + (t4 - t3) + " ms")
     }

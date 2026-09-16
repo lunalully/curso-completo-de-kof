@@ -1,8 +1,8 @@
 # Módulo 09 · Aula 5 — Hardening
 
 > Endurecer o servidor: headers de segurança, CSRF, CORS e limitação de taxa.
-> O `kof.security` fornece helpers; alguns são `WORKAROUND` manual até a
-> plataforma cobrir.
+> O `kof.security` fornece os helpers (rateLimit, CORS, headers) e o
+> `app.security()` compõe o middleware no JVM.
 
 ## Headers de segurança
 
@@ -16,10 +16,12 @@ O Kof fornece valores prontos (JVM):
 | `security.frameHeader()` | `X-Frame-Options` | clickjacking |
 | `security.referrerHeader()` | `Referrer-Policy` | vazamento de referer |
 
-> **Nota real:** a Fase 1 do `web.app()` ainda não permite headers de
-> resposta customizados. Use os helpers para **documentar e preparar**, e
-> acompanhe o roadmap (G12, TLS). Marque como `WORKAROUND` quando aplicar na
-> camada de proxy/frontend.
+> **Desde a 0.4.x:** `app.security({ headers: true, ... })` aplica o bloco
+> de headers de resposta no middleware composto (ordem fixa: rate-limit →
+> CORS → headers → cookies/sessão → CSRF → auth → RBAC), e `headerSet(...)`
+> permite headers customizados por handler. O `WORKAROUND` de camada de proxy
+> da Fase 1 não é mais necessário no JVM; Native/JS seguem `WEB006` para
+> `app.security()`.
 
 ## CSRF (Cross-Site Request Forgery)
 
@@ -68,7 +70,23 @@ var ok = security.corsAllowed(origin, "https://app.exemplo.com")
 
 ## Rate limiting (limitação de taxa)
 
-Protege contra brute force e DoS. **WORKAROUND manual** até a plataforma ter:
+Protege contra brute force e DoS. A plataforma já tem `security.rateLimit`:
+
+```kof
+// true se ainda cabe na janela; false se estourou
+var liberado = security.rateLimit("login:" + header("x-real-ip"), 5, 60)
+if (!liberado) {
+    return "{\"error\": \"muitas tentativas\"}"
+}
+```
+
+Assinatura: `security.rateLimit(chave, maximo, janelaSegundos)` — por chave
+(ex.: IP + rota). Verificado nos 3 targets (0.4.x). Para web apps no JVM,
+`app.security({ rateLimit: ... })` aplica o limiter composto
+(rate-limit → CORS → headers → sessão → CSRF → auth → RBAC) de uma vez.
+
+O padrão manual abaixo segue útil para entender o mecanismo (e onde o
+`security.rateLimit` não chega — riscv/aarch ainda cobertos pelo gate):
 
 ```kof
 record Tentativa(String chave, Long quando)
@@ -118,8 +136,9 @@ main() {
 }
 ```
 
-> `WORKAROUND`: a plataforma ainda não tem `kof.security.ratelimit` nem
-> `kof.web` com limiter. O padrão acima é didático e honesto — marque-o.
+> `WORKAROUND`: a plataforma não tinha `kof.security.ratelimit` até a 0.3.x;
+> hoje `security.rateLimit` cobre o caso e `app.security()` compõe o middleware.
+> O exemplo manual permanece como ensino do mecanismo.
 
 ## Check-List de hardening
 

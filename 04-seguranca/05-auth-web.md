@@ -14,7 +14,7 @@ contexto do usuário autenticado:
 | `auth.token()` | o token Bearer da request (String) |
 | `auth.authenticated()` | Bool — há token válido |
 | `auth.claims()` | claims verificadas (String JSON) |
-| `auth.user()` | identificador do usuário (sub) — **quebrado em handler** (nota #5); use `auth.claims()` |
+| `auth.user()` | identificador do usuário (sub) — ✅ corrigido na 0.4.x (nota #5) |
 | `auth.hasRole("admin")` | Bool |
 | `auth.hasPermission("write")` | Bool |
 
@@ -55,12 +55,14 @@ main() {
 }
 ```
 
-> **WORKAROUND (0.2.x):** atribua o resultado antes do `if`.
-> A forma direta `if (!auth.hasRole("admin"))` gera bytecode inválido, e
-> `auth.user()` dentro de handler derruba o servidor (`VerifyError`) —
-> use `auth.claims()` e leia o `sub` do JSON. Detalhes em
+> **Nota:** atribuir antes do `if` (`var admin = auth.hasRole("admin")`) é o
+> padrão idiomático do curso. Nos compiladores 0.2.x havia crashes reais aqui
+> (`if (!auth.hasRole(...))` direto gerava bytecode inválido; `auth.user()`
+> dentro de handler derrubava o servidor) — **corrigidos na 0.4.x**,
+> verificados ao vivo nesta trilha. As formas diretas hoje funcionam, mas o
+> curso mantém a atribuição por legibilidade. Detalhes em
 > [`00-fundamentos/99-notas-workarounds.md`](../00-fundamentos/99-notas-workarounds.md)
-> (#4 e #5).
+> (notas #4 e #5, fechadas).
 
 Teste:
 
@@ -92,8 +94,10 @@ main() {
 }
 ```
 
-> **Atenção:** o retorno do handler deve ser **expressão** (concatenação).
-> `return token;` com variável nua faz a rota não registrar (nota #5a).
+> **Nota:** `return` de variável nua em rota funcionava mal até a 0.2.x
+> (nota #5a — o typer não varria `return` aninhado); **corrigido na 0.3.x**
+> (bug #28) e verificado nesta trilha. `return null` continua significando
+> "sem resposta" → 404 honesto.
 
 ## Comparação `==` vs `constantTimeEquals`
 

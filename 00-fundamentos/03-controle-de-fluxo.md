@@ -19,7 +19,10 @@ var status = if (ativo) "online" else "offline"
 ```
 
 O if-expr **produz um valor**; os dois branches devem produzir valores
-compatíveis. Evite declarar variável e mutar dentro de branches:
+compatíveis — desde a 0.4.1 o compilador calcula o supertipo comum (LCA),
+então `if (c) "muitos" else n` (String × Int → `Object`) é aceito e o
+`println` imprime o ramo tomado. Evite declarar variável e mutar dentro de
+branches:
 
 ```kof
 // RUIM — mutação intermediária
@@ -162,6 +165,22 @@ switch (obj) {
 
 `break` sai do loop; `continue` pula para a próxima iteração. Usados com
 parcimônia — a intenção geralmente é um `for-in`.
+
+## Novidades 0.4.x — atribuições compostas e narrowing
+
+```kof
+var x = 6
+x <<= 2          // 24 (compostos de shift: <<= >>= ===; §172 corrigido)
+var y: Long = 10
+y += 5           // compostos funcionam em Long/Double/Float + elemento de array
+var a = new Int[3]
+a[0] += 7        // ok nos 4 targets
+```
+
+O compilador também faz **narrowing de fluxo**: `if (s != null) { s.length }`
+libera o receiver não-nulo dentro do ramo. Dereferenciar um `T?` sem
+narrowing é erro de compilação (SEM049), e atribuir `null` direto a uma
+variável não-nullable é SEM048.
 
 ## Exercícios
 

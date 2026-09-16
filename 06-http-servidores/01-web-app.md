@@ -46,10 +46,15 @@ main() {
 
 | Função de contexto | Retorna |
 |--------------------|---------|
-| `param("id")` | path parameter |
-| `query("name")` | query string |
-| `header("x-auth")` | header (case-insensitive) |
+| `param("id")` | path parameter (`String?` desde a 0.4.x) |
+| `query("name")` | query string (`String?` — ausente é `null`) |
+| `header("x-auth")` | header, case-insensitive (`String?`) |
 | `body()` | corpo cru |
+
+> **0.4.x:** `param`/`query`/`header` devolvem `String?` — a presença é
+> intencional: `query("nome")` sem o parâmetro na URL é `null`, não `""`.
+> Concatenação com `+` funciona; **deref** (`query("n").length`) sem
+> narrowing é `SEM049`. Forma segura: `var n = query("name"); if (n != null) { ... n ... }`.
 | `method()` | "GET", "POST", ... |
 | `path()` | caminho da request |
 

@@ -22,16 +22,23 @@ kof run app.kf --target js
 | try/catch/finally | ✅ |
 | `kof.security` (passwords/crypto/jwt) | ✅ |
 | `kof.ui` (widgets → DOM) | ✅ |
-| `kof.web` / `kof.http` | ✅ (`HTTP002` fechado, `WEB001` JS residual) |
-| `spawn` | ✅ `CONC003` fechado (async/await real) |
+| `kof.web` / `kof.http` | ✅ HTTP client (`HTTP002`); servidor web roda no host (GraalJS `HttpServer`); residual ws/sse/TLS = `WEB001` |
+| `spawn` / `await` / `selectAny` | ✅ `CONC003` fechado (async/await/Promise real) |
 
-> Gaps de target são diagnósticos **em compile-time** — o programa não
-> compila para JS com `spawn`; a plataforma diz, nunca silencia.
-> 
+> Gaps de target são diagnósticos **em compile-time** (ex.: `OTP002` em
+> `kof.supervisor` no JS, `DB001` em `kof.db`) — a plataforma diz, nunca
+> silencia.
+>
 > **Nota:** lambdas com capturas funcionam nos 5 alvos (JVM/Native/riscv/aarch64/JS) —
 > paridade de captura fechada na 0.3.0 (3 níveis aninhados).
 
-> **0.3.7:** `kof.strings`/`kof.encoding`/`kof.random`/`kof.net` funcionam no JS (5-6 alvos); `kof.ui` widgets Table/Select/Textarea/Canvas disponíveis — ver `training/idioms/ui.md`.
+> **0.4.x:** além de `kof.strings`/`encoding`/`random`/`net` (5-6 alvos), o
+> JS ganhou: servidor web GraalJS hostless (`web.app()` + fila de eventos
+> `KofJsWebQueue`), `spawn http.get(url)` + `await` = fetch assíncrono real
+> no Node/browser (§133), `Long = BigInt` (paridade 64-bit), `json.decode<Map>`,
+> `crypto` AES-256-GCM em JS puro (`SECN002` fechado) e o mesmo `kof.ui` com
+> widgets (Table/Select/Textarea/Canvas) renderizando em browser real —
+> Chrome headless E2E.
 
 ## kof.ui no JS
 

@@ -58,6 +58,11 @@ Regras do projeto:
 - Formato `MAJOR.MINOR.PATCH`; releases sem sufixo (`0.2.0`), ciclos de
   desenvolvimento com sufixo de estágio (`0.2.1-beta`).
 - Tags `kof-<versão>`; commit de bump com `[skip ci]`.
+- **D-BASELINE (14/09):** a toolchain do repo é **JDK 25** (`pom.xml
+  release=25`, CI/release/benchmark; `package.sh --jdk` embute Temurin 25).
+  **O contrato da linguagem não muda:** o backend JVM emite bytecode `V21` —
+  seu `.kf` compilado roda em JVM 21+ (`kof info` → Tooling API 21). Camadas:
+  compilar o repo = JDK 25; rodar seu programa = JVM 21+.
 - `scripts/package.sh` empacota `bin/ lib/ jdk/ tooling/ editor/ docs/ VERSION`
   em tarball + `SHA256SUMS`.
 - Artefatos: `kof-<v>-linux-x86_64.tar.gz`, `...-windows-x86_64.zip`,
@@ -75,19 +80,24 @@ Um serviço Kof num container (multi-stage, sem JDK no runtime final basta o
 JDK durante o build):
 
 ```dockerfile
-FROM eclipse-temurin:21 AS build
+FROM eclipse-temurin:25 AS build     # compilar o REPO exige JDK 25 (D-BASELINE)
 WORKDIR /src
 COPY . .
 RUN mvn -q clean package -DskipTests && mkdir -p /app/lib \
     && cp kof-cli/target/kof-cli-*.jar /app/lib/kof.jar
 
-FROM eclipse-temurin:21
+FROM eclipse-temurin:21              # rodar o CLI/programa: JVM 21+ basta (Tooling API 21)
 WORKDIR /app
 COPY --from=build /app/lib /app/lib
 COPY app.kf /app/app.kf
 EXPOSE 8080
 CMD ["bash", "-c", "java -jar /app/lib/kof.jar serve /app/app.kf --port 8080"]
 ```
+
+> **Build 25, runtime 21:** o JDK 25 é para *compilar o repo*; para *rodar* um
+> programa Kof já distribuído (jar do CLI + seu `.kf`), JVM 21+ serve. Se você
+> só consome o Kof (não builda o compilador), um único `temurin:21` basta —
+> basta o `kof.jar` já empacotado.
 
 > **Nota:** o Kof `serve` precisa do JAR + o programa + driver JDBC no
 > classpath (para `kof.db`). Ajuste o `CMD` para o seu serviço.

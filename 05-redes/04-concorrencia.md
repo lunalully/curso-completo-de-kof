@@ -186,10 +186,20 @@ h.kill()                     // destrói o processo
 
 - Filas produtor/consumidor: `kof.mq` (`queue/push/pop`, `mq.publish/
   subscribe`) — 3 targets (MQ001 fechado, 0.3.0-beta).
-- Native: **CONC001 fechado** (pthread, 0.3.0-beta) — spawn/await funciona.
-- JS: **CONC003 fechado** — concorrência real via async/await/Promise (0.3.0-beta).
-- Lambda com captura **e** parâmetro tipado ainda falha em runtime
-  (`99-notas-workarounds.md` #8).
+- Native x86: **CONC001 fechado** (pthread) — spawn/await funciona. Em
+  riscv64/aarch64 os helpers de concorrência reportam `CONC001` em
+  compile-time (gate honesto, nunca silêncio).
+- JS: **CONC003 fechado** — concorrência real via async/await/Promise.
+- **`throw` dentro de `spawn` no Native x86**: a exceção é publicada no
+  handle e relançada no `await`/`selectAny` do consumidor (§129, 0.4.x —
+  `kof_exc_chain` é TLS por thread). riscv/aarch seguem `OTP001`.
+- **Supervisão OTP**: `import kof.supervisor` — supervisor puro-Kof
+  (observar-falha, reinício com fábrica nova, restartLimit, escalate) no
+  JVM/Script/Native x86; `OTP002` no JS é gap honesto.
+- Lambda com captura + parâmetro tipado funciona (corrigido na 0.3.0 — a
+  antiga nota #8 está fechada).
+- **Memória compartilhada**: campos mutáveis de classe são `volatile`
+  (modelo SC, SG-020) — stop-flags são observáveis entre workers.
 
 ## Exercícios
 

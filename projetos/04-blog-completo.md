@@ -27,8 +27,9 @@ record Comentario(Int id, Int postId, String texto, String autor)
 | DELETE | `/posts/:id` | remove (autor ou admin) |
 
 **Regra de autorização:** só o autor (ou admin) remove — valide o dono via
-`auth.claims()` (ler `sub` do JSON; `auth.user()` ainda quebra em handler,
-nota #5) comparado a `post.autor` (evita IDOR, módulo 09).
+`auth.user()` (o `sub` do token; **funciona em handler desde a 0.4.x** — a
+antiga nota #5 foi corrigida) ou `auth.claims()` comparado a `post.autor`
+(evita IDOR, módulo 09).
 
 ## Frontend (kof.ui)
 
@@ -41,12 +42,12 @@ main() {
 }
 ```
 
-> **Nota real:** o cliente HTTP nativo existe no **JVM e JS**
-> (`http.get/post`). O frontend `kof.ui` renderiza via target JS, onde
-> `kof.http` funciona nos 3 targets (HTTP002 fechado, 0.3.0-beta). O padrão honesto do projeto:
-> o backend JVM serve a API; a UI consome estado servido ou usa `WORKAROUND`
-> documentado (fetch exposto pela plataforma). O importante é modelar a
-> integração e respeitar a separação backend/frontend.
+> **Nota real (0.4.x):** o cliente HTTP funciona nos **3 targets**
+> (`HTTP002` fechado) e no JS o `spawn http.get(url)` + `await` resolve o
+> corpo real no Node/browser (§133 — fetch assíncrono sobre a engine KofJS,
+> sem Node externo). O padrão honesto do projeto: o backend JVM serve a API;
+> a UI no target JS consome a API por `http` (`spawn`+`await`) — nada de
+> `WORKAROUND` aqui desde a 0.4.1.
 
 ## Passo a passo
 

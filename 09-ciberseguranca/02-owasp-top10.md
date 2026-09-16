@@ -13,7 +13,7 @@
 ```kof
 app.get("/admin") {
     var admin = auth.hasRole("admin")
-    if (!admin) {          // WORKAROUND: atribua antes (nota #4)
+    if (!admin) {          // atribuir antes segue idiomático (o crash da nota #4 foi corrigido na 0.4.x)
         return "{\"error\": \"forbidden\"}"
     }
     return "{\"ok\": true}"

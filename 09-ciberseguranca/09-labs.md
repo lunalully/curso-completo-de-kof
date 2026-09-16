@@ -84,7 +84,7 @@ main() {
 
     app.get("/admin") {
         var admin = auth.hasRole("admin")
-        if (!admin) {      // WORKAROUND: atribua antes (nota #4)
+        if (!admin) {      // atribua antes — idiomático (nota #4 corrigida na 0.4.x)
             return "{\"error\": \"forbidden\"}"
         }
         return "{\"ok\": true}"
@@ -120,7 +120,7 @@ responda: quem atacou, quando, quantas vezes, de onde? Você consegue
 ```kof
 app.delete("/users/:id") {
     var admin = auth.hasRole("admin")
-    if (!admin) {          // WORKAROUND: atribua antes (nota #4)
+    if (!admin) {          // atribua antes — idiomático (nota #4 corrigida na 0.4.x)
         return "{\"error\": \"forbidden\"}"
     }
     log.info("admin removeu id " + param("id"))
@@ -128,8 +128,9 @@ app.delete("/users/:id") {
 }
 ```
 
-> `auth.user()` ainda quebra em handler (nota #5) — logue o papel/claims,
-> não o `sub`, até o bug fechar.
+> `auth.user()` em handler funciona desde a 0.4.x (a antiga nota #5 foi
+> corrigida — verificado nesta trilha). Logar papel **e** `sub` é o ideal
+> para o audit trail.
 
 **Reflexão:** o que um *audit trail* bem feito permite? (responsabilização,
 detecção, reconstrução de incidente).

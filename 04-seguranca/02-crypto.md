@@ -20,7 +20,8 @@ idênticos nos três targets.
 
 ```kof
 main() {
-    // chave segura de 32 bytes hex
+    // chave de 32 bytes de entropia = 64 chars hex (AES-GCM exige 64 hex;
+    // 0.4.x lança "key must be 32 bytes (64 hex chars)" em chave curta)
     var key = crypto.randomHex(32)
     var ct = crypto.encryptAesGcm("segredo", key)
     println(crypto.decryptAesGcm(ct, key) == "segredo")   // true
