@@ -48,11 +48,16 @@ Double variancia(List<Double> dados) {
 }
 
 Double desvioPadrao(List<Double> dados) {
-    return raizQuadrada(variancia(dados)) // 0.3.7: use `math.sqrt` quando disponível? ainda não — mantenha Newton
+    return math.sqrt(variancia(dados)) // MATH001 fechado (0.4.x): math.sqrt nos 5 alvos
 }
-
-> **0.3.7 dica:** gere amostras com `kof.random` (`randomInt(0,100)`) para testar estatística com dados sintéticos — 5 alvos.
 ```
+
+> **Dicas 0.4.x:** gere amostras com `kof.random` (`randomInt(0,100)`,
+> `random.double()`, `randomString(n, alphabet)`) para estatística com dados
+> sintéticos — 5 alvos. `math.sqrt`/`pow`/`lerp`/`roundTo` estão disponíveis
+> em JVM/Native(x86/riscv/aarch64)/JS/Script; `randomHex`/`randomBytesHex`
+> também. A implementação própria por Newton (exercício ★★) continua válida
+> como treino de algoritmo.
 
 ## Moda
 

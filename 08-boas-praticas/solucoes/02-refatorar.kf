@@ -2,6 +2,11 @@
 class User {
     String name
     Int age
+
+    public constructor(String name, Int age) {
+        this.name = name
+        this.age = age
+    }
 }
 record Point(Int x, Int y)
 Int somar(Int a, Int b) {

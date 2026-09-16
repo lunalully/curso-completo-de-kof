@@ -101,7 +101,7 @@ var m = mapOf()             // Map vazio
 m.put("a", 1)
 println(m.get("a"))         // 1
 println(m.contains("b"))    // false
-println(m.size())           // sempre () — m.size quebra (ver notas)
+println(m.size())           // 1 (m.size sem () também funciona desde a 0.3.x)
 var chaves = m.keys()       // List<String>
 var valores = m.values()    // List<Int>
 println(m.remove("a"))      // 1
@@ -115,7 +115,8 @@ println(s.contains(2))      // true
 s.remove(1)
 ```
 
-> `m.size()` é a forma estável (método). `m.size` (propriedade) só funciona para `List` — ver notas #9.
+> `size()`/`size` (método e propriedade) funcionam nos três desde a 0.3.x —
+> a API oficial é de métodos (ver notas #9).
 
 Para associações nome-valor simples, agora o idiom é o `Map`. A alternativa
 com `List<record>` continua válida quando a entrada já vem em formato de

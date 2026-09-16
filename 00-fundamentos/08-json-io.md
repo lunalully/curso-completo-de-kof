@@ -18,10 +18,14 @@ var d = json.decode<Point>("{\"x\": 10, \"y\": 20}")
 println(d.x())                      // 10
 ```
 
-**Gaps documentados (compile-time, nunca silenciosos):**
-- JSON de objetos/records agora funciona nos 3 targets (JSN002 fechado, 0.3.0-beta).
-- `JSN001` — `json.encode(1.5)` (Float/Double) ainda não compila; converta
-  para String ou use Int.
+**Estado na 0.4.1-beta (gaps são compile-time, nunca silenciosos):**
+- JSON de objetos/records funciona nos 3 targets (JSN001 e JSN002 fechados;
+  `json.encode(1.5)` → `1.5` já sai correto).
+- `json.decode<Map<String,T>>` — decoder real em JVM/Script/JS; no Native é
+  gap honesto `JSN004`. `json.decode<List<Record>>` idem (JVM/JS; Native
+  `JSN004`). As chaves de `Map` são codificadas **ordenadas** nos 4 backends.
+- `json.encode(Map)` funciona nos 4 (no JS, `JSON.stringify` não enumera
+  `Map` — a stdlib resolve isso).
 
 ## Filesystem — `kof.io`
 
@@ -114,7 +118,10 @@ at("0 3 * * *") {
 }
 ```
 
-> kof.time agora funciona nos 3 targets (TIME001 fechado, 0.3.0-beta).
+> kof.time funciona nos 5 alvos (TIME001/TIME002 fechados). Calendário civil
+> ISO: `todayIso`, `formatDateIso`, `isToday`, `addDays`, `diffDays`,
+> `hoursBetween`, `parseDateIso`, `isWeekend`, `tzOffsetSeconds` (este último
+> com gap honesto `TIME003` no Native). Parse ISO é **estrito** nos 4 targets.
 
 ### `readLine()` (0.2.0+)
 

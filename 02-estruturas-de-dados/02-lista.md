@@ -87,9 +87,10 @@ class Config {
 }
 ```
 
-> Isto é um padrão didático — e um `WORKAROUND` até `Map` existir. Para o
-> dia a dia, veja `06-hash.md` (índice por chave) e `kof.config` (configuração
-> real da plataforma).
+> Isto é um **exercício didático** (construir o mecanismo à mão), não um
+> workaround — `Map<K,V>` já é da linguagem. No dia a dia use o `Map` real;
+> veja `06-hash.md` (índice por chave) e `kof.config` (configuração da
+> plataforma).
 
 ## Exercícios
 

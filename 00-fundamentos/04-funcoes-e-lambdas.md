@@ -113,7 +113,29 @@ main() {
 }
 ```
 
-Não há sobrecarga de funções top-level nem argumentos nomeados. `fn`/`fun`/`func` são palavras reservadas — não existem em Kof (dão `PARSE085`). Use `String nome(...) { }` ou `nome(...): String { }`.
+## Sobrecarga (SG-011B, 0.3.22+)
+
+**Funções top-level podem ser sobrecarregadas** — mesmas assinaturas
+coexistem e resolvem no call site (oracle JVM, saída idêntica nos targets):
+
+```kof
+Int processar(Int x) { return x * 2 }
+String processar(String s) { return s + "!" }
+
+main() {
+    println(processar(3))        // 6
+    println(processar("kof"))    // kof!
+}
+```
+
+Regras: assinatura **idêntica** duplicada ou colisão só-de-retorno é `SEM047`;
+chamada ambígua entre candidatos é `SEM057`. **Métodos de classe** também
+podem ser sobrecarregados (0.4.x, decisão 10a); na mesma classe, duas
+declarações com a MESMA assinatura JVM são rejeitadas na origem com `SEM061`.
+
+Não há argumentos nomeados. `fn`/`fun`/`func` são palavras reservadas — não
+existem em Kof (dão `PARSE085`). Use `String nome(...) { }` ou
+`nome(...): String { }`.
 
 ## Exercícios
 

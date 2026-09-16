@@ -14,7 +14,7 @@
 | [03-pilha.md](03-pilha.md) | pilha (LIFO) |
 | [04-fila.md](04-fila.md) | fila (FIFO) e fila circular |
 | [05-grafos.md](05-grafos.md) | grafos com records + List |
-| [06-hash.md](06-hash.md) | tabela hash (WORKAROUND até Map) |
+| [06-hash.md](06-hash.md) | conceito de tabela hash + o `Map` da linguagem |
 
 ## Como estudar
 

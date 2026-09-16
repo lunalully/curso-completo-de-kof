@@ -159,13 +159,14 @@ s == "Hello World"          // true (conteúdo)
 
 > `fn`/`fun`/`func` são **palavras reservadas** (SG-001) — não existem em nenhuma posição. `let`/`const` não existem (`PARSE085`); use `var`/`val`.
 
-## Novidades 0.3.5–0.3.7 (kof.strings / kof.encoding / arrays multidimensionais)
+## Novidades 0.3.5–0.4.x (kof.strings / kof.encoding / arrays multidim / stdlib)
 
 ```kof
 // kof.strings — 5 alvos
 strings.escapeJson("a\"b")   // "a\"b" (RFC 8259)
 strings.unescapeHtml("&lt;b&gt;") // "<b>"
 strings.toCamelCase("hello-world") // "helloWorld"
+strings.indent("ab", 2)     // recua 2 espaços (0.4.x)
 
 // kof.encoding — 5 alvos
 encoding.base64Encode("oi") // "b2k="
@@ -174,13 +175,54 @@ encoding.hexEncode("oi")    // "6f69"
 // arrays multidimensionais — 5 alvos
 var m = new Int[2][3]
 println(m[0].length)        // 3
+
+// kof.math Double — 5 alvos (0.4.x)
+println(math.roundTo(3.14159, 3))   // 3.142 (meio-para-longe-do-zero)
+println(math.parseIntOrDefault("abc", 42)) // 42 (falha DEVOLVE o default)
+
+// kof.uuid — v4 + v7 ordenado no tempo (RFC 9562) + isUuid
+println(uuid.v7().length)   // 36
+
+// kof.time — calendário civil ISO (0.4.x, 5 alvos)
+println(time.addDays("2026-09-15", 1)) // "2026-09-16"
+```
+
+## Contratos de rejeição (0.4.x — paridade absoluta, nunca silêncio)
+
+O compilador rejeita construtos que divergiam por target. Não são bugs — são
+a linguagem escolhendo um contrato único (ver notas):
+
+```kof
+// String: ordem lexicográfica é compareTo, não `<` (SEM053)
+"abc".compareTo("abd") < 0     // true — o caminho idiomático
+// "abc" < "abd"               // COMPILE ERROR [SEM053]
+
+// split devolve String[] (array fixo), não List: indexe com colchetes
+var ps = "a,b,c".split(",")
+println(ps[0])                 // "a"
+println(ps.length)             // 3
+// ps.get(0)                   // COMPILE ERROR [SEM028] (array não tem .get)
+
+// subscript `[]`: array e List aceitam; String/Map/Set rejeitam (SEM054)
+var l = listOf(1, 2, 3)
+println(l[0])                 // 1 (List aceita)
+println(l.get(0))            // 1 (idiomático)
+// "abc"[0]                   // COMPILE ERROR [SEM054] — use charAt(i)
+// mapOf("a",1)["a"]          // COMPILE ERROR [SEM054] — use get(k)
+
+// Long é 64-bit real em todos os alvos (no JS, BigInt — decisão 5b)
+var n = 9223372036854775807
+println(n / 2)                // 4611686018427387903
 ```
 
 ## Limitações reais (não invente)
 
 - `replace` existe como `replace(Char, Char)` e `replace(String, String)` (0.3.0+ cross).
-- `split` retorna `String[]`.
+- `split` retorna `String[]` e **continua regex**: `"a|b".split("|")` divide
+  carácter-a-carácter — use `split("\\|")`.
+- `Map.get` devolve `V?` (nullable) sempre — narrowing `if (v != null)` obrigatório.
 - Não existe `StringBuilder` — use `+` (concatenar é intenção).
+- `fn`/`fun`/`func`/`let`/`const` não existem na linguagem.
 
 ## Exercícios
 

@@ -38,8 +38,7 @@ main() {
 
 ## Autorização (AuthZ)
 
-O que você pode fazer? Roles e permissions (atribua antes do `if` —
-workaround da nota #4):
+O que você pode fazer? Roles e permissions:
 
 ```kof
 app.use {
@@ -78,7 +77,7 @@ app.delete("/users/:id") {
 | `auth.authenticated()` | Bool — há token válido |
 | `auth.token()` | o token Bearer |
 | `auth.claims()` | claims verificadas (JSON) |
-| `auth.user()` | `sub` (identificador) — quebrado em handler (nota #5); use `claims()` |
+| `auth.user()` | `sub` (identificador) — ✅ corrigido na 0.4.x (nota #5) |
 | `auth.hasRole("admin")` | Bool |
 | `auth.hasPermission("write")` | Bool |
 
