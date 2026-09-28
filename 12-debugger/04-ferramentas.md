@@ -8,8 +8,11 @@
 |------------|-----|
 | `kof check` | type-check sem emitir código (pega erros de compilação) |
 | `kof run` | compila e roda (mostra erros de runtime com linha) |
-| `kof test` | testes (`test "nome" { }`, PASS/FAIL por teste) — regressão |
-| `kof debug` | servidor DAP (breakpoints, call stack) |
+| `kof test [--tag] [--timeout]` | testes (`test "nome", "tag" { }`) — regressão |
+| `kof debug [--dap] [--attach] [--target native]` | breakpoints e call stack (0.4.9+: nativo com DWARF) |
+| `kof profile [--methods]` | CPU, RSS, GC; `--methods` mostra os métodos quentes (JFR no JVM; `--cpu-prof` + source map no JS) |
+| `kof bench [--baseline f] [--fail-on-regression] [--quick]` | benchmark com baseline e gate de regressão |
+| `kof inspect` | IR antes/depois da otimização (o que o compilador fez) |
 | `kof lsp` | diagnostics em tempo real no editor |
 | `kof info` | ambiente (versões, targets) |
 
@@ -19,7 +22,8 @@
 kof check bug.kf          # 1. erro de compilação? corrige aqui
 kof run bug.kf            # 2. erro de runtime? leia a linha
 kof test testes/          # 3. erro de lógica? regressão
-kof debug bug.kf          # 4. ainda não achou? breakpoints
+kof profile bug.kf --methods   # 4. lento? veja os métodos quentes
+kof debug bug.kf          # 5. ainda não achou? breakpoints
 ```
 
 ## Regra

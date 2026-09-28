@@ -43,12 +43,37 @@ main() {
 > `KOF_LOG_LEVEL` (debug < info < warn < error < off; default info).
 > `warn`/`error` vão para stderr.
 
+## `Secret` — o valor que não vaza (0.5.0, D-SECRETS)
+
+`secrets.get` devolve uma `String` crua que flui invisível para `println`,
+concatenação, JSON e logs. O tipo `Secret` torna o caminho seguro o padrão:
+
+```kof
+var chave = secrets.of("sk-live-...")     // ou secrets.secret("API_KEY") — env por nome
+println(chave)                            // Secret(*** ) — redigido por construção
+log.info("key=" + chave)                  // Secret(*** ) — concat também não vaza
+if (chave == secrets.secret("API_KEY")) { }  // igualdade de conteúdo constant-time
+var raw = chave.reveal()                  // o ÚNICO export cru — greppable na auditoria
+```
+
+- `json.encode(chave)` devolve `"Secret(*** )"` — jamais os campos.
+- `reveal()` indo direto para `log.*`/`json.encode` levanta o aviso
+  `SECN009` (desmascarar precisa ser visível).
+- `KeyHandle` fecha o ciclo das chaves: `secrets.keyFromHex(hex)`
+  (`keyFromPem`/`keyFromKeystore`), `crypto.hmacSha256(handle, msg)`,
+  `jwt.create(claims, handle)`, `handle.rotate()` revoga o handle antigo.
+- **Gate honesto:** `Secret`/`KeyHandle` são JVM; JS/Native/Script/Android
+  recusam em compile-time com `SECN008` — nunca stub silencioso.
+
 ## Anti-padrões
 
 - Segredo hard-coded no código → compromete todo o repo.
 - Segredo em log de erro → vaza na observabilidade.
 - Segredo em claims/token → base64 não é cifra.
-- Usar `==` para comparar tokens → use `security.constantTimeEquals`.
+- Usar `==` para comparar tokens → use `security.constantTimeEquals`
+  (ou `Secret`/`KeyHandle`, que já comparam constant-time).
+- Fazer `reveal()` para logar ou comparar — a única justificativa é entregar
+  o material cru a uma API externa, e isso fica visível na revisão.
 
 ## Exercícios
 

@@ -63,6 +63,17 @@
 - ★★ [27-diretorio.kf](solucoes/27-diretorio.kf) — liste o conteúdo de um diretório.
 - ★★★ [28-agenda-json.kf](solucoes/28-agenda-json.kf) — agenda de contatos (record) persistida em JSON num arquivo.
 
+## 9. Novidades 0.4.0–0.5.0 (extra)
+
+- ★★ [30-troolean.kf](solucoes/30-troolean.kf) — três estados com `Troolean`
+  (aprovado/reprovado/desconhecido) e narrowing para `Bool`.
+- ★★ [31-math-stdlib.kf](solucoes/31-math-stdlib.kf) — troque loops manuais
+  por `math.sqrt`, `math.roundTo`, `math.parse*`, `math.lerp`.
+- ★★ [32-sobrecarga.kf](solucoes/32-sobrecarga.kf) — sobrecarga top-level por
+  tipo e por aridade (0.4.0).
+- ★★★ [33-null-safe.kf](solucoes/33-null-safe.kf) — `Map.get` devolve `V?`;
+  narrowing + `getOrDefault`.
+
 ## Desafio integrador
 
 [29-integrador.kf](solucoes/29-integrador.kf) — combine tudo:
@@ -77,5 +88,5 @@ cd solucoes
 kof run 29-integrador.kf
 ```
 
-Cada solução compila e roda no compilador real (0.3.0-beta). Estude a solução
+Cada solução compila e roda no compilador real (0.5.0-beta). Estude a solução
 **após** tentar — e reescreva com suas palavras.

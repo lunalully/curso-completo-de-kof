@@ -10,12 +10,15 @@
 | [01-senhas.md](01-senhas.md) | `passwords.hash/verify/needsRehash` |
 | [02-crypto.md](02-crypto.md) | sha256, HMAC, AES-GCM, random seguro |
 | [03-jwt.md](03-jwt.md) | JWT HS256 (create/verify) |
-| [04-segredos.md](04-segredos.md) | `secrets.get/redact`, logs seguros |
-| [05-auth-web.md](05-auth-web.md) | `auth.*` em APIs (AuthN/AuthZ) |
+| [04-segredos.md](04-segredos.md) | `secrets.get/redact` + `Secret`/`KeyHandle`, logs seguros |
+| [05-auth-web.md](05-auth-web.md) | `auth.*` + `app.security()` (CSRF, sessão, OAuth2 resource server) |
 
-## Estado por target
+## Estado por target (0.5.0)
 
-JVM completo; Native/JS com gaps `SECN00x` reportados em compile-time.
+JVM completo (incl. `Secret`/`KeyHandle` e `app.security()`); JS com ponte e
+`SECN000` para CSRF/headers; Native x86 com gates `SECN002` (ChaCha20) e
+`SECN008` (Secret); tudo reportado em **compile-time** — nunca fallback
+silencioso.
 
 ## Como estudar
 

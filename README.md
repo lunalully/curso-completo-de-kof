@@ -14,19 +14,27 @@ tudo guiado pela **filosofia Kof**:
 Todo código deste curso é **verificável** com o compilador Kof real:
 
 ```bash
-kof run <arquivo>.kf [--target jvm|native|js|native.risc|native.arm] [--release]
-kof check <arquivo>.kf      # type-check sem emitir código
-kof build <dir> --target jvm|native|js|native.risc|native.arm|kofc [--release] [--output <dir>]
-kof serve app.kf            # sobe um servidor HTTP (web.app + TLS)
-kof test <arquivo.kf|dir> [--target jvm|native|js]  # PASS/FAIL por teste
-kof debug app.kf            # sessão DAP (breakpoints, call stack)
-kof bench [paths...] [--target jvm|native|js] [--iterations N]  # benchmarks
-kof profile <file.kf> [--target jvm|native|js]   # CPU, RSS, GC
+kof run <arquivo>.kf [--target jvm|native|js|native.risc|native.arm|android] [--release]
+kof check <arquivo>.kf|dir [--target <t>] [--json]  # type-check sem emitir código
+kof build <dir|file.kf> --target jvm|native|js|native.risc|native.arm|android [--release] [--fat] [--print-sizes] [--output <dir>]
+kof serve app.kf [--port N] [--host H]   # sobe um servidor HTTP (web.app + TLS)
+kof test <arquivo.kf|dir> [--target jvm|native|js] [--timeout S] [--tag T]  # PASS/FAIL por teste
+kof debug app.kf [--dap] [--attach <pid>] [--target native] [--break <linha>]
+kof bench [paths...] [--target jvm|native|js] [--baseline f] [--fail-on-regression]
+kof profile <file.kf> [--target jvm|native|js] [--methods]   # CPU, RSS, GC, métodos
 kof inspect <file.kf> [--json]  # estatísticas de IR
 kof fmt <file.kf|dir> [-w]  # formatador (parser real, idempotente)
+kof md check|format <file.md>  # Kofmd (MD002)
 kof script <file.ks|kf> [--target jvm|native|js]  # KofScript: Kof puro via KofInterpreter (sem let/const)
 kof repl                    # REPL KofScript interativo (Kof puro)
-kof c <file.c>              # KofC: subset C -> ELF nativo
+kof c <file.c> [--target x86_64|riscv64|aarch64]  # KofC: subset C -> ELF nativo
+kof new <dir> [--type mono|backend|frontend|full-stack]  # esqueleto de projeto
+kof deps <init|add|remove|list|resolve>  # gerenciador de pacotes (kofdeps)
+kof workflow <list|run> <file.kf> [--job <nome>] [--dry-run]
+kof deploy <dir> --target jvm [--publish]  # release empacotada (fat jar + checksums)
+kof migrate|translate|decompile|compare    # legado Java/.class
+kof editor <list|detect|setup|install>     # integração com editores (EDI001)
+kof config gen <file.kf|dir> [--output <f>]  # template kof.config das chaves usadas
 kof info [--json]           # ambiente completo
 kof lsp                     # Language Server Protocol
 kof install <dir>           # instala distribuição local
@@ -71,61 +79,75 @@ kof version
 
 ## Estado das soluções
 
-Todas as **soluções compilam e rodam** no compilador real 0.3.7-beta
-(verificadas nesta trilha). Workarounds residuais para bugs raros estão
-em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md).
+Todas as **soluções compilam** no compilador real **0.5.0-beta** (varredura
+`kof check` arquivo a arquivo nesta trilha: 193/193 `.kf`, 0 falhas).
+Workarounds residuais estão
+em [`00-fundamentos/99-notas-workarounds.md`](00-fundamentos/99-notas-workarounds.md)
+— a varredura de setembro/2026 fechou quase todos.
+
+## Novidades 0.3.8 → 0.5.0 (o que o curso ganhou nesta atualização)
+
+| Área | O que entrou |
+|------|--------------|
+| Linguagem | sobrecarga top-level (0.4.0), casts saturantes, `pkg.Type` qualificado, funções aninhadas com hoisting, guards de pattern, switch-expressão e tipo comum de ramos, generics **invariantes** (0.5.0) |
+| Null safety | `null` literal proibido (`SEM048`), narrowing obrigatório, **`Troolean`** para três estados (`SEM095` — `Bool?` não existe) |
+| Tipos/records | enum é classe real (identidade, `ordinal`/`compareTo`, `SEM062`), regra de campo único (`SEM076`), forma de classe validada (`SEM041-071`), `return` com valor em void é `SEM093` |
+| Stdlib | `math.sqrt/pow/parse*/roundTo/lerp`, `strings.uncapitalize/reverse/toCharArray`, `time.addDays/diffDays/todayIso/…`, `uuid.v7/isUuid`, `validation.format*/isNis`, `random.randomBytesHex/randomString`, `rng` (semeado), `kof.shell`/`kof.ssh`, `Secret`/`KeyHandle` |
+| Web/Segurança | `app.security()` (CSRF on por padrão, ordem fixa), cookies seguros, TLS próprio, OAuth2 resource server, `encryptChacha20` (JVM/JS; Native `SECN002`), `app.serveDir` |
+| Dados | driver JDBC automático, schemes `mysql://`/`postgres://`/`sqlite:` normalizados, MySQL/MariaDB wire no Native, ORM nativo completo, `mongodb://` no JVM/Android |
+| Ferramentas | `kof fmt`, `kof md`, `kof new`, `kof deps` (registry + proveniência), `kof workflow`, `kof deploy`, `kof debug` nativo (DWARF), `kof profile --methods`, `kof test --tag/--timeout` + setup/teardown, `kof config gen`, `kof editor` |
+| Frontend | `Style` declarativo (UI007), tokens `Spacing/Radius/Border/Elevation/Typography`, `AppState`, auto-unsub no unmount |
+| Confiabilidade | `kof.workflow` (retry/backoff/deadLetter/checkpoint/schedule/`runSupervised`), supervisor OTP, MEM001–022 (recursos não fechados avisam), `SEM102`/gates silenciosos viraram diagnóstico |
 
 ## Estado real da linguagem (versão do curso)
 
-Baseado na **0.3.7-beta** (implementada, testada e verificada no compilador — 1350+ testes: JVM/Native/JS/KofScript):
+Baseado na **0.5.0-beta** (implementada, testada e verificada no compilador — ~3.700 testes no compilador / 4.300 no reactor):
 
 | Capacidade | Estado |
 |------------|--------|
-| Classes, records, interfaces, herança, dispatch virtual | ✅ 3 targets |
-| Funções (todas as formas, sem `fun`), lambdas com capturas | ✅ 3 targets |
-| if-expr, switch, switch-expressão (`case ... ->`), loops, for-in, default parameters | ✅ 3 targets |
-| `List<T>`, `listOf`, arrays `new Int[n]`, `new Long[n]` | ✅ 3 targets |
-| `Map<K,V>` (`mapOf`, put/get/remove/keys/values/size), `Set<T>` (`setOf`) | ✅ 3 targets |
-| `enum` (+ `values`/`valueOf`/`name`, `==` por conteúdo, switch exaustivo) | ✅ 3 targets |
-| Strings (`+`, `==`, API completa, `lastIndexOf`) | ✅ 3 targets |
-| Exceções `throw "msg"` / try/catch/finally | ✅ 3 targets |
-| `assert`, `test "nome" { }` + `kof test` | ✅ 3 targets |
-| JSON `json.encode` / `json.decode<T>` (objetos/records/arrays) | ✅ 3 targets (JSN001/JSN002 fechados; NATIVE002-stdlib riscv64/aarch64) |
-| `kof.io` (File/Path/Directory, `readLine()`, `File.readRange()`) | ✅ 3 targets |
-| `kof.time` (`now()`, `sleep`, `interval`, `every`/`at` scheduler) | ✅ 3 targets (TIME001 fechado) |
-| `kof.web` (`web.app()`, rotas, middleware, `status()`, `headerSet()`, TLS, accept loop nativo) | ✅ JVM/Native (WEB003/WEB004 JS) |
-| `kof.web` WebSocket (`app.ws("/chat") { }`) + SSE nativo | ✅ JVM (WEB003/WEB004 Native/JS) |
-| `kof.http` client (`http.get/post/put/delete/status/timeout`) | ✅ 3 targets (HTTP002 fechado; NATIVE002-stdlib riscv64/aarch64) |
-| `kof.cache` (`cache.get/set/ttl/delete/clear`) | ✅ 3 targets |
-| `kof.db` (JDBC, `transaction {}` commit/rollback real, `query<T>`) + SQLite nativo | ✅ JVM/Native (DB001 JS) |
-| `kof.orm` (`entity`, CRUD, `where`, migrations, MongoDB, Query DSL tipada) | ✅ JVM/Native (ORM001 JS) |
-| `kof.security` (passwords, crypto, jwt, secrets, auth, rateLimit) | ✅ 3 targets |
-| `kof.config`, `kof.log` | ✅ 3 targets (LOG001 fechado) |
-| `kof.config` interpolação `${key}` | ✅ 3 targets |
-| `spawn` (stmt) / `val r = spawn f()` / `await r` / `poll/done/cancel/selectAny` | ✅ 3 targets (CONC001/CONC003 fechados; NATIVE002-stdlib riscv64/aarch64) |
-| `process.exit(code)` / `readLine()` | ✅ 3 targets |
-| `process.run(cmd, args...)` / `process.spawn(cmd, args...)` | ✅ 3 targets (PROC001 fechado) |
-| `kof fmt <file\|dir> [-w]` (formatador, parser real) | ✅ 3 targets |
-| `kof.ui` (Color, Palette, Theme, Window, widgets) | ✅ JS/webview |
-| Pattern matching `switch case String s`, `case Point(x,y)`, `instanceof` | ✅ 3 targets |
-| Null safety `String?`, `Int?` + `if (x != null)` narrowing | ✅ 3 targets |
-| `List.map/filter/reduce` (higher-order) | ✅ 3 targets |
-| `kof.mq` (pub/sub em memória) | ✅ 3 targets (MQ001 fechado) |
-| `kof.validation` (30+ predicados: isCpf/isCnpj, isIpv4/v6, Luhn, isDomain) | ✅ 4-5 targets |
-| `kof.observability` (health, counter/gauge/histogram) | ✅ 3 targets |
-| `kof.strings` (escapeJson/unescapeHtml, word converters, pad/repeat) | ✅ 5 targets |
-| `kof.encoding` (base64/hex/urlEncode) | ✅ 5 targets |
-| `kof.random` (randomInt/randomBoolean) | ✅ 5 targets |
-| `kof.net` (URI parse + fetch) | ✅ 6 alvos (NET001 fechado) |
-| `kof.uuid` v4 | ✅ 5 alvos (SECN000 cross) |
-| arrays multidimensionais `new T[a][b]` | ✅ 5 alvos (MULTIANEWARRAY) |
-| `application {}` lifecycle (onStart/onShutdown) | ✅ 3 targets |
-| W3C spans (spanStart/spanEnd) | ✅ 3 targets |
-| package manager MVP (`kof deps`) | ✅ disponível |
-| `kof init` (package manager) | 🚧 em desenvolvimento |
+| Classes, records, interfaces, herança, dispatch virtual | ✅ 3+ targets |
+| Funções (todas as formas, sem `fun`), **sobrecarga top-level**, tipos de função, lambdas com capturas | ✅ 4 alvos |
+| if-expr, switch, switch-expressão (`case ... ->`), loops, for-in, default parameters | ✅ 3+ targets |
+| `List<T>`, `listOf`, arrays `new Int[n]`, `new Long[n]` | ✅ 4 alvos |
+| `Map<K,V>` (`mapOf`, put/get/remove/keys/values/size), `Set<T>` (`setOf`) | ✅ 4 alvos |
+| `enum` como classe real (+ `values`/`valueOf`/`name`/`ordinal`/`compareTo`, switch exaustivo) | ✅ 4 alvos |
+| Strings (`+`, `==`, API completa, `toCharArray`) | ✅ 5 alvos |
+| Exceções `throw "msg"` / try/catch/finally (tipos de catch validados) | ✅ 4 alvos |
+| `assert`, `test "nome", "tag" { }` + `kof test` (setup/teardown, `--timeout`) | ✅ 3 targets |
+| JSON `json.encode` / `json.decode<T>` (objetos/records/arrays/FP) | ✅ 5 alvos |
+| `kof.io` completo (File/Path/Directory, `readRange`, `copyTo`/`moveTo`) | ✅ 5 alvos (0.5.0) |
+| `kof.time` (`now`, `sleep`, calendário ISO) + `scheduler.every/at` | ✅ 3 targets (cron real JVM/JS; Native `CRON001`) |
+| `kof.web` (`web.app()`, rotas, middleware, `status()`, `headerSet()`, `serveDir`) | ✅ JVM/Native; base JS |
+| `app.security()` (rate-limit, CORS, headers, sessão, CSRF) | ✅ JVM (`WEB006` Native/JS) |
+| `kof.web` WebSocket/SSE | ✅ JVM (`WEB004`/`WEB003` fora) |
+| `kof.http` client (`get/post/...` + `timeout/retry/circuit`) | ✅ 5 alvos |
+| `kof.cache` (`cache.get/set/ttl/delete/clear`) | ✅ 4 alvos |
+| `kof.db` (JDBC/SQLite/MySQL wire, `transaction {}`, `query<T>`) | ✅ JVM/Native/JS (recusas `DB001`/`DB002` nomeadas) |
+| `kof.orm` (`entity`, CRUD, `where`, page, migrations, Query DSL) | ✅ JVM/Native; JS (fechado) |
+| `kof.security` (passwords, crypto, jwt, secrets, `Secret`/`KeyHandle`, auth, rateLimit) | ✅ JVM/JS/Native x86 (gates `SECN00x`) |
+| `kof.config`, `kof.log` | ✅ 4 alvos |
+| `spawn`/`await`/`poll`/`done`/`cancel`/`selectAny`/`channel<T>` | ✅ 4 alvos |
+| `process.run/spawn`, `kof.shell` (argv em lista), `kof.ssh` | ✅ JVM/Native/JS |
+| `kof.workflow` (job/dag/retry/deadLetter/checkpoint/schedule/`runSupervised`) | ✅ JVM/JS/Native |
+| `kof.supervisor` (OTP one_for_one) | ✅ JVM/Script/Native x86 (gates `OTP001/002`) |
+| `kof fmt` / `kof md` / `kof test` / `kof profile --methods` / `kof debug` nativo | ✅ tooling |
+| `kof.ui` (Color, Palette, Theme, widgets, `Style`, tokens, `AppState`) | ✅ JS/KofJS (faces no-op documentadas) |
+| Pattern matching `case String s`, `case Point(x,y)` + guards | ✅ 3+ targets |
+| Null safety `String?`/`Int?` + narrowing; `Troolean` | ✅ 4 alvos |
+| `List.map/filter/reduce` (higher-order) | ✅ 4 alvos |
+| `kof.mq` (pub/sub em memória) | ✅ 3 targets |
+| `kof.validation` (30+ predicados) | ✅ 5 alvos |
+| `kof.observability` (health, counter/gauge/histogram, spans) | ✅ 4 alvos |
+| `kof.strings` / `kof.encoding` / `kof.random` / `kof.rng` | ✅ 5 alvos |
+| `kof.net` (URI parse + fetch) | ✅ 5 alvos |
+| `kof.uuid` (v4 + v7 + isUuid) | ✅ 5 alvos |
+| arrays multidimensionais `new T[a][b]` | ✅ 5 alvos |
+| package manager (`kof deps`, registry + proveniência) | ✅ disponível (0.5.0) |
+| `kof deploy` (multi-target, `--publish`) | ✅ disponível |
 
 **Gaps de target** são reportados em compile-time com códigos
-(`DB001`, `SECN00x`, `WEB001`, `ORM001`, `AND001`) — nunca de forma silenciosa. É parte da filosofia:
+(`DB001`, `DB002`, `SECN00x`, `WEB002-006`, `ORM001`, `CRON001`, `OTP00x`,
+`AND001`, `PROC001`, `STR003`...) — nunca de forma silenciosa. É parte da filosofia:
 a plataforma diz o que consegue fazer.
 
 ## Licença

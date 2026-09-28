@@ -187,7 +187,7 @@ var cubo = new Int[2][3][4]
 
 > Antes só a 1ª dim era alocada. Agora `new T[a][b][c]` cria TODAS as dimensões (bug 71 fechado, 5 alvos).
 
-## JSON com records (✅ 3 targets — JSN002 fechado)
+## JSON com records (✅ 5 alvos — JSN002 fechado)
 
 ```kof
 var p = Point(3, 4)
@@ -196,7 +196,9 @@ var d = json.decode<Point>("{\"x\": 10, \"y\": 20}")
 println(d.x())            // 10 — funciona em JVM/Native/JS
 ```
 
-> Desde 0.3.0, JSON de objetos/records funciona nos 3 targets, incluindo riscv64/aarch64 (NATIVE002-stdlib). Para List de records use `json.decode<List<Point>>`.
+> JSON de objetos/records funciona nos 5 alvos (0.3.0+; FP, `Map` aninhado e
+> record em `package` fecharam na 0.5.0). Para List de records use
+> `json.decode<List<Point>>`.
 
 ## Imutabilidade de records (0.3.5+ — SEM038)
 
@@ -204,10 +206,53 @@ println(d.x())            // 10 — funciona em JVM/Native/JS
 record Point(Int x, Int y)
 var p = Point(3, 4)
 p.x = 99   // ERRO de compilação SEM038: record é imutável
+p.x++      // ERRO SEM038 também (0.5.0)
 this.x = 99 // permitido SÓ dentro do construtor de record
 ```
 
 > `val` também é imutável (SEM037). `record` + `val` são garantias de compile-time — violar vira diagnóstico, não runtime.
+> `==` entre records compara **conteúdo** (incluindo campos String/Double e
+> aninhados) também no Native desde a 0.5.0.
+
+## Enums são classes de verdade (0.4.2+)
+
+Desde a 0.4.2 o enum virou classe real nos 4 alvos — identidade,
+`instanceof` e `getClass` funcionam, e a comparação com `String` é **erro**
+(`SEM062`):
+
+```kof
+enum Cor { Vermelho, Verde, Azul }
+
+main() {
+    var c = Cor.Verde
+    println(c.ordinal())          // 1  (0.4.1)
+    println(c.compareTo(Cor.Azul)) // -1 (0.4.1)
+    if (c == Cor.Verde) { }       // ✅ identidade/conteúdo
+    // if (c == "Verde") { }      // ❌ SEM062 — use c.name() se precisar do texto
+}
+```
+
+## Forma da classe é validada em compile-time (0.4.3+)
+
+Erros que antes só apareciam em runtime (ou nunca) agora são diagnóstico:
+
+| Código | Situação |
+|--------|----------|
+| `SEM041` | `new` de classe abstrata |
+| `SEM043` | classe concreta que não implementa todos os métodos |
+| `SEM064` | interface que estende classe |
+| `SEM069` | classe `final` + `abstract` ao mesmo tempo |
+| `SEM070` | herdar de classe `final` |
+| `SEM071` | `new` em interface |
+| `SEM076` | dois campos com o mesmo nome (qualquer tipo) — 0.4.5 |
+| `SEM101` | default methods conflitantes de interfaces |
+
+```kof
+class X {
+    String v
+    Int v      // ❌ SEM076: um campo por NOME
+}
+```
 
 ## Exercícios
 

@@ -19,13 +19,17 @@
 |---------|--------|
 | `List<T>`, arrays, `for-in` | ✅ base |
 | `Map<K,V>`, `Set<T>` | ✅ |
+| `math.sqrt/pow/parse*/roundTo/lerp/percentage` | ✅ 5 alvos (0.3.22–0.5.0) |
+| `math.isNaN/isInfinite/isFinite` | ✅ (0.4.1) |
+| `rng` (PRNG semeado, reprodutível) | ✅ JVM/Native/JS |
 | `kof.io` (ler CSV de arquivo) | ✅ |
 | `json.encode/decode` (dados) | ✅ |
 | `now()` (medir) | ✅ |
-| `kof.observability` (`counter`/`gauge`/`health`) | ✅ JVM/Native/JS |
+| `kof.observability` (`counter`/`gauge`/`health`) | ✅ 4 alvos |
 | Bibliotecas de ML (pandas/numpy-like) | não existem — **implementamos** |
 
-**Por que isso é Kof:** sem bibliotecas externas, você *entende* o algoritmo.
+**Por que isso é Kof:** a plataforma empresta as primitivas (raiz, parsing,
+arredondamento, sorteio reprodutível) e você *entende* o algoritmo.
 Dados = `List<Double>`/`List<record>`; a filosofia é representar o domínio.
 
 ## Como estudar

@@ -66,25 +66,34 @@ Observações importantes:
 
 | Comando | Faz o quê |
 |---------|-----------|
-| `kof run a.kf [--target jvm\|native\|js\|native.risc\|native.arm] [--release] [args...]` | compila e executa |
-| `kof check a.kf` | type-check sem emitir código |
-| `kof build dir --target jvm\|native\|js\|native.risc\|native.arm\|kofc [--release] [--output <dir>]` | compila para target |
-| `kof serve a.kf [--port N]` | sobe servidor HTTP (web.app + TLS) |
-| `kof test a.kf [--target jvm\|native\|js]` | roda blocos `test "nome" { }` (PASS/FAIL por teste) |
-| `kof debug a.kf` | sessão DAP (breakpoints, call stack) |
-| `kof bench [paths...] [--target jvm\|native\|js] [--iterations N]` | benchmarks com validação |
-| `kof profile a.kf [--target jvm\|native\|js]` | métricas de execução (CPU, RSS, GC) |
+| `kof run a.kf [--target jvm\|native\|js\|native.risc\|native.arm\|android] [--profile host\|freestanding] [--release] [args...]` | compila e executa |
+| `kof check a.kf\|dir [--target t] [--json]` | type-check sem emitir código |
+| `kof build dir --target jvm\|native\|js\|native.risc\|native.arm\|android [--release] [--fat] [--print-sizes] [--output <dir>]` | compila para target |
+| `kof serve a.kf [--port N] [--host H] [--backend t] [--frontend t]` | sobe servidor HTTP |
+| `kof test a.kf\|dir [--target jvm\|native\|js] [--timeout <s>] [--tag <t>]` | roda `test "nome", "tag" { }` (PASS/FAIL por teste) |
+| `kof debug a.kf [--dap] [--attach <pid>] [--target native] [--break <linha>]` | DAP/breakpoints (0.4.9+: nativo) |
+| `kof bench [paths...] [--target jvm\|native\|js] [--iterations N] [--warmup N] [--baseline f] [--json] [--quick]` | benchmarks com baseline e regressão |
+| `kof profile a.kf [--target jvm\|native\|js] [--methods]` | métricas de execução (CPU, RSS, GC, métodos) |
 | `kof inspect a.kf [--json]` | estatísticas de IR (antes/depois otimização) |
-| `kof script a.ks [--target jvm\|native\|js]` | KofScript: Kof puro via KofInterpreter (sem let/const/fn) |
+| `kof fmt a.kf\|dir [-w]` | formatador oficial (parser real, idempotente) |
+| `kof md check\|format a.md` | valida/canoniza Kofmd (MD002) |
+| `kof script a.ks [--target jvm\|native\|js] [--watch] [--inspect]` | KofScript: Kof puro via KofInterpreter (sem let/const/fn) |
 | `kof repl` | REPL KofScript interativo (Kof puro) |
-| `kof c a.c` | KofC: subset C -> ELF nativo |
+| `kof c a.c [--target x86_64\|riscv64\|aarch64] [--run]` | KofC: subset C -> ELF nativo |
+| `kof new <dir> [--type mono\|backend\|frontend\|full-stack]` | esqueleto de projeto |
+| `kof deps <init\|add\|remove\|list\|resolve>` | gerenciador de pacotes (`kofdeps`) |
+| `kof workflow <list\|run> a.kf [--job <nome>] [--dry-run]` | roda pipelines (`pipeline(): KofWfDag`) |
+| `kof deploy dir --target jvm [--publish]` | empacota release (fat jar + checksums) |
+| `kof migrate \| translate \| decompile \| compare` | migração/inspeção de legado Java/.class |
+| `kof editor <list\|detect\|setup\|install>` | integração com editores (EDI001) |
+| `kof config gen a.kf [--output <f>]` | gera template `kof.config` das chaves usadas |
 | `kof lsp` | language server (LSP 3.x, stdio) |
 | `kof info [--json]` | relatório do ambiente |
 | `kof install <dir>` | instala distribuição local |
 | `kof version` | versão do compilador |
 
 > No curso, a maioria dos exemplos roda com `kof run`. Quando um recurso é
-> específico de target, o texto avisa (ex.: `kof.db` é JVM-only hoje).
+> específico de target, o texto avisa (ex.: `kof.web` no Android é `AND002`).
 
 ## Regra de ouro do curso
 

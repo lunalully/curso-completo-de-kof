@@ -80,8 +80,10 @@ curl localhost:8080/users/1
 - **Prepared statements** (`?`) em todas as queries — sem SQL concatenado.
 - **Records** para bind tipado (`db.query<User>`).
 - **Config** da plataforma para URL/porta (`kof.config`).
-- **Gaps de target** honestos: `kof.db` e `kof.web` são JVM; Native/JS
-  reportam `DB001`/`WEB001` em compile-time.
+- **Gaps de target** honestos: `kof.web` base roda no JVM e no Native, com
+  partes marcadas por código (`WEB002` TLS, `WEB003` SSE, `WEB004` WS,
+  `WEB005` serveDir); `kof.db` roda no JVM/Native/JS com recusas nomeadas
+  (`DB001`, `DB002`, `ORM001`) — sempre em compile-time.
 
 ## Exercícios
 

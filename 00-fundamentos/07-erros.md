@@ -18,20 +18,25 @@ try {
 }
 ```
 
-## Múltiplos catches
+## Tipos de catch são validados (0.4.3+)
+
+Exceções Kof são `String`; o compilador recusa capturas impossíveis:
 
 ```kof
 try {
-    arriscado()
+    throw "boom"
 } catch (String e) {
-    println("erro de string: " + e)
-} catch (Int e) {
-    println("erro numerico: " + e)
+    println("capturado: " + e)
 }
 ```
 
-> No target **Native**, o *primeiro* catch captura (sem dispatch entre
-> múltiplos catches). No JVM, funciona como esperado.
+- `catch (Int e)` → `SEM067` (primitivo não é lançável).
+- `catch` de tipo não-lançável → `SEM068`.
+- Para exceções vindas de interop Java, capture o tipo de exceção real
+  (`Throwable`/`Exception` do `java.lang` resolvem sem import, 0.5.0).
+
+> A exceção atravessa frames e threads nos 4 alvos (per-thread exception
+> frame no Native desde a 0.4.1); `await` relança a exceção da task.
 
 ## When to use exceção
 
@@ -116,9 +121,10 @@ try {
 
 - Sem stack traces no Native.
 - Exceções são valores simples (Strings) — ainda não há modelo de objeto de
-  exceção.
-- Quando o domínio exige **ausência como valor** (não como erro), a sentinela
-  documentada pode ser um `WORKAROUND` aceitável — mas marque-o como tal.
+  exceção (interop Java pode lançar exceções do JDK).
+- Quando o domínio exige **ausência como valor** (não como erro), use o tipo
+  anulável (`String?`/`Int?` + narrowing) ou `Troolean` — não invente
+  sentinela; a linguagem já expressa "pode não existir".
 
 ## Exercícios
 

@@ -1,13 +1,3 @@
-Double raizQuadrada(Double n) {
-    if (n <= 0) {
-        return 0
-    }
-    var x = n
-    for (var i = 0; i < 100; i = i + 1) {
-        x = (x + n / x) / 2.0
-    }
-    return x
-}
 Double media(List<Double> dados) {
     var soma = 0.0
     for (var x in dados) {
@@ -31,7 +21,7 @@ Double pearson(List<Double> x, List<Double> y) {
         somaXX = somaXX + dx * dx
         somaYY = somaYY + dy * dy
     }
-    return somaXY / raizQuadrada(somaXX * somaYY)
+    return somaXY / math.sqrt(somaXX * somaYY)
 }
 main() {
     var alturas = listOf(150.0, 160.0, 170.0, 180.0, 190.0)

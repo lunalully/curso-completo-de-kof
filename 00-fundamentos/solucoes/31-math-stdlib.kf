@@ -1,0 +1,21 @@
+// Exercício 31 — kof.math: o que a plataforma já resolve
+//
+// Antes de escrever um loop, procure a função de intenção.
+
+main() {
+    // hipotenusa de 3.0 e 4.0 — math.sqrt em vez de Newton
+    var h = math.sqrt(3.0 * 3.0 + 4.0 * 4.0)
+    println(h)                       // 5.0
+
+    // arredondar para 2 casas — math.roundTo em vez de Math.pow artesanal
+    println(math.roundTo(123.456, 2)) // 123.46
+
+    // texto -> número é math.parse*, não `as`
+    var n = math.parseInt("42")
+    var d = math.parseDouble("2.5")
+    println(n + 1)                    // 43
+    println(d * 2.0)                  // 5.0
+
+    // interpolação linear
+    println(math.lerp(0.0, 100.0, 0.25))  // 25.0
+}

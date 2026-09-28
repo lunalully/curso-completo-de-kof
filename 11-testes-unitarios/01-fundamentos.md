@@ -35,6 +35,29 @@ kof test teste-soma.kf    # PASS soma positivos / PASS soma opostos
 - Exit code ≠ 0 se houver qualquer falha — pronto para CI.
 - Funciona nos 3 targets: `--target jvm|native|js`.
 
+## Tags, setup/teardown e timeout (0.5.0)
+
+Tags são **strings extras** no `test` — zero sintaxe nova:
+
+```kof
+test "soma positivos", "smoke", "matematica" {
+    assert(soma(2, 3) == 5)
+}
+```
+
+```bash
+kof test testes/ --tag smoke       # roda só os testes com a tag (compile-time)
+kof test testes/ --timeout 30      # mata teste que passar de 30s
+```
+
+- `--tag` filtra o catálogo **em compile-time** — JVM/Native/JS executam
+  exatamente o mesmo conjunto. Tag sem match diz
+  `no tests with tag 'x' (of N)` e passa (nunca silencioso).
+- `setup()`/`teardown()` são funções zero-arg comuns: se o `setup` lança, o
+  teste é **pulado** pelo nome; o `teardown` roda via `finally` mesmo com
+  teste falhando.
+- `--timeout` é aplicado pelo runner (no JS é melhor esforço, documentado).
+
 ## Estilo legado (exit code)
 
 Arquivos sem blocos `test` mantêm o contrato antigo: `main()` com asserts,

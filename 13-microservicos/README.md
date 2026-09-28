@@ -15,11 +15,13 @@
 
 | Capacidade | Estado |
 |------------|--------|
-| Servidor HTTP (`web.app()`) | ✅ JVM |
-| **Cliente HTTP** (`kof.http`: get/post/put/delete/patch) | ✅ 3 targets (HTTP002 fechado) |
-| `kof.config` (per-serviço via env/arquivo) | ✅ JVM |
-| `kof.log` (per-serviço) | ✅ JVM |
-| `spawn` (paralelismo dentro do serviço) | ✅ JVM |
+| Servidor HTTP (`web.app()`) | ✅ JVM/Native; base JS |
+| `app.security()` (CSRF/rate-limit/headers/sessão) | ✅ JVM (`WEB006` fora) |
+| **Cliente HTTP** (`kof.http` + `timeout/retry/circuit`) | ✅ 5 alvos |
+| `kof.config` (per-serviço via env/arquivo) | ✅ 4 alvos |
+| `kof.log` (per-serviço) | ✅ 4 alvos |
+| `spawn`/`await`/`channel` (paralelismo dentro do serviço) | ✅ 4 alvos |
+| Pipelines/supervisão (`kof.workflow`, `kof.supervisor`) | ✅ JVM/JS/Native |
 | Service discovery, load balancer | ⏳ planned (config manual / gateway) |
 
 **O gap restante** é descoberta de serviço: endereços vão no `kof.config`

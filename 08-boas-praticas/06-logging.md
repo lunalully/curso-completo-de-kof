@@ -59,7 +59,7 @@ log.info("conectando com " + secrets.redact(apiKey))
 ## Estado por target
 
 - JVM: ✅ completo (níveis, off).
-- Kof.log agora funciona nos 3 targets (LOG001 fechado, 0.3.0-beta).
+- Kof.log funciona em 4 alvos (LOG001 fechado; cross fechado 26/09).
 
 ## Exercícios
 

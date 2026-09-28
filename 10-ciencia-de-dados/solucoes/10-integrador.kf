@@ -3,16 +3,6 @@ record Ponto(Double x, Double y, String classe)
 record Distancia(Double d, String classe)
 record Regressao(Double a, Double b)
 
-Double raizQuadrada(Double n) {
-    if (n <= 0) {
-        return 0
-    }
-    var x = n
-    for (var i = 0; i < 100; i = i + 1) {
-        x = (x + n / x) / 2.0
-    }
-    return x
-}
 Double media(List<Double> dados) {
     var soma = 0.0
     for (var x in dados) {
@@ -72,7 +62,8 @@ Double desvioPadrao(List<Double> dados) {
     for (var x in dados) {
         soma = soma + (x - m) * (x - m)
     }
-    return raizQuadrada(soma / dados.size)
+    var variancia: Double = soma / dados.size
+    return math.sqrt(variancia)
 }
 Double pearson(List<Double> x, List<Double> y) {
     var mx = media(x)
@@ -87,7 +78,7 @@ Double pearson(List<Double> x, List<Double> y) {
         somaXX = somaXX + dx * dx
         somaYY = somaYY + dy * dy
     }
-    return somaXY / raizQuadrada(somaXX * somaYY)
+    return somaXY / math.sqrt(somaXX * somaYY)
 }
 Regressao ajustar(List<Double> x, List<Double> y) {
     var mx = media(x)
@@ -115,7 +106,7 @@ String classificar(List<Ponto> treino, Ponto novo, Int k) {
     for (var p in treino) {
         var dx = p.x - novo.x
         var dy = p.y - novo.y
-        distancias.add(Distancia(raizQuadrada(dx * dx + dy * dy), p.classe))
+        distancias.add(Distancia(math.sqrt(dx * dx + dy * dy), p.classe))
     }
     var ord = mergeSortDist(distancias)
     var ca = 0

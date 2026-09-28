@@ -117,6 +117,35 @@ error: switch sobre 'Cor' não cobre: Verde, Azul
 > Isso é a filosofia em ação: adicionar uma constante nova ao enum quebra
 > em compile-time todos os switches incompletos — não em runtime.
 
+## switch como expressão (0.4.1+)
+
+Assim como o `if`, o `switch` pode **produzir um valor** — cada caso usa
+`->` e o resultado vira o valor do bloco:
+
+```kof
+var nome = switch (dia) {
+    case 1 -> "domingo"
+    case 7 -> "sábado"
+    default -> "dia útil"
+}
+```
+
+Com `Bool` como sujeito, os dois casos (`true`/`false`) cobrem tudo — sem
+`default`:
+
+```kof
+var palavra = switch (ativo) {
+    case true -> "ligado"
+    case false -> "desligado"
+}
+```
+
+> Novidades 0.4.1+ que fecham arestas: ramos de if/switch com **tipos
+> distintos** ganham um tipo comum (ex.: `if (c) "texto" else 0` virou
+> `Object`), e `switch`-expressão pode ser o lado direito de uma atribuição
+> composta. No `switch`-**statement**, `break` encerra o `switch` — não o
+> loop de fora (corrigido na 0.5.0).
+
 ## Pattern Matching (0.2.0+)
 
 O `switch` suporta **type patterns** e **record destructuring**:

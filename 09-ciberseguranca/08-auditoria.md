@@ -27,9 +27,21 @@
 ### Criptografia
 - [ ] AES-GCM (não ECB/DES/MD5)?
 - [ ] IV/nonce único por mensagem?
-- [ ] Chaves fora do código (`secrets.get`)?
+- [ ] Chaves fora do código (`secrets.get` — ou `Secret`/`KeyHandle`, que
+      redigem por construção e comparam constant-time)?
 - [ ] Comparações secretas com `constantTimeEquals`?
 - [ ] Aleatório seguro (`crypto.randomHex/randomInt`)?
+- [ ] ChaCha20 só onde há implementação (JVM/JS; Native recusa `SECN002`)?
+
+### Segredos no repositório
+- [ ] Nenhum literal de chave/token no código (procure `sk-`, `AKIA`,
+      `-----BEGIN`, `password=`)?
+- [ ] `reveal()` de um `Secret` só aparece onde é inevitável — e está
+      justificado na revisão?
+- [ ] `log`/`json.encode` de segredos redigem (`Secret`)?
+- [ ] O repo tem política de reporte de vulnerabilidade e varredura de
+      segredos no CI (o próprio Kof4j tem `.github/` para isso — use de
+      referência)?
 
 ### Injeção e validação
 - [ ] SQL 100% com `?` bind?

@@ -55,12 +55,11 @@ main() {
 }
 ```
 
-> **WORKAROUND (0.2.x):** atribua o resultado antes do `if`.
-> A forma direta `if (!auth.hasRole("admin"))` gera bytecode inválido, e
-> `auth.user()` dentro de handler derruba o servidor (`VerifyError`) —
-> use `auth.claims()` e leia o `sub` do JSON. Detalhes em
-> [`00-fundamentos/99-notas-workarounds.md`](../00-fundamentos/99-notas-workarounds.md)
-> (#4 e #5).
+> **Nota de versionamento:** os itens #4/#5 das notas de workarounds
+> (negação direta de `auth.hasRole` e `auth.user()` em handler) foram
+> corrigidos na linha 0.4/0.5, mas não foram re-testados nesta atualização.
+> O padrão deste exemplo (atribuir antes do `if`, usar `auth.claims()`)
+> é seguro em qualquer versão — se você reproduzir o bug, registre.
 
 Teste:
 
@@ -92,8 +91,45 @@ main() {
 }
 ```
 
-> **Atenção:** o retorno do handler deve ser **expressão** (concatenação).
-> `return token;` com variável nua faz a rota não registrar (nota #5a).
+> **Corrigido na 0.5.0:** `return token;` com variável nua agora registra a
+> rota normalmente. Concatenar continua válido quando você monta a resposta.
+
+## `app.security()` — o middleware composto (0.4.1+, JVM)
+
+Em vez de montar rate-limit, CORS, headers, sessão e CSRF à mão, a plataforma
+tem um middleware com **ordem fixa** e **CSRF ligado por padrão** (modelo
+Spring, `DECISIONS §5`):
+
+```kof
+main() {
+    var app = web.app()
+    auth.secret(secrets.get("JWT_SECRET", "dev-secret"))
+    app.security()          // rate-limit → CORS → headers → sessão → CSRF
+    // com overrides explícitos (mapa String→String — coleções são homogêneas):
+    // app.security(mapOf("csrf", "false", "permitAll", "/health,/login"))
+    // app.security(mapOf("rateLimit", "10/60", "headers", "true"))
+    app.get("/health") { return "ok" }
+    app.listen(8080)
+}
+```
+
+- CSRF **on por default** quando `app.security()` é configurado
+  (`"csrf": false` desliga, com intenção explícita).
+- `permitAll` é alias de `publicPaths` (lista CSV) — o modelo Spring.
+- Opções: `rateLimit` (Int ou `"10/60"`), `cors`, `headers` (Bool),
+  `sessionHeader`, `auth` (Bool) e `roles`.
+- Fluxo manual: `security.csrfToken()` / `security.csrfValid(tok)`;
+  sessões `security.sessionCreate/Get/Destroy`; rate limit
+  `security.rateLimit("ip:" + addr, 10, 60)`.
+- Cookies com defaults seguros: `security.cookieSet("sid", sid)` e
+  `security.cookieGet` (JVM+JS); headers prontos: `security.cspHeader()`,
+  `hstsHeader()`, `frameHeader()`, `contentTypeOptionsHeader()`,
+  `referrerHeader()`; `security.corsAllowed(origin, allowed)`.
+
+> **Gates honestos:** `app.security()` é JVM (Native/JS = `WEB006`);
+> `security.csrf*` e os construtores de header são JVM/JS (Native =
+> `SECN000`). OAuth2 resource server (`auth.resourceServer`, JVM, 0.4.1)
+> valida token/escopos no próprio runtime — sem biblioteca de terceiros.
 
 ## Comparação `==` vs `constantTimeEquals`
 

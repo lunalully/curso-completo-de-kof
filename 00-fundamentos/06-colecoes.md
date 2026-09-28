@@ -1,7 +1,7 @@
 # Módulo 00 · Aula 6 — Coleções
 
 > `List<T>` é a coleção ordenada da linguagem. `Map<K,V>` e `Set<T>`
-> também existem (nos 3 targets).
+> também existem (em todos os alvos).
 
 ## Criar e usar uma lista
 
@@ -18,8 +18,8 @@ l.clear()
 var vazio = listOf<Int>()
 ```
 
-Disponível nos 3 targets (JVM: ArrayList; Native: implementação própria em
-asm; JS: runtime embarcado) com a mesma API.
+Disponível em todos os alvos (JVM: ArrayList; Native x86/riscv64/aarch64:
+implementação própria em asm; JS: runtime embarcado) com a mesma API.
 
 ## Tipos de elementos
 
@@ -100,8 +100,10 @@ encadeados.
 var m = mapOf()             // Map vazio
 m.put("a", 1)
 println(m.get("a"))         // 1
+println(m.get("z"))         // null — get devolve V? (0.4.0)
+println(m.getOrDefault("z", 0)) // 0 (0.4.5)
 println(m.contains("b"))    // false
-println(m.size())           // sempre () — m.size quebra (ver notas)
+println(m.size())           // 1 — m.size também funciona (0.5.0)
 var chaves = m.keys()       // List<String>
 var valores = m.values()    // List<Int>
 println(m.remove("a"))      // 1
@@ -115,7 +117,20 @@ println(s.contains(2))      // true
 s.remove(1)
 ```
 
-> `m.size()` é a forma estável (método). `m.size` (propriedade) só funciona para `List` — ver notas #9.
+> **`get` devolve `V?`** — o valor pode não existir. Trate com narrowing
+> (`if (v != null)`) ou com `getOrDefault`. Comparar `T? == null` nunca dá
+> NPE (D-NULL-INTENT); acessar direto dá erro de compilação.
+>
+> **`[]` só indexa array e `List`**: `l[0]` funciona (rota para `get`), mas
+> `map["k"]`, `set[0]` e `s[0]` em String são `SEM054` — use `get(k)` /
+> `charAt(i)`. A intenção do índice precisa ser explícita.
+>
+> **Igualdade de coleções** compara **conteúdo** (`==`) — no JS isso foi
+> alinhado na 0.5.0. Chaves de `Map` saem **ordenadas** no `json.encode`.
+>
+> Coleções "bare" (`List`, `Map`, `Set`, `Channel`) em posição declarada
+> resolvem para os builtins da linguagem (0.5.0) — e generics são
+> **invariantes**: `List<Int>` não é `List<String>`.
 
 Para associações nome-valor simples, agora o idiom é o `Map`. A alternativa
 com `List<record>` continua válida quando a entrada já vem em formato de

@@ -48,11 +48,13 @@ Double variancia(List<Double> dados) {
 }
 
 Double desvioPadrao(List<Double> dados) {
-    return raizQuadrada(variancia(dados)) // 0.3.7: use `math.sqrt` quando disponível? ainda não — mantenha Newton
+    return math.sqrt(variancia(dados))   // math.sqrt: 5 alvos desde a 0.3.22
 }
-
-> **0.3.7 dica:** gere amostras com `kof.random` (`randomInt(0,100)`) para testar estatística com dados sintéticos — 5 alvos.
 ```
+
+> **Dica:** gere amostras com `kof.random` (`randomInt(0,100)`) para testar
+> estatística com dados sintéticos — 5 alvos. Para testes **determinísticos**,
+> use `rng.seed(42)` (mesma seed = mesma sequência, JVM/Native/JS).
 
 ## Moda
 

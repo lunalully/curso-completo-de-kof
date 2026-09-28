@@ -1,8 +1,5 @@
 // Recebe um padrão Java-like e devolve a forma Kof
-class User {
-    String name
-    Int age
-}
+class User(String name, Int age)
 record Point(Int x, Int y)
 Int somar(Int a, Int b) {
     return a + b

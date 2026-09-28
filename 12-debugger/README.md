@@ -13,14 +13,16 @@
 | [03-runtime.md](03-runtime.md) | erros de runtime e diagnósticos |
 | [04-ferramentas.md](04-ferramentas.md) | `kof check`, `kof test`, logs |
 
-## Estado real
+## Estado real (0.5.0)
 
 - `kof debug <file.kf>` — servidor DAP sobre stdio (breakpoints por linha,
   call stack com funções/linhas Kof, continue, disconnect).
-- `kof check` — type-check sem emitir código.
-- `kof test` — blocos `test "nome" { }` com PASS/FAIL por teste.
-- `kof lsp` — diagnostics no editor.
-- `kof info` — ambiente.
+- `kof debug --target native [--break N] [--dap]` — debug nativo com DWARF
+  (gdb enxerga funções/linhas Kof); `--attach <pid>` anexa a processo vivo.
+- `kof check` — type-check sem emitir código (`--json` para CI).
+- `kof test` — `test "nome", "tag" { }` com PASS/FAIL, `--tag`/`--timeout`.
+- `kof profile --methods` — métodos quentes (JFR no JVM; `--cpu-prof` no JS).
+- `kof lsp` — diagnostics no editor; `kof info` — ambiente.
 
 ## Como estudar
 

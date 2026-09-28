@@ -67,10 +67,10 @@ A Fase 1 do `kof.web` usa status automáticos:
 | handler devolve null | 404 Not Found |
 | erro interno | 500 |
 
-> **Limitação real:** status customizados (201, 400, 401, 403) ainda não
-> existem na Fase 1. Para expressar erro, use o corpo. A trilha de
-> cibersegurança discute as implicações (resposta 200 com erro no body é um
-> `WORKAROUND` — nunca silencioso, sempre documentado).
+> **Status customizados existem** desde a 0.2.0: `status(codigo, corpo)`
+> (ex.: `status(201, json.encode(p))`, `status(401, "...")`). Prefira o
+> status HTTP correto a devolver 200 com erro no corpo — o cliente e o
+> monitoramento agradecem.
 
 ## JSON como linguagem do REST
 

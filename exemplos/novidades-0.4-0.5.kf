@@ -1,0 +1,54 @@
+// Exemplo — novidades 0.4.0–0.5.0 em um programa só
+//
+// Rode: kof run novidades-0.4-0.5.kf
+
+// 1) Sobrecarga top-level por tipo e aridade (0.4.0)
+descreve(Int n): String { return "int " + n }
+descreve(String s): String { return "str " + s }
+soma(Int a, Int b): Int { return a + b }
+soma(Int a, Int b, Int c): Int { return a + b + c }
+
+// 2) Troolean — três estados de verdade (0.5.0)
+situacao(Int nota): Troolean {
+    if (nota < 0) {
+        Troolean desconhecida
+        return desconhecida
+    }
+    return nota >= 7
+}
+
+main() {
+    // sobrecarga
+    println(descreve(7))
+    println(descreve("kof"))
+    println(soma(1, 2))
+    println(soma(1, 2, 3))
+
+    // Troolean: desconhecido não é true nem false
+    println(situacao(9) == true)
+    println(situacao(5) == false)
+    println(situacao(-1))
+
+    // stdlib de intenção
+    println(math.sqrt(81.0))
+    println(math.roundTo(3.14159, 2))
+    println(math.parseInt("42") + 1)
+    println(strings.reverse("café"))
+    println(strings.uncapitalize("Hello"))
+    println(time.addDays("2026-01-31", 1))
+    println(uuid.isUuid("123e4567-e89b-12d3-a456-426614174000"))
+    println(validation.formatCpf("12345678901"))
+
+    // rng semeado: mesma seed = mesma sequência (testes reprodutíveis)
+    rng.seed(42)
+    println(rng.int(100))
+
+    // null por intenção: ausência vem da API, tratada por narrowing
+    var estoque = mapOf("teclado", 10)
+    var mouse: Int? = estoque.get("mouse")
+    if (mouse != null) {
+        println("mouse: " + mouse)
+    } else {
+        println("mouse sem cadastro")
+    }
+}

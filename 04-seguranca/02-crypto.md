@@ -33,6 +33,21 @@ Formato: `aesgcm$<iv-b64>$<ciphertext+tag-b64>`.
 - GCM garante **confidencialidade + autenticidade** (detecta tamper).
 - Chave errada ou dado alterado → falha na descriptografia.
 
+## ChaCha20 (0.4.1+, RFC 8439)
+
+Alternativa em fluxo, disponível no JVM e no JS:
+
+```kof
+var key = crypto.randomHex(32)          // 32 bytes = 64 chars hex
+var ct = crypto.encryptChacha20("segredo", key)
+var pt = crypto.decryptChacha20(ct, key)
+println(pt == "segredo")                // true
+```
+
+> **Gate honesto:** no **Native** a forma existe mas o target recusa em
+> compile-time com `SECN002` — nunca um fallback silencioso mais fraco.
+> AES-GCM é a via cross-target para cifrar dados.
+
 ## Aleatório seguro
 
 ```kof

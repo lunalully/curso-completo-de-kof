@@ -13,7 +13,7 @@
 ```kof
 app.get("/admin") {
     var admin = auth.hasRole("admin")
-    if (!admin) {          // WORKAROUND: atribua antes (nota #4)
+    if (!admin) {          // nota #4: atribua antes do if (padrão seguro)
         return "{\"error\": \"forbidden\"}"
     }
     return "{\"ok\": true}"

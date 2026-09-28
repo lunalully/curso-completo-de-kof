@@ -90,24 +90,19 @@ kof test testes.kf      # 3 passed of 3 tests
 ## Testando exceções
 
 ```kof
-Bool lancaErro(Void fn) {
-    // WORKAROUND: Kof não tem lambdas de Void genéricas confiáveis
-    // — teste a exceção no fluxo direto
-    return false
-}
-
-main() {
+test "divisao por zero lanca" {
     try {
         dividir(1, 0)
         assert(false, "deveria ter lancado")
     } catch (String e) {
-        assert(true, "lancou como esperado")
+        assert(e.contains("zero"), "mensagem do erro")
     }
 }
 ```
 
-> O padrão seguro: envolver a chamada em `try/catch` e assertar o
-> comportamento observado.
+> O padrão: envolver a chamada em `try/catch` e assertar o comportamento
+> observado (mensagem inclusa). Se o teste passar sem lançar, o
+> `assert(false, ...)` pega o falso-verde.
 
 ## Exercícios
 

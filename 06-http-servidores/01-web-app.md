@@ -110,7 +110,23 @@ main() {
 app.listen(8080)   // bloqueante, 0.0.0.0
 app.port()         // porta efetivamente vinculada (útil com listen(0))
 app.close()        // encerra (graceful shutdown)
+app.serveDir("/", "public")   // arquivos estáticos sob / (JVM; Native/JS = WEB005)
 ```
+
+> **0.5.0:** `app.close()` deixou de ser opcional na prática — um `web.app()`
+> nunca fechado emite o aviso `MEM014` no compile. `[server] port` do
+> `kof.toml` é honrado pelo `kof serve` (a env `KOF_SERVER_PORT` vence a
+> config — `APP002`).
+
+## Segurança em uma linha: `app.security()` (0.4.1+)
+
+```kof
+var app = web.app()
+app.security()     // rate-limit → CORS → headers → sessão → CSRF (ordem fixa)
+```
+
+CSRF ligado por padrão, cookies com defaults seguros, headers de hardening —
+detalhes e opções na [aula 2](02-middleware.md) e no módulo 04 (auth web).
 
 ## Concorrência
 
@@ -134,7 +150,7 @@ main() {
 ```
 
 - `app.ws(path, handler)` — rota WebSocket (RFC 6455).
-- **JVM**: disponível; Native/JS: WEB003/WEB004 (gap documentado).
+- **JVM**: disponível; Native/JS: `WEB004` (gap documentado).
 
 ## SSE — Server-Sent Events (0.2.6+)
 
@@ -151,7 +167,7 @@ main() {
 ```
 
 - `app.sse(path, handler)` — rota SSE nativa (JVM).
-- **JVM**: disponível; Native/JS: WEB003/WEB004 (gap documentado).
+- **JVM**: disponível; Native/JS: `WEB003` (gap documentado).
 
 ## Exercícios
 

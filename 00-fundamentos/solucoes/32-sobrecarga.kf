@@ -1,0 +1,26 @@
+// Exercício 32 — sobrecarga top-level (0.4.0+)
+//
+// Mesmo nome, assinaturas distintas — o compilador escolhe pelo call-site.
+
+descreve(Int n): String {
+    return "inteiro: " + n
+}
+
+descreve(String s): String {
+    return "texto: " + s
+}
+
+saudacao(String nome): String {
+    return "Olá, " + nome
+}
+
+saudacao(String nome, String humor): String {
+    return "Olá, " + nome + " (" + humor + ")"
+}
+
+main() {
+    println(descreve(7))              // inteiro: 7
+    println(descreve("kof"))          // texto: kof
+    println(saudacao("Mel"))          // Olá, Mel
+    println(saudacao("Mel", "caótica")) // Olá, Mel (caótica)
+}

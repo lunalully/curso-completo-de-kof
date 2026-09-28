@@ -19,10 +19,13 @@ Kof source → Kof Compiler → Kof IR → KofJS → DOM real (webview/browser)
 |---------|--------|
 | `Color`, `Palette`, `Theme` | ✅ JVM/Native/JS |
 | `Window`, `Label`, `Button`, `Input` | ✅ JS (webview/browser) |
-| `Column`, `Row`, `View`, `Style` | ✅ JS |
+| `Column`, `Row`, `View` | ✅ JS |
+| `Style` declarativo (CSS-like, UI007) | ✅ JS (validação em compile-time) |
+| Tokens `Spacing`/`Radius`/`Border`/`Elevation`/`Typography` | ✅ 4 alvos (fold) |
+| `AppState` + auto-unsub no unmount | ✅ JS/KofJS (0.4.5/0.5.0) |
 | Ações por lambda | ✅ JS |
 | Renderização | sempre via KofJS → DOM (webview/browser); JVM/Native ponte para o mesmo runtime |
-| `spawn` no JS | ✅ `CONC003` fechado (async/await real, 0.3.0-beta) |
+| `spawn` no JS | ✅ `CONC003` fechado (async/await real) |
 
 A renderização é **KofJS**: widgets → DOM real no webview nativo
 (`bin/kof-webview`, WebKitGTK) ou no browser. Sem JavaFX, sem AWT.

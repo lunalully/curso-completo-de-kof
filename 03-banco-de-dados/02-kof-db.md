@@ -1,6 +1,8 @@
 # Módulo 03 · Aula 2 — A API kof.db
 
-> Tudo em `kof.db`, com intenção direta. Funciona no target **JVM**.
+> Tudo em `kof.db`, com intenção direta. Funciona no **JVM** (JDBC),
+> no **Native** (SQLite e MySQL/MariaDB wire) e no **JS** (ponte) — com
+> gaps honestos onde o backend não existe (`DB001`).
 
 ## Conectar
 
@@ -13,6 +15,19 @@ main() {
     db.close(db)
 }
 ```
+
+**Novidades 0.5.0 na conexão:**
+
+- **Drivers JDBC automáticos:** `kof run`/`kof build` baixam o driver do
+  scheme usado para `~/.kof/deps` (mariadb, sqlite, postgresql, h2, mongo)
+  na primeira execução — sem `java -cp` manual, sem `--deps` para driver.
+  Offline/falha de download é erro alto com o caminho manual.
+- **Schemes curtos normalizam:** `mysql://` e `mariadb://` → `jdbc:mariadb://`,
+  `postgres://` → `jdbc:postgresql://` (userinfo vira `user`/`password` do
+  query string), `sqlite:...` → `jdbc:sqlite:...`. Sem isso, `DB001`.
+- `mongodb://` conecta no JVM/Android; no JS/Native é `DB001` nomeado.
+- `CONF001`: ADB/DB cross sem implementação recusa em compile-time — nunca
+  valor silenciosamente errado.
 
 ## Executar (INSERT/UPDATE/DELETE)
 
@@ -73,19 +88,26 @@ main() {
 }
 ```
 
-## Rodando com o driver JDBC
+## Driver JDBC: a plataforma provisiona (0.5.0)
 
-Como `kof run` compila e executa na JVM, o driver precisa estar no classpath:
+Antes era preciso baixar o jar e montar o classpath na mão. Desde a 0.5.0 o
+`kof run` resolve o driver do scheme automaticamente:
 
 ```bash
-# compile
-kof build app.kf --target jvm --output out
-# execute com o driver H2
-java -cp "out:h2.jar" Default.Main
+kof run app.kf          # baixa o driver do scheme (1ª vez) e roda
 ```
 
-> Nos testes oficiais do projeto, o subprocesso roda com o jar do H2 no
-> classpath. Este é o padrão para programas que usam `kof.db`.
+- Versões pinadas (mariadb 3.5.10, sqlite 3.53.4.0, postgresql 42.7.13,
+  h2 2.5.250, trio mongo 5.12.0); cache em `~/.kof/deps`.
+- Um pin próprio (`kofdeps`) vence o pin da plataforma.
+- Sem rede? O erro é alto e explica o drop manual do jar — nunca fallback
+  silencioso.
+- `kof build --fat` embute os drivers no artefato (JVM).
+
+> MySQL/MariaDB pela rede também roda no **Native** (wire client completo,
+> 0.5.0): `connect`/`execute`/`query`/`transaction`, auth
+> `mysql_native_password`, binds tipados. Contra auth recusada, a conexão
+> lança `mysql: <msg>` — nunca handle morto com SIGSEGV depois.
 
 ## Exercícios
 

@@ -21,9 +21,12 @@ kof run app.kf --target js
 | `kof.io` | ✅ |
 | try/catch/finally | ✅ |
 | `kof.security` (passwords/crypto/jwt) | ✅ |
-| `kof.ui` (widgets → DOM) | ✅ |
-| `kof.web` / `kof.http` | ✅ (`HTTP002` fechado, `WEB001` JS residual) |
-| `spawn` | ✅ `CONC003` fechado (async/await real) |
+| `kof.ui` (widgets → DOM, `Style`, tokens, `AppState`) | ✅ |
+| `kof.web` (servidor base) / `kof.http` | ✅ (base web no JS desde 0.4.0; `WEB003/004/005/006` por feature) |
+| `kof.db`/`kof.orm` (ponte) | ✅ (`DB002` para `query<T>`; `ORM001` fechado) |
+| `spawn` / `process.spawn` / `shell.pipeline` | ✅ (async real; host Kof) |
+| `kof.buffer`, FFI (struct/array/buffer) | ✅ 0.5.0 |
+| `time.collect()`, GPU fallback honesto | ✅ 0.5.0 (`TIME004`/`GPU001` aposentados) |
 
 > Gaps de target são diagnósticos **em compile-time** — o programa não
 > compila para JS com `spawn`; a plataforma diz, nunca silencia.
@@ -31,7 +34,11 @@ kof run app.kf --target js
 > **Nota:** lambdas com capturas funcionam nos 5 alvos (JVM/Native/riscv/aarch64/JS) —
 > paridade de captura fechada na 0.3.0 (3 níveis aninhados).
 
-> **0.3.7:** `kof.strings`/`kof.encoding`/`kof.random`/`kof.net` funcionam no JS (5-6 alvos); `kof.ui` widgets Table/Select/Textarea/Canvas disponíveis — ver `training/idioms/ui.md`.
+> **0.5.0:** `Long` é `BigInt` de verdade no JS (paridade de 64 bits);
+> igualdade de coleções por conteúdo (`#518`); source maps com
+> `sourcesContent`; `process.spawn`/pipeline reais sob o host Kof (node puro
+> recusa com diagnóstico nomeado); `kof.ui` ganhou `Style` declarativo,
+> tokens e `AppState` — ver `training/idioms/ui.md`.
 
 ## kof.ui no JS
 

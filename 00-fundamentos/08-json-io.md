@@ -18,10 +18,15 @@ var d = json.decode<Point>("{\"x\": 10, \"y\": 20}")
 println(d.x())                      // 10
 ```
 
-**Gaps documentados (compile-time, nunca silenciosos):**
-- JSON de objetos/records agora funciona nos 3 targets (JSN002 fechado, 0.3.0-beta).
-- `JSN001` — `json.encode(1.5)` (Float/Double) ainda não compila; converta
-  para String ou use Int.
+**Novidades 0.4.0–0.5.0:**
+- `json.encode(1.5)` e coleções com ponto flutuante compilam nos 5 alvos
+  (o antigo `JSN001` fechou; no cross, elementos `Double`/`Long` têm caminho
+  próprio — 0.5.0).
+- `json.encode(mapOf(...))` emite chaves **ordenadas** (0.4.0), e strings
+  seguem o escape do Jackson (0.5.0).
+- `json.decode<Map<String, T>>` com `Map` aninhado e `List<Record>` fora da
+  ordem de fonte funcionam (0.5.0); record dentro de `package` também.
+- Record sem schema no JS continua gap honesto (`JSN002`).
 
 ## Filesystem — `kof.io`
 
@@ -54,8 +59,11 @@ println(conteudo)
 | `File("x").writeText(s)` / `.appendText(s)` | Bool |
 | `File("x").readBytes()` | `Int[]` (0-255); `null` se falhar |
 | `File("x").writeBytes(b)` | Bool |
-| `File("x").size()` | Long; `-1` se não existir |
-| `File("x").delete()` | Bool |
+| `File("x").size()` | Long; **erro `file not found: <path>`** se não existir (JVM e Native, 0.5.0) |
+| `File("x").delete()` | Bool (recursivo se diretório) |
+| `File("x").copyTo(dest)` / `.moveTo(dest)` | Bool |
+| `File("x").modifiedTime()` / `.isSymlink()` | Long / Bool (0.4.5+) |
+| `File("x").readRange(inicio, fim)` | `Int[]` de bytes — leitura parcial (`fim` exclusivo) |
 
 Estáticas: `File.exists(p)`, `File.readText(p)`, `File.writeText(p, s)`, ...
 
@@ -87,9 +95,16 @@ println(path.size())
 
 ## Erros de IO
 
-- Leituras que falham retornam `null` (JVM); no Native, `readText` de arquivo
-  inexistente encerra com erro — verifique `exists()` antes.
-- `size()` retorna `-1` para arquivo inexistente.
+- `readText`/`readBytes` de arquivo inexistente retornam `null` — nos 5 alvos
+  (paridade travada na 0.5.0).
+- `size()` de arquivo inexistente **lança** `file not found: <path>` — a
+  mensagem é idêntica no JVM e no Native (0.5.0, §494). Verifique com
+  `exists()` se a ausência for esperada.
+- A partir da 0.5.0 o conjunto completo de `kof.io` roda também em
+  riscv64/aarch64: predicados, `mkdir/mkdirs`, `delete` recursivo,
+  `copyTo`/`moveTo`, `readRange`, `path`/`fileName`/`parent`/`extension` e
+  `resolve`/`normalize`/`toAbsolute`. Método/namespace inexistente em tipo
+  builtin agora é `SEM102` (0.5.0) — nunca no-op silencioso.
 
 ## `kof.time`
 
@@ -98,23 +113,29 @@ var agora = now()        // epoch milliseconds (Long)
 println(agora > 1700000000000)
 ```
 
-### Scheduler: `every` / `at` (0.2.0+)
+### Scheduler: `every` / `at`
 
-Agendamento de tarefas recorrentes ou em horário específico (JVM/JS):
+Agendamento de tarefas recorrentes ou em horário específico:
 
 ```kof
-// a cada 30 segundos
-every(30s) {
+// a cada 30 segundos (milissegundos)
+var id = scheduler.every(30000) {
     println("tick")
 }
+scheduler.cancel(id)
 
-// às 03:00 todo dia (cron)
-at("0 3 * * *") {
-    backup()
-}
+// cron de 5 campos (UTC) — real no JVM/JS desde 0.4.4
+var job = scheduler.at("0 3 * * *", () -> backup())
+
+// expressão de duração idiomática (0.4.8): s, ms, m, h, d, M, a e composição com &
+var lembrete = scheduler.at("30m", () -> println("pausa"))
+var manutencao = scheduler.at("1d&30m", () -> println("janela"))
 ```
 
-> kof.time agora funciona nos 3 targets (TIME001 fechado, 0.3.0-beta).
+> `scheduler.at` com cron/duração é real no JVM e no JS; no **Native** é
+> `CRON001` em compile-time (recusa honesta). `scheduler.every` funciona
+> nos 3 targets (SCHED001 fechado). Para atraso único, o idiom é
+> `spawn { time.sleep(ms); job() }`.
 
 ### `readLine()` (0.2.0+)
 

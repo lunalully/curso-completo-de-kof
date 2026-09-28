@@ -27,8 +27,10 @@ record Comentario(Int id, Int postId, String texto, String autor)
 | DELETE | `/posts/:id` | remove (autor ou admin) |
 
 **Regra de autorização:** só o autor (ou admin) remove — valide o dono via
-`auth.claims()` (ler `sub` do JSON; `auth.user()` ainda quebra em handler,
-nota #5) comparado a `post.autor` (evita IDOR, módulo 09).
+`auth.claims()` (ler `sub` do JSON) comparado a `post.autor` (evita IDOR,
+módulo 09). Proteja as rotas com `app.security()` (0.4.1+) — CSRF, sessão,
+rate-limit e headers em ordem fixa — e deixe `/login`/`/health` em
+`permitAll`.
 
 ## Frontend (kof.ui)
 
@@ -41,12 +43,11 @@ main() {
 }
 ```
 
-> **Nota real:** o cliente HTTP nativo existe no **JVM e JS**
-> (`http.get/post`). O frontend `kof.ui` renderiza via target JS, onde
-> `kof.http` funciona nos 3 targets (HTTP002 fechado, 0.3.0-beta). O padrão honesto do projeto:
-> o backend JVM serve a API; a UI consome estado servido ou usa `WORKAROUND`
-> documentado (fetch exposto pela plataforma). O importante é modelar a
-> integração e respeitar a separação backend/frontend.
+> **Nota real:** o cliente HTTP nativo existe no JVM, Native e JS
+> (`http.get/post` + `timeout/retry/circuit`). O frontend `kof.ui` renderiza
+> via target JS. O padrão honesto do projeto: o backend JVM serve a API; a
+> UI consome a API (ou estado servido). O importante é modelar a integração
+> e respeitar a separação backend/frontend.
 
 ## Passo a passo
 

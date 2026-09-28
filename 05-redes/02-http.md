@@ -72,6 +72,27 @@ main() {
 Funções de contexto: `param(name)`, `query(name)`, `header(name)`,
 `body()`, `method()`, `path()`.
 
+> Desde a 0.4.0, `query(name)` e `header(name)` devolvem **`String?`** — o
+> conteúdo pode não existir. Em concatenação vira `null`; se o valor for
+> obrigatório, trate com narrowing (`if (q != null)`) ou valide a entrada.
+
+## Cliente HTTP com resiliência (0.4.3+)
+
+Além de `http.get/post/put/delete/patch/options/status`, o cliente tem três
+controles de resiliência — antes eram aceitos e ignorados; desde a 0.4.3 são
+reais (x86 primeiro, depois cross):
+
+```kof
+http.timeout(30)      // timeout global em ms
+http.retry(3)         // repete em exceção e em HTTP 5xx
+http.circuit(5)       // abre o circuito após 5 falhas por 30s
+http.circuit(0)       // fecha/recupera o circuito
+```
+
+> Na 0.4.3 esses controles eram reais só no x86; na 0.5.0 compilam e rodam
+> também no cross (riscv64/aarch64) e no JS. Se algum recurso não existir no
+> seu alvo, o compilador recusa com código — nunca no-op.
+
 ## Comportamento do servidor
 
 - Handler devolve `String` → 200 com o corpo.

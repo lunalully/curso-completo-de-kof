@@ -71,6 +71,45 @@ class Colors {
 }
 ```
 
+## Novidades reais 0.4.5–0.5.0 (kof.ui)
+
+**`Style` declarativo (UI007)** — uma string CSS-like, parseada e validada no
+compilador (propriedade desconhecida → `SEM076/077/078`, nunca silencioso):
+
+```kof
+var card = Style("background: #ffffff; padding: 8; border-radius: 4")
+var v = View(card)
+var l = Label("titulo")
+l.setStyle(card)               // qualquer widget, não só View
+```
+
+**Tokens do design system (Fase 10)** — números mágicos viram intenção:
+
+```kof
+l.setFontSize(Typography.lg)   // 20
+var pad = Spacing.md           // 16  (grade de 8px: 4/8/16/24/32)
+var rad = Radius.md            // 4   (none/sm/md/lg/full)
+var b = Border.thin            // 2   (hairline/thin/medium/thick)
+var e = Elevation.sm           // 1   (none/sm/md/lg/xl)
+```
+
+Membro inexistente (`Spacing.huge`) é `SEM079`.
+
+**Estado sem prop-drilling (Fase 8)** — `AppState` é o store-raiz:
+
+```kof
+AppState(0).set(1)
+AppState(0).subscribe((v: Int) -> { l.text = "mode " + v })
+```
+
+**Ciclo de vida libera sozinho (`D-UI-AUTOUNSUB`, 18/09)** — subscription ou
+store criado **durante** o ciclo de vida do componente morre no unmount; sem
+`unsubscribe` manual, sem leak (10k ciclos provados). Criado fora de qualquer
+componente, é escopo de app e continua manual.
+
+> O observable vive no KofJS; no JVM/Native/Script essas faces são no-op
+> documentado. O `Style` de string é real no KofJS.
+
 ## Exercícios
 
 1. Monte uma `Column` com 3 `Label` e um `Button`.

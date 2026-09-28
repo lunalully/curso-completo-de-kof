@@ -113,7 +113,61 @@ main() {
 }
 ```
 
-Não há sobrecarga de funções top-level nem argumentos nomeados. `fn`/`fun`/`func` são palavras reservadas — não existem em Kof (dão `PARSE085`). Use `String nome(...) { }` ou `nome(...): String { }`.
+Não há **argumentos nomeados**. `fn`/`fun`/`func` são palavras reservadas — não existem em Kof (dão `PARSE085`). Use `String nome(...) { }` ou `nome(...): String { }`.
+
+## Sobrecarga top-level (0.4.0+)
+
+Funções top-level podem ter o **mesmo nome** quando as assinaturas são
+distintas (tipo ou aridade) — o compilador escolhe pelo call-site, nos 4
+alvos (decisão 10a):
+
+```kof
+Int dobro(Int x) { return x * 2 }
+String dobro(String s) { return s + s }
+
+Int soma(Int a, Int b) { return a + b }
+Int soma(Int a, Int b, Int c) { return a + b + c }
+```
+
+Duas funções com a **mesma assinatura** são `SEM047` — ambiguidade é erro,
+não sorteio.
+
+> Cuidado com o idioma: sobrecarga é permitida, mas se duas funções fizerem
+> a mesma *intenção* com tipos diferentes, prefira uma função genérica ou um
+> nome que diga o domínio. O compilador deixou de proibir; seu bom senso
+> continua no comando.
+
+## Funções como valor (0.4.0+)
+
+O tipo de função pode aparecer em parâmetro, campo e retorno — a assinatura
+`(Tipo) -> Retorno`:
+
+```kof
+aplica((Int) -> Int f, Int v): Int { return f(v) }
+
+main() {
+    var op: (Int) -> Int = (x: Int) -> x + 1
+    println(aplica(op, 41))     // 42
+}
+```
+
+Retornar função também funciona (o tipo da lambda `-> T?` em slot `-> T` é
+recusado: `SEM085`).
+
+## Funções aninhadas (0.3.22+)
+
+Uma função pode ser declarada **dentro** de outra — com hoisting, ou seja,
+pode ser chamada antes do ponto onde aparece:
+
+```kof
+main() {
+    println(aux(2))          // 102
+    Int aux(Int x) { return x + 100 }
+}
+```
+
+Use para lógica local curta; se precisa ser reusada fora, promova a
+top-level.
 
 ## Exercícios
 

@@ -15,20 +15,21 @@
 
 ## Estado e pré-requisito
 
-- `kof.db` funciona no target **JVM** (JDBC). Native/JS → `DB001` em compile-time.
-- Para rodar: driver JDBC no classpath (H2, SQLite, PostgreSQL, MySQL).
+- `kof.db` roda no **JVM** (JDBC), no **Native** (SQLite e MySQL/MariaDB wire)
+  e no **JS** (ponte). Gaps honestos: `DB002` para `query<T>` no JS,
+  `ORM001`/`DB001` por recurso.
+- Para rodar: nada manual — o `kof run` baixa o driver do scheme (0.5.0).
 
 ```bash
-kof build app.kf --target jvm --output out
-java -cp "out:h2.jar" Default.Main
+kof run app.kf          # driver provisionado automaticamente
 ```
 
 ## Como estudar
 
 1. Leia as aulas na ordem.
 2. Faça os [exercícios](exercicios.md) por nível.
-3. Confira as [soluções](solucoes/) — compile-as com `kof check`; rode com o
-   driver no classpath.
+3. Confira as [soluções](solucoes/) — compile-as com `kof check`; rode com
+   `kof run` (o driver é provisionado).
 4. Passe no checkpoint.
 
 ## Checkpoint

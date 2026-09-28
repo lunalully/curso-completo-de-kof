@@ -21,7 +21,7 @@ Double pearson(List<Double> x, List<Double> y) {
         somaXX = somaXX + dx * dx
         somaYY = somaYY + dy * dy
     }
-    return somaXY / raizQuadrada(somaXX * somaYY)
+    return somaXY / math.sqrt(somaXX * somaYY)
 }
 ```
 
@@ -66,7 +66,7 @@ record Ponto(Double x, Double y, String classe)
 Double distancia(Ponto a, Ponto b) {
     var dx = a.x - b.x
     var dy = a.y - b.y
-    return raizQuadrada(dx * dx + dy * dy)
+    return math.sqrt(dx * dx + dy * dy)
 }
 
 String classificar(List<Ponto> treino, Ponto novo, Int k) {
@@ -77,22 +77,20 @@ String classificar(List<Ponto> treino, Ponto novo, Int k) {
 }
 ```
 
-## Implementando `sqrt` (raiz quadrada)
+## `math.sqrt` — a plataforma já resolve (0.3.22+)
 
-Se o compilador não tiver `sqrt`, use o **método de Newton**:
+Desde a 0.3.22 `math.sqrt(Double)` existe nos **5 alvos** (NaN para negativo,
+IEEE 754) — e no riscv64/aarch64 roda de verdade (MATH001 fechado).
+Não reimplemente:
 
 ```kof
-Double raizQuadrada(Double n) {
-    if (n <= 0) {
-        return 0
-    }
-    var x = n
-    for (var i = 0; i < 100; i = i + 1) {
-        x = (x + n / x) / 2.0
-    }
-    return x
-}
+var h = math.sqrt(3.0 * 3.0 + 4.0 * 4.0)   // 5.0
 ```
+
+> **Curiosidade (opcional):** se um dia você precisar da matemática por trás,
+> o método de Newton é o exercício clássico — mas em código Kof normal a
+> resposta é `math.sqrt`. A partir da 0.4.1 o pacote tem também
+> `math.isNaN`/`isInfinite`/`isFinite` para validar os resultados.
 
 ## Exercício integrado
 

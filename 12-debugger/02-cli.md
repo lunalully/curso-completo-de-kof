@@ -3,7 +3,10 @@
 ## O comando
 
 ```bash
-kof debug <file.kf>
+kof debug <file.kf>                       # DAP no JVM
+kof debug <file.kf> --target native [--break 42] [--output <dir>]
+kof debug <file.kf> --dap --target native # servidor DAP no nativo
+kof debug <file.kf> --attach <pid>        # anexa a um processo em execução
 ```
 
 Inicia um **servidor DAP** (Debug Adapter Protocol) sobre **stdio**:
@@ -13,6 +16,12 @@ Inicia um **servidor DAP** (Debug Adapter Protocol) sobre **stdio**:
 - `continue` e `disconnect`.
 
 Qualquer editor com suporte a DAP (VS Code, Neovim, Helix) pode conectar.
+
+**Novidades 0.4.9 (debug nativo):** `kof debug --target native` gera
+símbolos **DWARF** (`.debug_info`/`.debug_line`, DIEs tipados) — dá para
+depurar o binário nativo com `gdb` enxergando funções e linhas Kof, e o modo
+`--dap` fala DAP em cima do nativo. `--attach <pid>` conecta a um processo
+já rodando (JVM/nativo).
 
 ## Fluxo típico
 

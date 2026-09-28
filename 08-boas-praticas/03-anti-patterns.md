@@ -113,8 +113,37 @@ testada, transação, estado compartilhado).
 feature planned que o substitui. Nunca apresente workaround como exemplo de
 código idiomático.
 
+## 9. Confiar em silêncio (0.5.0 fechou a porta)
+
+Código que "compila mas não faz" era o pior bug: field/método inexistente em
+namespace/nome builtin (`math.PI`, `File.bogus()`), cast perdido, branch
+engolido. Na 0.5.0 isso é diagnóstico de compile-time (`SEM102` e família):
+
+```kof
+// BAD — antes: getfield "?", no-op ou ClassFormatError em runtime
+math.PI          // SEM102 (não existe `PI`; use constante sua ou math.*)
+File("x").size   // propriedade? use o método documentado
+
+// GOOD — a plataforma diz o que não tem
+```
+
+Regra: se algo não está no corpus/training, **compile antes de confiar** —
+nunca presuma que uma chamada desconhecida vira no-op inofensivo.
+
+## 10. Null plantado e `Bool?` (SEM048/SEM095)
+
+```kof
+// BAD — os dois não existem em Kof moderno
+String? s = null
+Bool? b = null
+
+// GOOD
+String? s = mapOf("k", "v").get("ausente")   // ausência vem da API
+Troolean b = desconhecido                    // três estados de verdade
+```
+
 ## Exercícios
 
 1. Encontre os anti-patterns em um código seu e refatore.
-2. Crie uma "checklist de revisão" com os 8 itens acima.
+2. Crie uma "checklist de revisão" com os 10 itens acima.
 3. (Revisão) Leia `training/anti-patterns/` e anote um exemplo real de cada.

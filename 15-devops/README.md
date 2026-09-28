@@ -14,11 +14,13 @@
 
 | Ferramenta | Estado |
 |------------|--------|
-| `kof build/run/serve/check/test` | ✅ |
-| `kof bench`, `kof profile` | ✅ tooling |
-| `kof debug`, `kof lsp`, `kof info` | ✅ |
+| `kof build/run/serve/check/test` | ✅ (test com `--tag`/`--timeout`) |
+| `kof bench` (baseline/regressão), `kof profile --methods` | ✅ tooling |
+| `kof debug` (nativo DWARF), `kof lsp`, `kof info` | ✅ |
+| `kof fmt`, `kof md`, `kof workflow`, `kof deploy` | ✅ tooling |
+| `kof deps` (registry + proveniência `KOF_DEPS_TRUST=enforce`) | ✅ 0.5.0 |
 | `scripts/package.sh`, `bump-version.sh`, `changelog.sh`, `build-webview.sh` | ✅ no repo |
-| GitHub Actions (build+test no PR; release por tag) | ✅ no repo |
+| GitHub Actions (build+test no PR; release por tag; matriz 3 SOs) | ✅ no repo |
 | `VERSION` + `<revision>` no pom.xml | ✅ fonte única |
 
 ## Como estudar

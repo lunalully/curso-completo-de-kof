@@ -15,20 +15,23 @@ intenção → Kof → kof.db → JDBC → banco
 ```
 
 - SQL-first: você escreve o SQL; records viram bind automático.
-- Sem ORM pesado (JPA-style é decisão futura, não pressuposto).
-- Gaps de target (Native/JS) reportados em compile-time (`DB001`).
+- ORM existe para o que é repetitivo (`entity` + CRUD tipado), não como
+  dogma — ver `training/idioms/database.md`.
+- Gaps de target reportados em compile-time com código (`DB001`, `DB002`,
+  `ORM001`, `ORM003`) — nunca fallback silencioso.
 
-## Estado
+## Estado (0.5.0-beta)
 
 | Recurso | Estado |
 |---------|--------|
-| `db.connect(url)` / `db.connect(url, user, pass)` | ✅ JVM |
-| `db.execute(handle, sql, args...)` | ✅ JVM |
-| `db.query(handle, sql, args...)` → `List<String>` (JSON por linha) | ✅ JVM |
-| `db.query<T>(handle, sql, args...)` → `List<T>` (records) | ✅ JVM |
-| `transaction { ... }` | ✅ JVM |
-| `db.close(handle)` | ✅ JVM |
-| Native / JS | `DB001` (gap em compile-time) |
+| `db.connect(url)` / `db.connect(url, user, pass)` | ✅ JVM (JDBC), Native (SQLite/MySQL), JS (ponte) |
+| `db.execute(handle, sql, args...)` | ✅ JVM, Native x86/cross, JS |
+| `db.query(handle, sql, args...)` → `List<String>` (JSON por linha) | ✅ JVM, Native, JS |
+| `db.query<T>(handle, sql, args...)` → `List<T>` (records) | ✅ JVM/Native; `DB002` no JS |
+| `transaction { ... }` | ✅ JVM, Native; no JS via ponte |
+| `db.close(handle)` | ✅ todos (e aviso `MEM014` se esquecer) |
+| `orm.*` (CRUD, `where`, page, migrations) | ✅ JVM, Native (SQLite/MySQL); JS fechou `ORM001` |
+| `mongodb://` / `oracle://` | MongoDB ✅ JVM/Android (`DB001` nomeado no JS/Native); Oracle via driver |
 
 ## Sumário de aulas
 
@@ -41,6 +44,7 @@ intenção → Kof → kof.db → JDBC → banco
 
 ## Pré-requisito
 
-Qualquer driver JDBC no classpath (H2, SQLite, PostgreSQL, MySQL). No JVM o
-driver é resolvido via `ServiceLoader` — sem acoplamento de biblioteca no
+Nenhum setup manual: desde a 0.5.0 o `kof run` provisiona o driver JDBC do
+scheme usado (H2, SQLite, PostgreSQL, MySQL/MariaDB, MongoDB) em `~/.kof/deps`.
+O driver é resolvido via `ServiceLoader` — sem acoplamento de biblioteca no
 runtime Kof.

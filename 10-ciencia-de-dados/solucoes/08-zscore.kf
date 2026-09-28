@@ -1,13 +1,3 @@
-Double raizQuadrada(Double n) {
-    if (n <= 0) {
-        return 0
-    }
-    var x = n
-    for (var i = 0; i < 100; i = i + 1) {
-        x = (x + n / x) / 2.0
-    }
-    return x
-}
 Double media(List<Double> dados) {
     var soma = 0.0
     for (var x in dados) {
@@ -21,7 +11,10 @@ Double desvioPadrao(List<Double> dados) {
     for (var x in dados) {
         soma = soma + (x - m) * (x - m)
     }
-    return raizQuadrada(soma / dados.size)
+    // 0.5.0: a resolução de math.sqrt não aplica widening de Int→Double no
+    // argumento — materialize o Double antes (variância média).
+    var variancia: Double = soma / dados.size
+    return math.sqrt(variancia)
 }
 List<Double> zScore(List<Double> dados) {
     var m = media(dados)

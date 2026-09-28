@@ -1,4 +1,5 @@
-// List<String> são comparáveis por conteúdo (< funciona alfabeticamente)
+// String compara por conteúdo (==) e ordena com compareTo
+// (0.5.0: `<` em String é SEM053 — ordem lexicográfica difere por target)
 Int buscaBinariaString(List<String> lista, String alvo) {
     var baixo = 0
     var alto = lista.size - 1
@@ -8,7 +9,7 @@ Int buscaBinariaString(List<String> lista, String alvo) {
         if (valor == alvo) {
             return meio
         }
-        if (valor < alvo) {
+        if (valor.compareTo(alvo) < 0) {
             baixo = meio + 1
         } else {
             alto = meio - 1

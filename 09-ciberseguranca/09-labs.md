@@ -84,7 +84,7 @@ main() {
 
     app.get("/admin") {
         var admin = auth.hasRole("admin")
-        if (!admin) {      // WORKAROUND: atribua antes (nota #4)
+        if (!admin) {      // nota #4: atribua antes do if (padrão seguro)
             return "{\"error\": \"forbidden\"}"
         }
         return "{\"ok\": true}"
@@ -120,7 +120,7 @@ responda: quem atacou, quando, quantas vezes, de onde? Você consegue
 ```kof
 app.delete("/users/:id") {
     var admin = auth.hasRole("admin")
-    if (!admin) {          // WORKAROUND: atribua antes (nota #4)
+    if (!admin) {          // nota #4: atribua antes do if (padrão seguro)
         return "{\"error\": \"forbidden\"}"
     }
     log.info("admin removeu id " + param("id"))

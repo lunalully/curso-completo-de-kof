@@ -197,6 +197,40 @@ var pares = nums.filter((n: Int) -> n % 2 == 0)
 var soma = nums.reduce(0, (a: Int, n: Int) -> a + n)
 ```
 
+## 14. Ausência por intenção; três estados por `Troolean` (0.5.0)
+
+```kof
+// BAD — null plantado no código (SEM048) e Bool anulável (SEM095)
+String? nome = null
+Bool? ativo = null
+
+// GOOD — null vem da operação; three-state é Troolean
+String? nome = mapOf("a", "Mel").get("b")   // ausência vem da API
+Troolean ativo = respostaDesconhecida()     // true/false/desconhecido
+```
+
+## 15. Sobrecarga com domínio, não por hábito (0.4.0+)
+
+```kof
+// BOM — mesma intenção, formas distintas e claras
+descreve(Int n): String { return "inteiro: " + n }
+descreve(String s): String { return "texto: " + s }
+
+// BAD — assinaturas idênticas (SEM047) ou nomes opacos (descreveA/descreveB)
+```
+
+## 16. Tokens de design e stdlib de intenção
+
+```kof
+// BAD — número mágico e conversão por cast
+l.setFontSize(20)
+var n = "42" as Int          // SEM100: `as` não converte texto
+
+// GOOD — intenção nomeada e função de intenção
+l.setFontSize(Typography.lg)
+var n = math.parseInt("42")
+```
+
 ## Exercícios
 
 1. Refatore cada BAD acima para GOOD no seu editor.

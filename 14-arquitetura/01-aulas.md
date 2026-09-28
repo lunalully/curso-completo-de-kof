@@ -107,6 +107,29 @@ A "injeção" é só **passar o objeto** no construtor/função. Nada de reflect
 **Decisão arquitetural do projeto:** DI é NOT APPLICABLE no núcleo — reavaliar
 apenas se surgir necessidade real (plugins/SPI).
 
+## Aula 06 — Infra como código tipado (0.4–0.5)
+
+A mesma filosofia aplicada à operação: pipeline, supervisão e reconciliação
+de infraestrutura são **código Kof tipado** — não YAML colado por exit codes.
+
+- **Pipelines** (`kof.workflow`): `job`/`dag`/`after`/`run` + `Report`
+  tipado, com retry/backoff, dead-letter, checkpoint em `kof.db` e
+  `runSupervised(dag, nome, max)` (one_for_one via supervisor). Runner:
+  `kof workflow run`.
+- **Supervisão OTP** (`kof.supervisor`): árvore de workers com fábrica nova
+  por reinício, políticas `permanent`/`transient`/`temporary` e `escalate`
+  no limite — falha não derruba o sistema.
+- **Reconciliação** (`kof.makealive`, 0.5.0): um `Infrastructure("nome")`
+  declara recursos, dependências e propriedades desejadas; um `Provider`
+  (funções que leem/convergem/removem) é o adapter do mundo real; `apply`
+  calcula o diff e converge, `destroy` desfaz em ordem topológica reversa, e
+  `reconcile(design, provider, intervalMs)` mantém o laço. CLI:
+  `kof makealive plan|apply|destroy`. Idempotência por construção: aplicar de
+  novo um design convergido faz zero chamadas.
+
+> O adapter continua sendo seu: fs (`kof.io`), CLI (`kof.shell`), REST
+> (`kof.http`) — a plataforma dá o modelo, você dá o mundo.
+
 ## Checkpoint detalhado
 
 1. Modelo `Reserva` + `Salas` + `conflita` (acima).

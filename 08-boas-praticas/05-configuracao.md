@@ -10,9 +10,16 @@ config.str("app.name", "fallback")      // String
 config.int("server.port", 8080)         // Int
 config.long("server.timeout", 30000)    // Long
 config.bool("app.debug", false)         // Bool
+config.get("chave")                     // valor como está
+config.required("db.url")               // chave ausente = ERRO (nunca "" silencioso)
 config.has("chave")                     // Bool
 config.env("KOF_DIRECT")                // lê env direto (ou null)
 ```
+
+> Chaves **literais** são descobertas em compile-time — `kof config gen`
+> gera o template `kof.config` a partir do código; chave computada degrada
+> para runtime (travado em teste). No cross sem implementação, o acesso é
+> `CONF001` em compile-time — nunca valor silenciosamente errado.
 
 ## Fontes, em ordem de precedência
 
@@ -54,6 +61,13 @@ app.debug=false
 - Nomes consistentes entre env e arquivo.
 - Segredos continuam no ambiente via `kof.security.secrets` (não em config
   comitada).
+
+## `kof.toml` e `kof serve` (0.5.0)
+
+O manifesto do projeto tem seção `[server]`; ao rodar `kof serve`, a CLI lê
+`[server] port` e a entrega como `KOF_SERVER_PORT` (a env **vence** a
+config — `APP002`). O esqueleto de projeto (`kof new backend`) já nasce com
+manifesto e `kof.config` coerentes.
 
 ## Regra
 

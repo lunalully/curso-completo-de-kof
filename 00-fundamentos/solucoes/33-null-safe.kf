@@ -1,0 +1,21 @@
+// Exercício 33 — null safety por intenção
+//
+// Map.get devolve V?. Trate com narrowing ou getOrDefault — nunca plante null.
+
+main() {
+    var estoque = mapOf("teclado", 10, "mouse", 3)
+
+    // 1) narrowing: o ramo não-nulo é seguro
+    var teclado: Int? = estoque.get("teclado")
+    if (teclado != null) {
+        println("teclado tem " + teclado)   // teclado tem 10
+    } else {
+        println("teclado sem cadastro")
+    }
+
+    // 2) getOrDefault: ausência com valor padrão
+    println(estoque.getOrDefault("monitor", 0))  // 0
+
+    // 3) ausência genuína imprime null — e não quebra
+    println(estoque.get("monitor"))              // null
+}

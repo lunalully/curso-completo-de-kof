@@ -165,31 +165,43 @@ main() {
 
 ```kof
 var r = process.run("git", "status")
-println(r.output)
-println(r.exitCode)
+println(r.stdout)            // saída padrão
+println(r.stderr)            // saída de erro
+println(r.exitCode)          // exit != 0 é DADO, nunca exceção
 ```
 
-`process.spawn` lança um processo com **stdin/stdout vivos** (F10):
+`process.spawn` lança um processo com **stdin/stdout vivos**:
 
 ```kof
 var h = process.spawn("sh", "-c", "read x; echo got=$x")
-h.write("hello\n")           // envia para stdin
+h.write("hello\n")           // envia para stdin (no cross, no-op honesto)
 var line = h.readLine()      // lê stdout
+println(h.alive())
 h.kill()                     // destrói o processo
 ```
 
-- `process.run`: ✅ 3 targets (PROC001 fechado, 0.3.0-beta).
-- `process.spawn`: ✅ 3 targets (PROC001 fechado, 0.3.0-beta).
-- `process.exit(code)`: ✅ 3 targets.
+- `process.run`/`process.spawn`: ✅ JVM, Native x86/riscv64/aarch64 e JS
+  (sob o host Kof; `node` puro recusa com diagnóstico nomeado).
+- `process.exit(code)`: ✅ todos os alvos com runtime de processo.
+- **`kof.shell`** é a forma idiomática para argv dinâmico/pipeline:
+  `shell.run("git", listOf("status"))`, `shell.ok(r)`,
+  `shell.pipeline(listOf(listOf("echo", "a b"), listOf("wc", "-w")))` —
+  argv é **lista**, nunca string concatenada (anti-injeção).
+- **`kof.ssh`**: `ssh.run(host, cmd)`/`ssh.cmd`/`ssh.ok` no JVM e no cross.
 
-## Limitações honestas
+## Limitações honestas (0.5.0)
 
 - Filas produtor/consumidor: `kof.mq` (`queue/push/pop`, `mq.publish/
-  subscribe`) — 3 targets (MQ001 fechado, 0.3.0-beta).
-- Native: **CONC001 fechado** (pthread, 0.3.0-beta) — spawn/await funciona.
-- JS: **CONC003 fechado** — concorrência real via async/await/Promise (0.3.0-beta).
-- Lambda com captura **e** parâmetro tipado ainda falha em runtime
-  (`99-notas-workarounds.md` #8).
+  subscribe`) — 3 targets (MQ001 fechado).
+- Native: **CONC001 fechado** (pthread) — spawn/await real; canais
+  `channel<T>()` portados para riscv64/aarch64 na 0.5.0.
+- JS: **CONC003 fechado** — async/await/Promise. `cancelled()` no JS
+  ainda devolve `false` (sem thread-local da task) e o `sleep` é
+  cooperativo (§132): espere timers com um `sleep` longo, não polling curto.
+- Exceção dentro da task atravessa `await` com a mensagem original
+  (frame por thread no Native desde a 0.4.1).
+- `selectAny`/`awaitTimeout` para esperar "o primeiro que chegar" ou limitar
+  a espera.
 
 ## Exercícios
 

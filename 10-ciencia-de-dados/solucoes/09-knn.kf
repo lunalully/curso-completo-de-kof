@@ -1,15 +1,5 @@
 record Ponto(Double x, Double y, String classe)
 record Distancia(Double d, String classe)
-Double raizQuadrada(Double n) {
-    if (n <= 0) {
-        return 0
-    }
-    var x = n
-    for (var i = 0; i < 100; i = i + 1) {
-        x = (x + n / x) / 2.0
-    }
-    return x
-}
 List<Distancia> mergeSortDist(List<Distancia> l) {
     if (l.size <= 1) {
         return l
@@ -53,7 +43,7 @@ String classificar(List<Ponto> treino, Ponto novo, Int k) {
     for (var p in treino) {
         var dx = p.x - novo.x
         var dy = p.y - novo.y
-        distancias.add(Distancia(raizQuadrada(dx * dx + dy * dy), p.classe))
+        distancias.add(Distancia(math.sqrt(dx * dx + dy * dy), p.classe))
     }
     var ord = mergeSortDist(distancias)
     var contagemA = 0

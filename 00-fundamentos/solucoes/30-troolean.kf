@@ -1,0 +1,19 @@
+// Exercício 30 — Troolean: três estados (true / false / desconhecido)
+//
+// resposta(nota): devolve true (>= 7), false (0..6) ou desconhecido (nota < 0).
+// Desconhecido NASCE de uma API/lógica de domínio — nunca de `Bool?`.
+
+aprovado(Int nota): Troolean {
+    if (nota < 0) {
+        Troolean semDado   // declarado e não instanciado = desconhecido
+        return semDado
+    }
+    return nota >= 7
+}
+
+main() {
+    println(aprovado(9) == true)     // true
+    println(aprovado(5) == false)    // true
+    println(aprovado(-1) == true)    // false — desconhecido não é true
+    println(aprovado(-1))            // null (imprime true/false/null)
+}

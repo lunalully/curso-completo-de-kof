@@ -5,8 +5,8 @@ interface Armazenamento {
 }
 
 class ArmazenamentoEmBanco implements Armazenamento {
-    Int handle
-    constructor(Int handle) {
+    String handle
+    constructor(String handle) {
         this.handle = handle
     }
     void salvar(String chave, String valor) {
@@ -24,9 +24,10 @@ class ArmazenamentoEmBanco implements Armazenamento {
 }
 
 main() {
-    var db = db.connect("jdbc:h2:mem:hex;DB_CLOSE_DELAY=-1")
-    var storage = ArmazenamentoEmBanco(db)
+    // cuidado: não sombreie o namespace `db` com uma variável de mesmo nome
+    var conexao = db.connect("jdbc:h2:mem:hex;DB_CLOSE_DELAY=-1")
+    var storage = ArmazenamentoEmBanco(conexao)
     storage.salvar("usuario-1", "Mel")
     println(storage.carregar("usuario-1"))
-    db.close(db)
+    db.close(conexao)
 }

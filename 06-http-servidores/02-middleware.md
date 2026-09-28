@@ -99,6 +99,31 @@ main() {
 }
 ```
 
+## Middleware composto: `app.security()` (0.4.1+, JVM)
+
+Escrever rate-limit + CORS + headers + sessão + CSRF na mão é fácil de errar a
+**ordem**. A plataforma oferece a composição pronta (modelo Spring):
+
+```kof
+main() {
+    var app = web.app()
+    app.security()   // rate-limit → CORS → headers → sessão → CSRF → auth → RBAC → rota
+    // overrides explícitos:
+    // app.security(mapOf("rateLimit", "10/60", "csrf", "false", "permitAll", "/health,/login"))
+    app.get("/health") { return "ok" }
+    app.listen(8080)
+}
+```
+
+- **CSRF ligado por padrão** quando `app.security()` é configurado; desligar
+  exige `"csrf": "false"` explícito.
+- `permitAll` (alias de `publicPaths`) libera rotas do CSRF (ex.:
+  `/health,/login`).
+- Opções: `rateLimit` (`"10/60"` = 10 req/60s), `cors`, `headers`,
+  `sessionHeader`, `auth` (Bool), `roles`.
+- Gate honesto: JVM (Native/JS = `WEB006`). O fluxo manual (`security.csrf*`,
+  cookies, sessões, headers) está no módulo 04.
+
 ## Boa prática
 
 - Middleware para **transversalidade** (auth, logging, rate-limit futuro).

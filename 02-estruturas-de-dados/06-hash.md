@@ -1,6 +1,6 @@
 # Módulo 02 · Aula 6 — Tabela Hash e `Map`
 
-> O `Map<K,V>` **existe** na linguagem (3 targets). Este módulo ensina
+> O `Map<K,V>` **existe** na linguagem (todos os alvos). Este módulo ensina
 > o *conceito* de hash — e mostra por que o `Map` da linguagem é o padrão.
 
 ## O conceito

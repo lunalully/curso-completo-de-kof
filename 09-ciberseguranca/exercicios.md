@@ -22,7 +22,7 @@
 
 ## Hardening (aula 05)
 
-- ★★★ [06-rate-limit.kf](solucoes/06-rate-limit.kf) — `RateLimiter` (WORKAROUND manual) aplicado ao login.
+- ★★★ [06-rate-limit.kf](solucoes/06-rate-limit.kf) — `RateLimiter` didático aplicado ao login; compare com `security.rateLimit`.
 - ★★★ [07-errors-genericos.kf](solucoes/07-errors-genericos.kf) — handler que loga o detalhe e devolve erro genérico.
 
 ## Secure coding (aula 06)
